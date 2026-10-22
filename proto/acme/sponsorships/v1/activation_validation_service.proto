@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.sponsorships.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/sponsorships/v1/sponsorships.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Sponsorships.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/sponsorships/v1;sponsorshipsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ActivationValidationServiceProto";
+option java_package = "com.acme.sponsorships.v1";
+
+// Checks activations against the rules before anything acts on them.
+service ActivationValidationService {
+  // Validates an activation.
+  rpc ValidateActivation(ValidateActivationRequest) returns (ValidateActivationResponse);
+
+  // Previews an activation.
+  rpc PreviewActivation(PreviewActivationRequest) returns (PreviewActivationResponse);
+
+  // Checks an activation.
+  rpc CheckActivationEligibility(CheckActivationEligibilityRequest) returns (CheckActivationEligibilityResponse);
+
+  // Normalizes an activation.
+  rpc NormalizeActivation(NormalizeActivationRequest) returns (NormalizeActivationResponse);
+
+  // Explains an activation.
+  rpc ExplainActivationDecision(ExplainActivationDecisionRequest) returns (ExplainActivationDecisionResponse);
+
+  // Scores an activation.
+  rpc ScoreActivation(ScoreActivationRequest) returns (ScoreActivationResponse);
+
+  // Lints an activation.
+  rpc LintActivations(LintActivationsRequest) returns (LintActivationsResponse);
+
+  // Returns an activation.
+  rpc GetActivationRules(GetActivationRulesRequest) returns (GetActivationRulesResponse);
+}
+
+// The request of `ValidateActivation`.
+message ValidateActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  ValidateActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateActivation`.
+message ValidateActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  ValidateActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewActivation`.
+message PreviewActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  PreviewActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewActivation`.
+message PreviewActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  PreviewActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckActivationEligibility`.
+message CheckActivationEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  CheckActivationEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckActivationEligibility`.
+message CheckActivationEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  CheckActivationEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeActivation`.
+message NormalizeActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  NormalizeActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeActivation`.
+message NormalizeActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  NormalizeActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainActivationDecision`.
+message ExplainActivationDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  ExplainActivationDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainActivationDecision`.
+message ExplainActivationDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  ExplainActivationDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreActivation`.
+message ScoreActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  ScoreActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreActivation`.
+message ScoreActivationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreActivationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Activation activation = 1;
+  ScoreActivationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintActivations`.
+message LintActivationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  LintActivationsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintActivations`.
+message LintActivationsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  LintActivationsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetActivationRules`.
+message GetActivationRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetActivationRules`.
+message GetActivationRulesResponse {
+  Activation activation = 1;
+  acme.common.v1.OperationResult result = 2;
+}

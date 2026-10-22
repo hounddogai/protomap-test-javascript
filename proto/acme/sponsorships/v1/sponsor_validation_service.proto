@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.sponsorships.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/sponsorships/v1/sponsorships.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Sponsorships.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/sponsorships/v1;sponsorshipsv1";
+option java_multiple_files = true;
+option java_outer_classname = "SponsorValidationServiceProto";
+option java_package = "com.acme.sponsorships.v1";
+
+// Checks sponsors against the rules before anything acts on them.
+service SponsorValidationService {
+  // Validates a sponsor.
+  rpc ValidateSponsor(ValidateSponsorRequest) returns (ValidateSponsorResponse);
+
+  // Previews a sponsor.
+  rpc PreviewSponsor(PreviewSponsorRequest) returns (PreviewSponsorResponse);
+
+  // Checks a sponsor.
+  rpc CheckSponsorEligibility(CheckSponsorEligibilityRequest) returns (CheckSponsorEligibilityResponse);
+
+  // Normalizes a sponsor.
+  rpc NormalizeSponsor(NormalizeSponsorRequest) returns (NormalizeSponsorResponse);
+
+  // Explains a sponsor.
+  rpc ExplainSponsorDecision(ExplainSponsorDecisionRequest) returns (ExplainSponsorDecisionResponse);
+
+  // Scores a sponsor.
+  rpc ScoreSponsor(ScoreSponsorRequest) returns (ScoreSponsorResponse);
+
+  // Returns a sponsor.
+  rpc GetSponsorRules(GetSponsorRulesRequest) returns (GetSponsorRulesResponse);
+}
+
+// The request of `ValidateSponsor`.
+message ValidateSponsorRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsor_id = 2;
+  Sponsor sponsor = 3;
+  ValidateSponsorRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateSponsor`.
+message ValidateSponsorResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Sponsor sponsor = 1;
+  ValidateSponsorResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewSponsor`.
+message PreviewSponsorRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsor_id = 2;
+  Sponsor sponsor = 3;
+  PreviewSponsorRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewSponsor`.
+message PreviewSponsorResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Sponsor sponsor = 1;
+  PreviewSponsorResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckSponsorEligibility`.
+message CheckSponsorEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsor_id = 2;
+  Sponsor sponsor = 3;
+  CheckSponsorEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckSponsorEligibility`.
+message CheckSponsorEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Sponsor sponsor = 1;
+  CheckSponsorEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeSponsor`.
+message NormalizeSponsorRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsor_id = 2;
+  Sponsor sponsor = 3;
+  NormalizeSponsorRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeSponsor`.
+message NormalizeSponsorResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Sponsor sponsor = 1;
+  NormalizeSponsorResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainSponsorDecision`.
+message ExplainSponsorDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsor_id = 2;
+  Sponsor sponsor = 3;
+  ExplainSponsorDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainSponsorDecision`.
+message ExplainSponsorDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Sponsor sponsor = 1;
+  ExplainSponsorDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreSponsor`.
+message ScoreSponsorRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsor_id = 2;
+  Sponsor sponsor = 3;
+  ScoreSponsorRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreSponsor`.
+message ScoreSponsorResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreSponsorResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Sponsor sponsor = 1;
+  ScoreSponsorResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSponsorRules`.
+message GetSponsorRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string sponsor_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSponsorRules`.
+message GetSponsorRulesResponse {
+  Sponsor sponsor = 1;
+  acme.common.v1.OperationResult result = 2;
+}

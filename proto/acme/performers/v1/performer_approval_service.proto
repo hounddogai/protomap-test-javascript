@@ -1,0 +1,304 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performers.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/performers/v1/performers.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Performers.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performers/v1;performersv1";
+option java_multiple_files = true;
+option java_outer_classname = "PerformerApprovalServiceProto";
+option java_package = "com.acme.performers.v1";
+
+// Routes performers through approval, with escalation and delegation.
+service PerformerApprovalService {
+  // Submits a performer.
+  rpc SubmitPerformer(SubmitPerformerRequest) returns (SubmitPerformerResponse);
+
+  // Approves a performer.
+  rpc ApprovePerformer(ApprovePerformerRequest) returns (ApprovePerformerResponse);
+
+  // Rejects a performer.
+  rpc RejectPerformer(RejectPerformerRequest) returns (RejectPerformerResponse);
+
+  // Escalates a performer.
+  rpc EscalatePerformer(EscalatePerformerRequest) returns (EscalatePerformerResponse);
+
+  // Delegates a performer.
+  rpc DelegatePerformerApproval(DelegatePerformerApprovalRequest) returns (DelegatePerformerApprovalResponse);
+
+  // Recalls a performer.
+  rpc RecallPerformer(RecallPerformerRequest) returns (RecallPerformerResponse);
+
+  // Returns a performer.
+  rpc GetPerformerApprovalStatus(GetPerformerApprovalStatusRequest) returns (GetPerformerApprovalStatusResponse);
+
+  // Comments a performer.
+  rpc CommentPerformerApproval(CommentPerformerApprovalRequest) returns (CommentPerformerApprovalResponse);
+}
+
+// The request of `SubmitPerformer`.
+message SubmitPerformerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  SubmitPerformerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitPerformer`.
+message SubmitPerformerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  SubmitPerformerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApprovePerformer`.
+message ApprovePerformerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  ApprovePerformerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApprovePerformer`.
+message ApprovePerformerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  ApprovePerformerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectPerformer`.
+message RejectPerformerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  RejectPerformerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectPerformer`.
+message RejectPerformerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  RejectPerformerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalatePerformer`.
+message EscalatePerformerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  EscalatePerformerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalatePerformer`.
+message EscalatePerformerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  EscalatePerformerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegatePerformerApproval`.
+message DelegatePerformerApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  DelegatePerformerApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegatePerformerApproval`.
+message DelegatePerformerApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  DelegatePerformerApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallPerformer`.
+message RecallPerformerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  RecallPerformerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallPerformer`.
+message RecallPerformerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  RecallPerformerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetPerformerApprovalStatus`.
+message GetPerformerApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetPerformerApprovalStatus`.
+message GetPerformerApprovalStatusResponse {
+  Performer performer = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentPerformerApproval`.
+message CommentPerformerApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  CommentPerformerApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentPerformerApproval`.
+message CommentPerformerApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  CommentPerformerApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

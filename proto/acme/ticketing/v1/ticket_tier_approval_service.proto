@@ -1,0 +1,266 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.ticketing.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/ticketing/v1/ticketing.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Ticketing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/ticketing/v1;ticketingv1";
+option java_multiple_files = true;
+option java_outer_classname = "TicketTierApprovalServiceProto";
+option java_package = "com.acme.ticketing.v1";
+
+// Routes ticket tiers through approval, with escalation and delegation.
+service TicketTierApprovalService {
+  // Submits a ticket tier.
+  rpc SubmitTicketTier(SubmitTicketTierRequest) returns (SubmitTicketTierResponse);
+
+  // Approves a ticket tier.
+  rpc ApproveTicketTier(ApproveTicketTierRequest) returns (ApproveTicketTierResponse);
+
+  // Rejects a ticket tier.
+  rpc RejectTicketTier(RejectTicketTierRequest) returns (RejectTicketTierResponse);
+
+  // Delegates a ticket tier.
+  rpc DelegateTicketTierApproval(DelegateTicketTierApprovalRequest) returns (DelegateTicketTierApprovalResponse);
+
+  // Recalls a ticket tier.
+  rpc RecallTicketTier(RecallTicketTierRequest) returns (RecallTicketTierResponse);
+
+  // Returns a ticket tier.
+  rpc GetTicketTierApprovalStatus(GetTicketTierApprovalStatusRequest) returns (GetTicketTierApprovalStatusResponse);
+
+  // Comments a ticket tier.
+  rpc CommentTicketTierApproval(CommentTicketTierApprovalRequest) returns (CommentTicketTierApprovalResponse);
+}
+
+// The request of `SubmitTicketTier`.
+message SubmitTicketTierRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  SubmitTicketTierRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitTicketTier`.
+message SubmitTicketTierResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  SubmitTicketTierResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveTicketTier`.
+message ApproveTicketTierRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  ApproveTicketTierRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveTicketTier`.
+message ApproveTicketTierResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  ApproveTicketTierResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectTicketTier`.
+message RejectTicketTierRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  RejectTicketTierRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectTicketTier`.
+message RejectTicketTierResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  RejectTicketTierResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateTicketTierApproval`.
+message DelegateTicketTierApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  DelegateTicketTierApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateTicketTierApproval`.
+message DelegateTicketTierApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  DelegateTicketTierApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallTicketTier`.
+message RecallTicketTierRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  RecallTicketTierRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallTicketTier`.
+message RecallTicketTierResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  RecallTicketTierResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTicketTierApprovalStatus`.
+message GetTicketTierApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTicketTierApprovalStatus`.
+message GetTicketTierApprovalStatusResponse {
+  TicketTier ticket_tier = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentTicketTierApproval`.
+message CommentTicketTierApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  CommentTicketTierApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentTicketTierApproval`.
+message CommentTicketTierApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  CommentTicketTierApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

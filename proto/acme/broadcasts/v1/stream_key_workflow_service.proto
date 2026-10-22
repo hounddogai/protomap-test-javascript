@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "StreamKeyWorkflowServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Runs the long-lived workflow that takes a stream key from start to finish.
+service StreamKeyWorkflowService {
+  // Starts a stream key.
+  rpc StartStreamKeyWorkflow(StartStreamKeyWorkflowRequest) returns (StartStreamKeyWorkflowResponse);
+
+  // Advances a stream key.
+  rpc AdvanceStreamKeyWorkflow(AdvanceStreamKeyWorkflowRequest) returns (AdvanceStreamKeyWorkflowResponse);
+
+  // Cancels a stream key.
+  rpc CancelStreamKeyWorkflow(CancelStreamKeyWorkflowRequest) returns (CancelStreamKeyWorkflowResponse);
+
+  // Retrys a stream key.
+  rpc RetryStreamKeyWorkflow(RetryStreamKeyWorkflowRequest) returns (RetryStreamKeyWorkflowResponse);
+
+  // Pauses a stream key.
+  rpc PauseStreamKeyWorkflow(PauseStreamKeyWorkflowRequest) returns (PauseStreamKeyWorkflowResponse);
+
+  // Resumes a stream key.
+  rpc ResumeStreamKeyWorkflow(ResumeStreamKeyWorkflowRequest) returns (ResumeStreamKeyWorkflowResponse);
+
+  // Returns a stream key.
+  rpc InspectStreamKeyWorkflow(InspectStreamKeyWorkflowRequest) returns (InspectStreamKeyWorkflowResponse);
+
+  // Lists stream keys a page at a time.
+  rpc ListStreamKeyWorkflows(ListStreamKeyWorkflowsRequest) returns (ListStreamKeyWorkflowsResponse);
+
+  // Signals a stream key.
+  rpc SignalStreamKeyWorkflow(SignalStreamKeyWorkflowRequest) returns (SignalStreamKeyWorkflowResponse);
+}
+
+// The request of `StartStreamKeyWorkflow`.
+message StartStreamKeyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  StartStreamKeyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartStreamKeyWorkflow`.
+message StartStreamKeyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  StartStreamKeyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceStreamKeyWorkflow`.
+message AdvanceStreamKeyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  AdvanceStreamKeyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceStreamKeyWorkflow`.
+message AdvanceStreamKeyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  AdvanceStreamKeyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelStreamKeyWorkflow`.
+message CancelStreamKeyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  CancelStreamKeyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelStreamKeyWorkflow`.
+message CancelStreamKeyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  CancelStreamKeyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryStreamKeyWorkflow`.
+message RetryStreamKeyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  RetryStreamKeyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryStreamKeyWorkflow`.
+message RetryStreamKeyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  RetryStreamKeyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseStreamKeyWorkflow`.
+message PauseStreamKeyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  PauseStreamKeyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseStreamKeyWorkflow`.
+message PauseStreamKeyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  PauseStreamKeyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeStreamKeyWorkflow`.
+message ResumeStreamKeyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  ResumeStreamKeyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeStreamKeyWorkflow`.
+message ResumeStreamKeyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  ResumeStreamKeyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectStreamKeyWorkflow`.
+message InspectStreamKeyWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectStreamKeyWorkflow`.
+message InspectStreamKeyWorkflowResponse {
+  StreamKey stream_key = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListStreamKeyWorkflows`.
+message ListStreamKeyWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated StreamKeyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListStreamKeyWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListStreamKeyWorkflows`.
+message ListStreamKeyWorkflowsResponse {
+  repeated StreamKey stream_keys = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalStreamKeyWorkflow`.
+message SignalStreamKeyWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  SignalStreamKeyWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalStreamKeyWorkflow`.
+message SignalStreamKeyWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  SignalStreamKeyWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

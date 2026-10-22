@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "AdmissionWorkflowServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Runs the long-lived workflow that takes an admission from start to finish.
+service AdmissionWorkflowService {
+  // Starts an admission.
+  rpc StartAdmissionWorkflow(StartAdmissionWorkflowRequest) returns (StartAdmissionWorkflowResponse);
+
+  // Advances an admission.
+  rpc AdvanceAdmissionWorkflow(AdvanceAdmissionWorkflowRequest) returns (AdvanceAdmissionWorkflowResponse);
+
+  // Cancels an admission.
+  rpc CancelAdmissionWorkflow(CancelAdmissionWorkflowRequest) returns (CancelAdmissionWorkflowResponse);
+
+  // Retrys an admission.
+  rpc RetryAdmissionWorkflow(RetryAdmissionWorkflowRequest) returns (RetryAdmissionWorkflowResponse);
+
+  // Pauses an admission.
+  rpc PauseAdmissionWorkflow(PauseAdmissionWorkflowRequest) returns (PauseAdmissionWorkflowResponse);
+
+  // Resumes an admission.
+  rpc ResumeAdmissionWorkflow(ResumeAdmissionWorkflowRequest) returns (ResumeAdmissionWorkflowResponse);
+
+  // Returns an admission.
+  rpc InspectAdmissionWorkflow(InspectAdmissionWorkflowRequest) returns (InspectAdmissionWorkflowResponse);
+
+  // Lists admissions a page at a time.
+  rpc ListAdmissionWorkflows(ListAdmissionWorkflowsRequest) returns (ListAdmissionWorkflowsResponse);
+
+  // Signals an admission.
+  rpc SignalAdmissionWorkflow(SignalAdmissionWorkflowRequest) returns (SignalAdmissionWorkflowResponse);
+}
+
+// The request of `StartAdmissionWorkflow`.
+message StartAdmissionWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  StartAdmissionWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartAdmissionWorkflow`.
+message StartAdmissionWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  StartAdmissionWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceAdmissionWorkflow`.
+message AdvanceAdmissionWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  AdvanceAdmissionWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceAdmissionWorkflow`.
+message AdvanceAdmissionWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  AdvanceAdmissionWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelAdmissionWorkflow`.
+message CancelAdmissionWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  CancelAdmissionWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelAdmissionWorkflow`.
+message CancelAdmissionWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  CancelAdmissionWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryAdmissionWorkflow`.
+message RetryAdmissionWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  RetryAdmissionWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryAdmissionWorkflow`.
+message RetryAdmissionWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  RetryAdmissionWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseAdmissionWorkflow`.
+message PauseAdmissionWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  PauseAdmissionWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseAdmissionWorkflow`.
+message PauseAdmissionWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  PauseAdmissionWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeAdmissionWorkflow`.
+message ResumeAdmissionWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  ResumeAdmissionWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeAdmissionWorkflow`.
+message ResumeAdmissionWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  ResumeAdmissionWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectAdmissionWorkflow`.
+message InspectAdmissionWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectAdmissionWorkflow`.
+message InspectAdmissionWorkflowResponse {
+  Admission admission = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListAdmissionWorkflows`.
+message ListAdmissionWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AdmissionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListAdmissionWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListAdmissionWorkflows`.
+message ListAdmissionWorkflowsResponse {
+  repeated Admission admissions = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalAdmissionWorkflow`.
+message SignalAdmissionWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  SignalAdmissionWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalAdmissionWorkflow`.
+message SignalAdmissionWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  SignalAdmissionWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

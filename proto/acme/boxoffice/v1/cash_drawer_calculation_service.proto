@@ -1,0 +1,249 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "CashDrawerCalculationServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Computes the figures of a cash drawer, such as totals, taxes, and estimates.
+service CashDrawerCalculationService {
+  // Calculates a cash drawer.
+  rpc CalculateCashDrawer(CalculateCashDrawerRequest) returns (CalculateCashDrawerResponse);
+
+  // Estimates a cash drawer.
+  rpc EstimateCashDrawer(EstimateCashDrawerRequest) returns (EstimateCashDrawerResponse);
+
+  // Compares a cash drawer.
+  rpc CompareCashDrawerOptions(CompareCashDrawerOptionsRequest) returns (CompareCashDrawerOptionsResponse);
+
+  // Recalculates a cash drawer.
+  rpc RecalculateCashDrawers(RecalculateCashDrawersRequest) returns (RecalculateCashDrawersResponse);
+
+  // Explains a cash drawer.
+  rpc ExplainCashDrawerCalculation(ExplainCashDrawerCalculationRequest) returns (ExplainCashDrawerCalculationResponse);
+
+  // Returns a cash drawer.
+  rpc GetCashDrawerRates(GetCashDrawerRatesRequest) returns (GetCashDrawerRatesResponse);
+}
+
+// The request of `CalculateCashDrawer`.
+message CalculateCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  CalculateCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateCashDrawer`.
+message CalculateCashDrawerResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateCashDrawerResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CashDrawer cash_drawer = 1;
+  CalculateCashDrawerResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateCashDrawer`.
+message EstimateCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  EstimateCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateCashDrawer`.
+message EstimateCashDrawerResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateCashDrawerResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CashDrawer cash_drawer = 1;
+  EstimateCashDrawerResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareCashDrawerOptions`.
+message CompareCashDrawerOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  CompareCashDrawerOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareCashDrawerOptions`.
+message CompareCashDrawerOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareCashDrawerOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CashDrawer cash_drawer = 1;
+  CompareCashDrawerOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateCashDrawers`.
+message RecalculateCashDrawersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  RecalculateCashDrawersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateCashDrawers`.
+message RecalculateCashDrawersResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateCashDrawersResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CashDrawer cash_drawer = 1;
+  RecalculateCashDrawersResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainCashDrawerCalculation`.
+message ExplainCashDrawerCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  ExplainCashDrawerCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainCashDrawerCalculation`.
+message ExplainCashDrawerCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  ExplainCashDrawerCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCashDrawerRates`.
+message GetCashDrawerRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCashDrawerRates`.
+message GetCashDrawerRatesResponse {
+  CashDrawer cash_drawer = 1;
+  acme.common.v1.OperationResult result = 2;
+}

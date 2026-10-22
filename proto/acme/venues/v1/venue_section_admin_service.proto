@@ -1,0 +1,220 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenueSectionAdminServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Operator actions on venue sections that support staff run by hand.
+service VenueSectionAdminService {
+  // Archives a venue section.
+  rpc ArchiveVenueSection(ArchiveVenueSectionRequest) returns (ArchiveVenueSectionResponse);
+
+  // Restores a venue section.
+  rpc RestoreVenueSection(RestoreVenueSectionRequest) returns (RestoreVenueSectionResponse);
+
+  // Deletes a venue section.
+  rpc PurgeVenueSection(PurgeVenueSectionRequest) returns (PurgeVenueSectionResponse);
+
+  // Reassigns a venue section.
+  rpc ReassignVenueSection(ReassignVenueSectionRequest) returns (ReassignVenueSectionResponse);
+
+  // Locks a venue section.
+  rpc LockVenueSection(LockVenueSectionRequest) returns (LockVenueSectionResponse);
+
+  // Transfers a venue section.
+  rpc TransferVenueSection(TransferVenueSectionRequest) returns (TransferVenueSectionResponse);
+}
+
+// The request of `ArchiveVenueSection`.
+message ArchiveVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  ArchiveVenueSectionRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ArchiveVenueSection`.
+message ArchiveVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  ArchiveVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RestoreVenueSection`.
+message RestoreVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  RestoreVenueSectionRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RestoreVenueSection`.
+message RestoreVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  RestoreVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PurgeVenueSection`.
+message PurgeVenueSectionRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `PurgeVenueSection`.
+message PurgeVenueSectionResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}
+
+// The request of `ReassignVenueSection`.
+message ReassignVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.identity.v1.UserRef assignee = 1;
+    string queue = 2;
+    int32 capacity = 3;
+    string assignee_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  ReassignVenueSectionRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReassignVenueSection`.
+message ReassignVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  ReassignVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LockVenueSection`.
+message LockVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  LockVenueSectionRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `LockVenueSection`.
+message LockVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  LockVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TransferVenueSection`.
+message TransferVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  TransferVenueSectionRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TransferVenueSection`.
+message TransferVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  TransferVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

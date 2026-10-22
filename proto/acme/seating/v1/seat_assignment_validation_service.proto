@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.seating.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/seating/v1/seating.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Seating.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/seating/v1;seatingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeatAssignmentValidationServiceProto";
+option java_package = "com.acme.seating.v1";
+
+// Checks seat assignments against the rules before anything acts on them.
+service SeatAssignmentValidationService {
+  // Validates a seat assignment.
+  rpc ValidateSeatAssignment(ValidateSeatAssignmentRequest) returns (ValidateSeatAssignmentResponse);
+
+  // Previews a seat assignment.
+  rpc PreviewSeatAssignment(PreviewSeatAssignmentRequest) returns (PreviewSeatAssignmentResponse);
+
+  // Checks a seat assignment.
+  rpc CheckSeatAssignmentEligibility(CheckSeatAssignmentEligibilityRequest) returns (CheckSeatAssignmentEligibilityResponse);
+
+  // Normalizes a seat assignment.
+  rpc NormalizeSeatAssignment(NormalizeSeatAssignmentRequest) returns (NormalizeSeatAssignmentResponse);
+
+  // Explains a seat assignment.
+  rpc ExplainSeatAssignmentDecision(ExplainSeatAssignmentDecisionRequest) returns (ExplainSeatAssignmentDecisionResponse);
+
+  // Scores a seat assignment.
+  rpc ScoreSeatAssignment(ScoreSeatAssignmentRequest) returns (ScoreSeatAssignmentResponse);
+
+  // Lints a seat assignment.
+  rpc LintSeatAssignments(LintSeatAssignmentsRequest) returns (LintSeatAssignmentsResponse);
+
+  // Returns a seat assignment.
+  rpc GetSeatAssignmentRules(GetSeatAssignmentRulesRequest) returns (GetSeatAssignmentRulesResponse);
+}
+
+// The request of `ValidateSeatAssignment`.
+message ValidateSeatAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  ValidateSeatAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateSeatAssignment`.
+message ValidateSeatAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  ValidateSeatAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewSeatAssignment`.
+message PreviewSeatAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  PreviewSeatAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewSeatAssignment`.
+message PreviewSeatAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  PreviewSeatAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckSeatAssignmentEligibility`.
+message CheckSeatAssignmentEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  CheckSeatAssignmentEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckSeatAssignmentEligibility`.
+message CheckSeatAssignmentEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  CheckSeatAssignmentEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeSeatAssignment`.
+message NormalizeSeatAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  NormalizeSeatAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeSeatAssignment`.
+message NormalizeSeatAssignmentResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  NormalizeSeatAssignmentResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainSeatAssignmentDecision`.
+message ExplainSeatAssignmentDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  ExplainSeatAssignmentDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainSeatAssignmentDecision`.
+message ExplainSeatAssignmentDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  ExplainSeatAssignmentDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreSeatAssignment`.
+message ScoreSeatAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  ScoreSeatAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreSeatAssignment`.
+message ScoreSeatAssignmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreSeatAssignmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  ScoreSeatAssignmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintSeatAssignments`.
+message LintSeatAssignmentsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  LintSeatAssignmentsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintSeatAssignments`.
+message LintSeatAssignmentsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  LintSeatAssignmentsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSeatAssignmentRules`.
+message GetSeatAssignmentRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSeatAssignmentRules`.
+message GetSeatAssignmentRulesResponse {
+  SeatAssignment seat_assignment = 1;
+  acme.common.v1.OperationResult result = 2;
+}

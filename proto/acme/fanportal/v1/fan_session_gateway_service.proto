@@ -1,0 +1,314 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.fanportal.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/fanportal/v1/fanportal.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Fanportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/fanportal/v1;fanportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "FanSessionGatewayServiceProto";
+option java_package = "com.acme.fanportal.v1";
+
+// The edge API that apps call for fan sessions.
+service FanSessionGatewayService {
+  // Fetchs a fan session.
+  rpc FetchFanSessionView(FetchFanSessionViewRequest) returns (FetchFanSessionViewResponse);
+
+  // Composes a fan session.
+  rpc ComposeFanSessionPage(ComposeFanSessionPageRequest) returns (ComposeFanSessionPageResponse);
+
+  // Refreshs a fan session.
+  rpc RefreshFanSession(RefreshFanSessionRequest) returns (RefreshFanSessionResponse);
+
+  // Submits a fan session.
+  rpc SubmitFanSessionForm(SubmitFanSessionFormRequest) returns (SubmitFanSessionFormResponse);
+
+  // Tracks a fan session.
+  rpc TrackFanSession(TrackFanSessionRequest) returns (TrackFanSessionResponse);
+
+  // Streams the changes of fan sessions as they happen.
+  rpc StreamFanSessionUpdates(StreamFanSessionUpdatesRequest) returns (stream StreamFanSessionUpdatesResponse);
+
+  // Takes a stream of fan sessions and answers once at the end.
+  rpc UploadFanSessionAttachments(stream UploadFanSessionAttachmentsRequest) returns (UploadFanSessionAttachmentsResponse);
+
+  // Lists fan sessions a page at a time.
+  rpc SearchFanSessionCatalog(SearchFanSessionCatalogRequest) returns (SearchFanSessionCatalogResponse);
+
+  // Returns a fan session.
+  rpc GetFanSessionSummary(GetFanSessionSummaryRequest) returns (GetFanSessionSummaryResponse);
+
+  // Starts a fan session.
+  rpc StartFanSessionCheckout(StartFanSessionCheckoutRequest) returns (StartFanSessionCheckoutResponse);
+}
+
+// The request of `FetchFanSessionView`.
+message FetchFanSessionViewRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string fan_session_id = 2;
+  FanSession fan_session = 3;
+  FetchFanSessionViewRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `FetchFanSessionView`.
+message FetchFanSessionViewResponse {
+  FanSession fan_session = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ComposeFanSessionPage`.
+message ComposeFanSessionPageRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string fan_session_id = 2;
+  FanSession fan_session = 3;
+  ComposeFanSessionPageRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ComposeFanSessionPage`.
+message ComposeFanSessionPageResponse {
+  FanSession fan_session = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `RefreshFanSession`.
+message RefreshFanSessionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string fan_session_id = 2;
+  FanSession fan_session = 3;
+  RefreshFanSessionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RefreshFanSession`.
+message RefreshFanSessionResponse {
+  FanSession fan_session = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `SubmitFanSessionForm`.
+message SubmitFanSessionFormRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string fan_session_id = 2;
+  FanSession fan_session = 3;
+  SubmitFanSessionFormRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitFanSessionForm`.
+message SubmitFanSessionFormResponse {
+  FanSession fan_session = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `TrackFanSession`.
+message TrackFanSessionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string device = 1;
+    string locale = 2;
+    acme.common.v1.GeoPoint location = 3;
+    map<string, string> client_hints = 4;
+    string session_id = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string fan_session_id = 2;
+  FanSession fan_session = 3;
+  TrackFanSessionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `TrackFanSession`.
+message TrackFanSessionResponse {
+  FanSession fan_session = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `StreamFanSessionUpdates`.
+message StreamFanSessionUpdatesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated FanSessionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamFanSessionUpdatesRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamFanSessionUpdates`.
+message StreamFanSessionUpdatesResponse {
+  FanSession fan_session = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `UploadFanSessionAttachments`.
+message UploadFanSessionAttachmentsRequest {
+  // What a stream of records starts with.
+  message StreamHeader {
+    string source = 1;
+    string format = 2;
+    int64 total_records = 3;
+    acme.common.v1.ContactInfo submitted_by = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof chunk {
+    UploadFanSessionAttachmentsRequest.StreamHeader header = 2;
+    FanSession record = 3;
+  }
+  int64 sequence = 4;
+}
+
+// The response of `UploadFanSessionAttachments`.
+message UploadFanSessionAttachmentsResponse {
+  // A record the import turned down.
+  message Rejection {
+    int64 sequence = 1;
+    string reason = 2;
+    string fan_session_id = 3;
+  }
+
+  int64 accepted = 1;
+  int64 rejected = 2;
+  repeated UploadFanSessionAttachmentsResponse.Rejection rejections = 3;
+  acme.common.v1.OperationResult result = 4;
+}
+
+// The request of `SearchFanSessionCatalog`.
+message SearchFanSessionCatalogRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated FanSessionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SearchFanSessionCatalogRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SearchFanSessionCatalog`.
+message SearchFanSessionCatalogResponse {
+  repeated FanSession fan_sessions = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetFanSessionSummary`.
+message GetFanSessionSummaryRequest {
+  acme.common.v1.RequestContext context = 1;
+  string fan_session_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetFanSessionSummary`.
+message GetFanSessionSummaryResponse {
+  FanSession fan_session = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `StartFanSessionCheckout`.
+message StartFanSessionCheckoutRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string fan_session_id = 2;
+  FanSession fan_session = 3;
+  StartFanSessionCheckoutRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartFanSessionCheckout`.
+message StartFanSessionCheckoutResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  FanSession fan_session = 1;
+  StartFanSessionCheckoutResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

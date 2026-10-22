@@ -1,0 +1,173 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "GuestListReportingServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Builds and schedules reports about guest lists.
+service GuestListReportingService {
+  // Generates a guest list.
+  rpc GenerateGuestListReport(GenerateGuestListReportRequest) returns (GenerateGuestListReportResponse);
+
+  // Returns a guest list.
+  rpc FetchGuestListReport(FetchGuestListReportRequest) returns (FetchGuestListReportResponse);
+
+  // Schedules a guest list.
+  rpc ScheduleGuestListReport(ScheduleGuestListReportRequest) returns (ScheduleGuestListReportResponse);
+
+  // Lists guest lists a page at a time.
+  rpc ListGuestListReports(ListGuestListReportsRequest) returns (ListGuestListReportsResponse);
+
+  // Counts guest lists by status.
+  rpc CountGuestListTotals(CountGuestListTotalsRequest) returns (CountGuestListTotalsResponse);
+
+  // Deletes a guest list.
+  rpc DeleteGuestListReport(DeleteGuestListReportRequest) returns (DeleteGuestListReportResponse);
+}
+
+// The request of `GenerateGuestListReport`.
+message GenerateGuestListReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GenerateGuestListReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `GenerateGuestListReport`.
+message GenerateGuestListReportResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `FetchGuestListReport`.
+message FetchGuestListReportRequest {
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `FetchGuestListReport`.
+message FetchGuestListReportResponse {
+  GuestList guest_list = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleGuestListReport`.
+message ScheduleGuestListReportRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  ScheduleGuestListReportRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ScheduleGuestListReport`.
+message ScheduleGuestListReportResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ListGuestListReports`.
+message ListGuestListReportsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GuestListStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListGuestListReportsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListGuestListReports`.
+message ListGuestListReportsResponse {
+  repeated GuestList guest_lists = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountGuestListTotals`.
+message CountGuestListTotalsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GuestListStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountGuestListTotalsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountGuestListTotals`.
+message CountGuestListTotalsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DeleteGuestListReport`.
+message DeleteGuestListReportRequest {
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `DeleteGuestListReport`.
+message DeleteGuestListReportResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}

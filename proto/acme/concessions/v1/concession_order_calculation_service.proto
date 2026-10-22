@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.concessions.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/concessions/v1/concessions.proto";
+import "google/protobuf/field_mask.proto";
+
+option csharp_namespace = "Acme.Concessions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/concessions/v1;concessionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ConcessionOrderCalculationServiceProto";
+option java_package = "com.acme.concessions.v1";
+
+// Computes the figures of a concession order, such as totals, taxes, and estimates.
+service ConcessionOrderCalculationService {
+  // Calculates a concession order.
+  rpc CalculateConcessionOrder(CalculateConcessionOrderRequest) returns (CalculateConcessionOrderResponse);
+
+  // Estimates a concession order.
+  rpc EstimateConcessionOrder(EstimateConcessionOrderRequest) returns (EstimateConcessionOrderResponse);
+
+  // Quotes a concession order.
+  rpc QuoteConcessionOrder(QuoteConcessionOrderRequest) returns (QuoteConcessionOrderResponse);
+
+  // Compares a concession order.
+  rpc CompareConcessionOrderOptions(CompareConcessionOrderOptionsRequest) returns (CompareConcessionOrderOptionsResponse);
+
+  // Recalculates a concession order.
+  rpc RecalculateConcessionOrders(RecalculateConcessionOrdersRequest) returns (RecalculateConcessionOrdersResponse);
+
+  // Simulates a concession order.
+  rpc SimulateConcessionOrder(SimulateConcessionOrderRequest) returns (SimulateConcessionOrderResponse);
+
+  // Returns a concession order.
+  rpc GetConcessionOrderRates(GetConcessionOrderRatesRequest) returns (GetConcessionOrderRatesResponse);
+}
+
+// The request of `CalculateConcessionOrder`.
+message CalculateConcessionOrderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  CalculateConcessionOrderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateConcessionOrder`.
+message CalculateConcessionOrderResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateConcessionOrderResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ConcessionOrder concession_order = 1;
+  CalculateConcessionOrderResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateConcessionOrder`.
+message EstimateConcessionOrderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  EstimateConcessionOrderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateConcessionOrder`.
+message EstimateConcessionOrderResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateConcessionOrderResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ConcessionOrder concession_order = 1;
+  EstimateConcessionOrderResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteConcessionOrder`.
+message QuoteConcessionOrderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  QuoteConcessionOrderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteConcessionOrder`.
+message QuoteConcessionOrderResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteConcessionOrderResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ConcessionOrder concession_order = 1;
+  QuoteConcessionOrderResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareConcessionOrderOptions`.
+message CompareConcessionOrderOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  CompareConcessionOrderOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareConcessionOrderOptions`.
+message CompareConcessionOrderOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareConcessionOrderOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ConcessionOrder concession_order = 1;
+  CompareConcessionOrderOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateConcessionOrders`.
+message RecalculateConcessionOrdersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  RecalculateConcessionOrdersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateConcessionOrders`.
+message RecalculateConcessionOrdersResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateConcessionOrdersResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ConcessionOrder concession_order = 1;
+  RecalculateConcessionOrdersResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateConcessionOrder`.
+message SimulateConcessionOrderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  SimulateConcessionOrderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateConcessionOrder`.
+message SimulateConcessionOrderResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateConcessionOrderResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ConcessionOrder concession_order = 1;
+  SimulateConcessionOrderResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetConcessionOrderRates`.
+message GetConcessionOrderRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetConcessionOrderRates`.
+message GetConcessionOrderRatesResponse {
+  ConcessionOrder concession_order = 1;
+  acme.common.v1.OperationResult result = 2;
+}

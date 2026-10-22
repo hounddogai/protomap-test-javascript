@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "WristbandLifecycleServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Moves a wristband between the states of its lifecycle.
+service WristbandLifecycleService {
+  // Activates a wristband.
+  rpc ActivateWristband(ActivateWristbandRequest) returns (ActivateWristbandResponse);
+
+  // Suspends a wristband.
+  rpc SuspendWristband(SuspendWristbandRequest) returns (SuspendWristbandResponse);
+
+  // Reinstates a wristband.
+  rpc ReinstateWristband(ReinstateWristbandRequest) returns (ReinstateWristbandResponse);
+
+  // Terminates a wristband.
+  rpc TerminateWristband(TerminateWristbandRequest) returns (TerminateWristbandResponse);
+
+  // Renews a wristband.
+  rpc RenewWristband(RenewWristbandRequest) returns (RenewWristbandResponse);
+
+  // Expires a wristband.
+  rpc ExpireWristband(ExpireWristbandRequest) returns (ExpireWristbandResponse);
+
+  // Returns a wristband.
+  rpc GetWristbandLifecycle(GetWristbandLifecycleRequest) returns (GetWristbandLifecycleResponse);
+
+  // Schedules a wristband.
+  rpc ScheduleWristbandExpiry(ScheduleWristbandExpiryRequest) returns (ScheduleWristbandExpiryResponse);
+}
+
+// The request of `ActivateWristband`.
+message ActivateWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  ActivateWristbandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateWristband`.
+message ActivateWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  ActivateWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendWristband`.
+message SuspendWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  SuspendWristbandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendWristband`.
+message SuspendWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  SuspendWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateWristband`.
+message ReinstateWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  ReinstateWristbandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateWristband`.
+message ReinstateWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  ReinstateWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateWristband`.
+message TerminateWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  TerminateWristbandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateWristband`.
+message TerminateWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  TerminateWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewWristband`.
+message RenewWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  RenewWristbandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewWristband`.
+message RenewWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  RenewWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireWristband`.
+message ExpireWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  ExpireWristbandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireWristband`.
+message ExpireWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  ExpireWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetWristbandLifecycle`.
+message GetWristbandLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetWristbandLifecycle`.
+message GetWristbandLifecycleResponse {
+  Wristband wristband = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleWristbandExpiry`.
+message ScheduleWristbandExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  ScheduleWristbandExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleWristbandExpiry`.
+message ScheduleWristbandExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  ScheduleWristbandExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

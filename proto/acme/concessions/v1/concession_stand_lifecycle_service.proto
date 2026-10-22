@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.concessions.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/concessions/v1/concessions.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Concessions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/concessions/v1;concessionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ConcessionStandLifecycleServiceProto";
+option java_package = "com.acme.concessions.v1";
+
+// Moves a concession stand between the states of its lifecycle.
+service ConcessionStandLifecycleService {
+  // Activates a concession stand.
+  rpc ActivateConcessionStand(ActivateConcessionStandRequest) returns (ActivateConcessionStandResponse);
+
+  // Suspends a concession stand.
+  rpc SuspendConcessionStand(SuspendConcessionStandRequest) returns (SuspendConcessionStandResponse);
+
+  // Reinstates a concession stand.
+  rpc ReinstateConcessionStand(ReinstateConcessionStandRequest) returns (ReinstateConcessionStandResponse);
+
+  // Terminates a concession stand.
+  rpc TerminateConcessionStand(TerminateConcessionStandRequest) returns (TerminateConcessionStandResponse);
+
+  // Renews a concession stand.
+  rpc RenewConcessionStand(RenewConcessionStandRequest) returns (RenewConcessionStandResponse);
+
+  // Expires a concession stand.
+  rpc ExpireConcessionStand(ExpireConcessionStandRequest) returns (ExpireConcessionStandResponse);
+
+  // Returns a concession stand.
+  rpc GetConcessionStandLifecycle(GetConcessionStandLifecycleRequest) returns (GetConcessionStandLifecycleResponse);
+
+  // Schedules a concession stand.
+  rpc ScheduleConcessionStandExpiry(ScheduleConcessionStandExpiryRequest) returns (ScheduleConcessionStandExpiryResponse);
+}
+
+// The request of `ActivateConcessionStand`.
+message ActivateConcessionStandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_stand_id = 2;
+  ActivateConcessionStandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateConcessionStand`.
+message ActivateConcessionStandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionStand concession_stand = 1;
+  ActivateConcessionStandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendConcessionStand`.
+message SuspendConcessionStandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_stand_id = 2;
+  SuspendConcessionStandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendConcessionStand`.
+message SuspendConcessionStandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionStand concession_stand = 1;
+  SuspendConcessionStandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateConcessionStand`.
+message ReinstateConcessionStandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_stand_id = 2;
+  ReinstateConcessionStandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateConcessionStand`.
+message ReinstateConcessionStandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionStand concession_stand = 1;
+  ReinstateConcessionStandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateConcessionStand`.
+message TerminateConcessionStandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_stand_id = 2;
+  TerminateConcessionStandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateConcessionStand`.
+message TerminateConcessionStandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionStand concession_stand = 1;
+  TerminateConcessionStandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewConcessionStand`.
+message RenewConcessionStandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_stand_id = 2;
+  RenewConcessionStandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewConcessionStand`.
+message RenewConcessionStandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionStand concession_stand = 1;
+  RenewConcessionStandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireConcessionStand`.
+message ExpireConcessionStandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_stand_id = 2;
+  ExpireConcessionStandRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireConcessionStand`.
+message ExpireConcessionStandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionStand concession_stand = 1;
+  ExpireConcessionStandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetConcessionStandLifecycle`.
+message GetConcessionStandLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string concession_stand_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetConcessionStandLifecycle`.
+message GetConcessionStandLifecycleResponse {
+  ConcessionStand concession_stand = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleConcessionStandExpiry`.
+message ScheduleConcessionStandExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_stand_id = 2;
+  ConcessionStand concession_stand = 3;
+  ScheduleConcessionStandExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleConcessionStandExpiry`.
+message ScheduleConcessionStandExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionStand concession_stand = 1;
+  ScheduleConcessionStandExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

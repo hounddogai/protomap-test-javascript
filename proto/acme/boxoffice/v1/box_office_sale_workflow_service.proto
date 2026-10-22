@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "BoxOfficeSaleWorkflowServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Runs the long-lived workflow that takes a box office sale from start to finish.
+service BoxOfficeSaleWorkflowService {
+  // Starts a box office sale.
+  rpc StartBoxOfficeSaleWorkflow(StartBoxOfficeSaleWorkflowRequest) returns (StartBoxOfficeSaleWorkflowResponse);
+
+  // Advances a box office sale.
+  rpc AdvanceBoxOfficeSaleWorkflow(AdvanceBoxOfficeSaleWorkflowRequest) returns (AdvanceBoxOfficeSaleWorkflowResponse);
+
+  // Cancels a box office sale.
+  rpc CancelBoxOfficeSaleWorkflow(CancelBoxOfficeSaleWorkflowRequest) returns (CancelBoxOfficeSaleWorkflowResponse);
+
+  // Retrys a box office sale.
+  rpc RetryBoxOfficeSaleWorkflow(RetryBoxOfficeSaleWorkflowRequest) returns (RetryBoxOfficeSaleWorkflowResponse);
+
+  // Pauses a box office sale.
+  rpc PauseBoxOfficeSaleWorkflow(PauseBoxOfficeSaleWorkflowRequest) returns (PauseBoxOfficeSaleWorkflowResponse);
+
+  // Resumes a box office sale.
+  rpc ResumeBoxOfficeSaleWorkflow(ResumeBoxOfficeSaleWorkflowRequest) returns (ResumeBoxOfficeSaleWorkflowResponse);
+
+  // Returns a box office sale.
+  rpc InspectBoxOfficeSaleWorkflow(InspectBoxOfficeSaleWorkflowRequest) returns (InspectBoxOfficeSaleWorkflowResponse);
+
+  // Lists box office sales a page at a time.
+  rpc ListBoxOfficeSaleWorkflows(ListBoxOfficeSaleWorkflowsRequest) returns (ListBoxOfficeSaleWorkflowsResponse);
+
+  // Signals a box office sale.
+  rpc SignalBoxOfficeSaleWorkflow(SignalBoxOfficeSaleWorkflowRequest) returns (SignalBoxOfficeSaleWorkflowResponse);
+}
+
+// The request of `StartBoxOfficeSaleWorkflow`.
+message StartBoxOfficeSaleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  StartBoxOfficeSaleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartBoxOfficeSaleWorkflow`.
+message StartBoxOfficeSaleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  StartBoxOfficeSaleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceBoxOfficeSaleWorkflow`.
+message AdvanceBoxOfficeSaleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  AdvanceBoxOfficeSaleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceBoxOfficeSaleWorkflow`.
+message AdvanceBoxOfficeSaleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  AdvanceBoxOfficeSaleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelBoxOfficeSaleWorkflow`.
+message CancelBoxOfficeSaleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  CancelBoxOfficeSaleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelBoxOfficeSaleWorkflow`.
+message CancelBoxOfficeSaleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  CancelBoxOfficeSaleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryBoxOfficeSaleWorkflow`.
+message RetryBoxOfficeSaleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  RetryBoxOfficeSaleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryBoxOfficeSaleWorkflow`.
+message RetryBoxOfficeSaleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  RetryBoxOfficeSaleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseBoxOfficeSaleWorkflow`.
+message PauseBoxOfficeSaleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  PauseBoxOfficeSaleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseBoxOfficeSaleWorkflow`.
+message PauseBoxOfficeSaleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  PauseBoxOfficeSaleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeBoxOfficeSaleWorkflow`.
+message ResumeBoxOfficeSaleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  ResumeBoxOfficeSaleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeBoxOfficeSaleWorkflow`.
+message ResumeBoxOfficeSaleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  ResumeBoxOfficeSaleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectBoxOfficeSaleWorkflow`.
+message InspectBoxOfficeSaleWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectBoxOfficeSaleWorkflow`.
+message InspectBoxOfficeSaleWorkflowResponse {
+  BoxOfficeSale box_office_sale = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListBoxOfficeSaleWorkflows`.
+message ListBoxOfficeSaleWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated BoxOfficeSaleStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListBoxOfficeSaleWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListBoxOfficeSaleWorkflows`.
+message ListBoxOfficeSaleWorkflowsResponse {
+  repeated BoxOfficeSale box_office_sales = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalBoxOfficeSaleWorkflow`.
+message SignalBoxOfficeSaleWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  SignalBoxOfficeSaleWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalBoxOfficeSaleWorkflow`.
+message SignalBoxOfficeSaleWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  SignalBoxOfficeSaleWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

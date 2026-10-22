@@ -1,0 +1,245 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.sponsorships.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/sponsorships/v1/sponsorships.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Sponsorships.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/sponsorships/v1;sponsorshipsv1";
+option java_multiple_files = true;
+option java_outer_classname = "SponsorshipDealQueryServiceProto";
+option java_package = "com.acme.sponsorships.v1";
+
+// Answers read-only questions about sponsorship deals, for screens and reports.
+service SponsorshipDealQueryService {
+  // Returns a sponsorship deal.
+  rpc LookupSponsorshipDeal(LookupSponsorshipDealRequest) returns (LookupSponsorshipDealResponse);
+
+  // Lists sponsorship deals a page at a time.
+  rpc BrowseSponsorshipDeals(BrowseSponsorshipDealsRequest) returns (BrowseSponsorshipDealsResponse);
+
+  // Lists sponsorship deals a page at a time.
+  rpc FindSponsorshipDeals(FindSponsorshipDealsRequest) returns (FindSponsorshipDealsResponse);
+
+  // Counts sponsorship deals by status.
+  rpc CountSponsorshipDeals(CountSponsorshipDealsRequest) returns (CountSponsorshipDealsResponse);
+
+  // Returns several sponsorship deals at once.
+  rpc ResolveSponsorshipDeals(ResolveSponsorshipDealsRequest) returns (ResolveSponsorshipDealsResponse);
+
+  // Streams every matching sponsorship deal.
+  rpc ExportSponsorshipDeals(ExportSponsorshipDealsRequest) returns (stream ExportSponsorshipDealsResponse);
+
+  // Summarizes a sponsorship deal.
+  rpc SummarizeSponsorshipDeals(SummarizeSponsorshipDealsRequest) returns (SummarizeSponsorshipDealsResponse);
+
+  // Lists sponsorship deals a page at a time.
+  rpc SuggestSponsorshipDeals(SuggestSponsorshipDealsRequest) returns (SuggestSponsorshipDealsResponse);
+
+  // Returns a sponsorship deal.
+  rpc PeekSponsorshipDeal(PeekSponsorshipDealRequest) returns (PeekSponsorshipDealResponse);
+}
+
+// The request of `LookupSponsorshipDeal`.
+message LookupSponsorshipDealRequest {
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupSponsorshipDeal`.
+message LookupSponsorshipDealResponse {
+  SponsorshipDeal sponsorship_deal = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseSponsorshipDeals`.
+message BrowseSponsorshipDealsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SponsorshipDealStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseSponsorshipDealsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseSponsorshipDeals`.
+message BrowseSponsorshipDealsResponse {
+  repeated SponsorshipDeal sponsorship_deals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindSponsorshipDeals`.
+message FindSponsorshipDealsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SponsorshipDealStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindSponsorshipDealsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindSponsorshipDeals`.
+message FindSponsorshipDealsResponse {
+  repeated SponsorshipDeal sponsorship_deals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountSponsorshipDeals`.
+message CountSponsorshipDealsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SponsorshipDealStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountSponsorshipDealsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountSponsorshipDeals`.
+message CountSponsorshipDealsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveSponsorshipDeals`.
+message ResolveSponsorshipDealsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string sponsorship_deal_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveSponsorshipDeals`.
+message ResolveSponsorshipDealsResponse {
+  repeated SponsorshipDeal sponsorship_deals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportSponsorshipDeals`.
+message ExportSponsorshipDealsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SponsorshipDealStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportSponsorshipDealsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportSponsorshipDeals`.
+message ExportSponsorshipDealsResponse {
+  SponsorshipDeal sponsorship_deal = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeSponsorshipDeals`.
+message SummarizeSponsorshipDealsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SummarizeSponsorshipDealsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeSponsorshipDeals`.
+message SummarizeSponsorshipDealsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestSponsorshipDeals`.
+message SuggestSponsorshipDealsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SponsorshipDealStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestSponsorshipDealsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestSponsorshipDeals`.
+message SuggestSponsorshipDealsResponse {
+  repeated SponsorshipDeal sponsorship_deals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekSponsorshipDeal`.
+message PeekSponsorshipDealRequest {
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekSponsorshipDeal`.
+message PeekSponsorshipDealResponse {
+  SponsorshipDeal sponsorship_deal = 1;
+  acme.common.v1.OperationResult result = 2;
+}

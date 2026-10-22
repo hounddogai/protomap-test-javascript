@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.concessions.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/concessions/v1/concessions.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Concessions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/concessions/v1;concessionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "MenuItemWorkflowServiceProto";
+option java_package = "com.acme.concessions.v1";
+
+// Runs the long-lived workflow that takes a menu item from start to finish.
+service MenuItemWorkflowService {
+  // Starts a menu item.
+  rpc StartMenuItemWorkflow(StartMenuItemWorkflowRequest) returns (StartMenuItemWorkflowResponse);
+
+  // Advances a menu item.
+  rpc AdvanceMenuItemWorkflow(AdvanceMenuItemWorkflowRequest) returns (AdvanceMenuItemWorkflowResponse);
+
+  // Retrys a menu item.
+  rpc RetryMenuItemWorkflow(RetryMenuItemWorkflowRequest) returns (RetryMenuItemWorkflowResponse);
+
+  // Pauses a menu item.
+  rpc PauseMenuItemWorkflow(PauseMenuItemWorkflowRequest) returns (PauseMenuItemWorkflowResponse);
+
+  // Returns a menu item.
+  rpc InspectMenuItemWorkflow(InspectMenuItemWorkflowRequest) returns (InspectMenuItemWorkflowResponse);
+
+  // Lists menu items a page at a time.
+  rpc ListMenuItemWorkflows(ListMenuItemWorkflowsRequest) returns (ListMenuItemWorkflowsResponse);
+
+  // Signals a menu item.
+  rpc SignalMenuItemWorkflow(SignalMenuItemWorkflowRequest) returns (SignalMenuItemWorkflowResponse);
+}
+
+// The request of `StartMenuItemWorkflow`.
+message StartMenuItemWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  StartMenuItemWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartMenuItemWorkflow`.
+message StartMenuItemWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  StartMenuItemWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceMenuItemWorkflow`.
+message AdvanceMenuItemWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  AdvanceMenuItemWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceMenuItemWorkflow`.
+message AdvanceMenuItemWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  AdvanceMenuItemWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryMenuItemWorkflow`.
+message RetryMenuItemWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  RetryMenuItemWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryMenuItemWorkflow`.
+message RetryMenuItemWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  RetryMenuItemWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseMenuItemWorkflow`.
+message PauseMenuItemWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  PauseMenuItemWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseMenuItemWorkflow`.
+message PauseMenuItemWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  PauseMenuItemWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectMenuItemWorkflow`.
+message InspectMenuItemWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectMenuItemWorkflow`.
+message InspectMenuItemWorkflowResponse {
+  MenuItem menu_item = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListMenuItemWorkflows`.
+message ListMenuItemWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated MenuItemStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListMenuItemWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListMenuItemWorkflows`.
+message ListMenuItemWorkflowsResponse {
+  repeated MenuItem menu_items = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalMenuItemWorkflow`.
+message SignalMenuItemWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  SignalMenuItemWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalMenuItemWorkflow`.
+message SignalMenuItemWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  SignalMenuItemWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

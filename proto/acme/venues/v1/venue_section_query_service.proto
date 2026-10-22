@@ -1,0 +1,189 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenueSectionQueryServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Answers read-only questions about venue sections, for screens and reports.
+service VenueSectionQueryService {
+  // Returns a venue section.
+  rpc LookupVenueSection(LookupVenueSectionRequest) returns (LookupVenueSectionResponse);
+
+  // Lists venue sections a page at a time.
+  rpc BrowseVenueSections(BrowseVenueSectionsRequest) returns (BrowseVenueSectionsResponse);
+
+  // Lists venue sections a page at a time.
+  rpc FindVenueSections(FindVenueSectionsRequest) returns (FindVenueSectionsResponse);
+
+  // Returns several venue sections at once.
+  rpc ResolveVenueSections(ResolveVenueSectionsRequest) returns (ResolveVenueSectionsResponse);
+
+  // Streams every matching venue section.
+  rpc ExportVenueSections(ExportVenueSectionsRequest) returns (stream ExportVenueSectionsResponse);
+
+  // Summarizes a venue section.
+  rpc SummarizeVenueSections(SummarizeVenueSectionsRequest) returns (SummarizeVenueSectionsResponse);
+
+  // Returns a venue section.
+  rpc PeekVenueSection(PeekVenueSectionRequest) returns (PeekVenueSectionResponse);
+}
+
+// The request of `LookupVenueSection`.
+message LookupVenueSectionRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupVenueSection`.
+message LookupVenueSectionResponse {
+  VenueSection venue_section = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseVenueSections`.
+message BrowseVenueSectionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated VenueSectionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseVenueSectionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseVenueSections`.
+message BrowseVenueSectionsResponse {
+  repeated VenueSection venue_sections = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindVenueSections`.
+message FindVenueSectionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated VenueSectionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindVenueSectionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindVenueSections`.
+message FindVenueSectionsResponse {
+  repeated VenueSection venue_sections = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveVenueSections`.
+message ResolveVenueSectionsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string venue_section_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveVenueSections`.
+message ResolveVenueSectionsResponse {
+  repeated VenueSection venue_sections = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportVenueSections`.
+message ExportVenueSectionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated VenueSectionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportVenueSectionsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportVenueSections`.
+message ExportVenueSectionsResponse {
+  VenueSection venue_section = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeVenueSections`.
+message SummarizeVenueSectionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  SummarizeVenueSectionsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeVenueSections`.
+message SummarizeVenueSectionsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `PeekVenueSection`.
+message PeekVenueSectionRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekVenueSection`.
+message PeekVenueSectionResponse {
+  VenueSection venue_section = 1;
+  acme.common.v1.OperationResult result = 2;
+}

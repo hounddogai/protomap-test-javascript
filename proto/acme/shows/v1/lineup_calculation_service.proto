@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "LineupCalculationServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Computes the figures of a lineup, such as totals, taxes, and estimates.
+service LineupCalculationService {
+  // Calculates a lineup.
+  rpc CalculateLineup(CalculateLineupRequest) returns (CalculateLineupResponse);
+
+  // Estimates a lineup.
+  rpc EstimateLineup(EstimateLineupRequest) returns (EstimateLineupResponse);
+
+  // Quotes a lineup.
+  rpc QuoteLineup(QuoteLineupRequest) returns (QuoteLineupResponse);
+
+  // Compares a lineup.
+  rpc CompareLineupOptions(CompareLineupOptionsRequest) returns (CompareLineupOptionsResponse);
+
+  // Recalculates a lineup.
+  rpc RecalculateLineups(RecalculateLineupsRequest) returns (RecalculateLineupsResponse);
+
+  // Simulates a lineup.
+  rpc SimulateLineup(SimulateLineupRequest) returns (SimulateLineupResponse);
+
+  // Explains a lineup.
+  rpc ExplainLineupCalculation(ExplainLineupCalculationRequest) returns (ExplainLineupCalculationResponse);
+
+  // Returns a lineup.
+  rpc GetLineupRates(GetLineupRatesRequest) returns (GetLineupRatesResponse);
+}
+
+// The request of `CalculateLineup`.
+message CalculateLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  CalculateLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateLineup`.
+message CalculateLineupResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateLineupResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Lineup lineup = 1;
+  CalculateLineupResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateLineup`.
+message EstimateLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  EstimateLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateLineup`.
+message EstimateLineupResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateLineupResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Lineup lineup = 1;
+  EstimateLineupResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteLineup`.
+message QuoteLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  QuoteLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteLineup`.
+message QuoteLineupResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteLineupResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Lineup lineup = 1;
+  QuoteLineupResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareLineupOptions`.
+message CompareLineupOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  CompareLineupOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareLineupOptions`.
+message CompareLineupOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareLineupOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Lineup lineup = 1;
+  CompareLineupOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateLineups`.
+message RecalculateLineupsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  RecalculateLineupsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateLineups`.
+message RecalculateLineupsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateLineupsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Lineup lineup = 1;
+  RecalculateLineupsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateLineup`.
+message SimulateLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  SimulateLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateLineup`.
+message SimulateLineupResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateLineupResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Lineup lineup = 1;
+  SimulateLineupResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainLineupCalculation`.
+message ExplainLineupCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  ExplainLineupCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainLineupCalculation`.
+message ExplainLineupCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  ExplainLineupCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetLineupRates`.
+message GetLineupRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetLineupRates`.
+message GetLineupRatesResponse {
+  Lineup lineup = 1;
+  acme.common.v1.OperationResult result = 2;
+}

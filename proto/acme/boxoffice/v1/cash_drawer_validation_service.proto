@@ -1,0 +1,268 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "CashDrawerValidationServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Checks cash drawers against the rules before anything acts on them.
+service CashDrawerValidationService {
+  // Validates a cash drawer.
+  rpc ValidateCashDrawer(ValidateCashDrawerRequest) returns (ValidateCashDrawerResponse);
+
+  // Previews a cash drawer.
+  rpc PreviewCashDrawer(PreviewCashDrawerRequest) returns (PreviewCashDrawerResponse);
+
+  // Checks a cash drawer.
+  rpc CheckCashDrawerEligibility(CheckCashDrawerEligibilityRequest) returns (CheckCashDrawerEligibilityResponse);
+
+  // Normalizes a cash drawer.
+  rpc NormalizeCashDrawer(NormalizeCashDrawerRequest) returns (NormalizeCashDrawerResponse);
+
+  // Scores a cash drawer.
+  rpc ScoreCashDrawer(ScoreCashDrawerRequest) returns (ScoreCashDrawerResponse);
+
+  // Lints a cash drawer.
+  rpc LintCashDrawers(LintCashDrawersRequest) returns (LintCashDrawersResponse);
+
+  // Returns a cash drawer.
+  rpc GetCashDrawerRules(GetCashDrawerRulesRequest) returns (GetCashDrawerRulesResponse);
+}
+
+// The request of `ValidateCashDrawer`.
+message ValidateCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  ValidateCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateCashDrawer`.
+message ValidateCashDrawerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  ValidateCashDrawerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewCashDrawer`.
+message PreviewCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  PreviewCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewCashDrawer`.
+message PreviewCashDrawerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  PreviewCashDrawerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckCashDrawerEligibility`.
+message CheckCashDrawerEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  CheckCashDrawerEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckCashDrawerEligibility`.
+message CheckCashDrawerEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  CheckCashDrawerEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeCashDrawer`.
+message NormalizeCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  NormalizeCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeCashDrawer`.
+message NormalizeCashDrawerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  NormalizeCashDrawerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreCashDrawer`.
+message ScoreCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  ScoreCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreCashDrawer`.
+message ScoreCashDrawerResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreCashDrawerResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  CashDrawer cash_drawer = 1;
+  ScoreCashDrawerResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintCashDrawers`.
+message LintCashDrawersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  LintCashDrawersRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintCashDrawers`.
+message LintCashDrawersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  LintCashDrawersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetCashDrawerRules`.
+message GetCashDrawerRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetCashDrawerRules`.
+message GetCashDrawerRulesResponse {
+  CashDrawer cash_drawer = 1;
+  acme.common.v1.OperationResult result = 2;
+}

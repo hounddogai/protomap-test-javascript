@@ -1,0 +1,253 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "WristbandCalculationServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Computes the figures of a wristband, such as totals, taxes, and estimates.
+service WristbandCalculationService {
+  // Calculates a wristband.
+  rpc CalculateWristband(CalculateWristbandRequest) returns (CalculateWristbandResponse);
+
+  // Estimates a wristband.
+  rpc EstimateWristband(EstimateWristbandRequest) returns (EstimateWristbandResponse);
+
+  // Quotes a wristband.
+  rpc QuoteWristband(QuoteWristbandRequest) returns (QuoteWristbandResponse);
+
+  // Compares a wristband.
+  rpc CompareWristbandOptions(CompareWristbandOptionsRequest) returns (CompareWristbandOptionsResponse);
+
+  // Recalculates a wristband.
+  rpc RecalculateWristbands(RecalculateWristbandsRequest) returns (RecalculateWristbandsResponse);
+
+  // Returns a wristband.
+  rpc GetWristbandRates(GetWristbandRatesRequest) returns (GetWristbandRatesResponse);
+}
+
+// The request of `CalculateWristband`.
+message CalculateWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  CalculateWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateWristband`.
+message CalculateWristbandResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateWristbandResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Wristband wristband = 1;
+  CalculateWristbandResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateWristband`.
+message EstimateWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  EstimateWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateWristband`.
+message EstimateWristbandResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateWristbandResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Wristband wristband = 1;
+  EstimateWristbandResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteWristband`.
+message QuoteWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  QuoteWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteWristband`.
+message QuoteWristbandResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteWristbandResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Wristband wristband = 1;
+  QuoteWristbandResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareWristbandOptions`.
+message CompareWristbandOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  CompareWristbandOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareWristbandOptions`.
+message CompareWristbandOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareWristbandOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Wristband wristband = 1;
+  CompareWristbandOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateWristbands`.
+message RecalculateWristbandsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  RecalculateWristbandsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateWristbands`.
+message RecalculateWristbandsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateWristbandsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Wristband wristband = 1;
+  RecalculateWristbandsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetWristbandRates`.
+message GetWristbandRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetWristbandRates`.
+message GetWristbandRatesResponse {
+  Wristband wristband = 1;
+  acme.common.v1.OperationResult result = 2;
+}

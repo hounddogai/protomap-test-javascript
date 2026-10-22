@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.seating.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/seating/v1/seating.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Seating.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/seating/v1;seatingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeatMapLifecycleServiceProto";
+option java_package = "com.acme.seating.v1";
+
+// Moves a seat map between the states of its lifecycle.
+service SeatMapLifecycleService {
+  // Activates a seat map.
+  rpc ActivateSeatMap(ActivateSeatMapRequest) returns (ActivateSeatMapResponse);
+
+  // Suspends a seat map.
+  rpc SuspendSeatMap(SuspendSeatMapRequest) returns (SuspendSeatMapResponse);
+
+  // Reinstates a seat map.
+  rpc ReinstateSeatMap(ReinstateSeatMapRequest) returns (ReinstateSeatMapResponse);
+
+  // Terminates a seat map.
+  rpc TerminateSeatMap(TerminateSeatMapRequest) returns (TerminateSeatMapResponse);
+
+  // Renews a seat map.
+  rpc RenewSeatMap(RenewSeatMapRequest) returns (RenewSeatMapResponse);
+
+  // Expires a seat map.
+  rpc ExpireSeatMap(ExpireSeatMapRequest) returns (ExpireSeatMapResponse);
+
+  // Returns a seat map.
+  rpc GetSeatMapLifecycle(GetSeatMapLifecycleRequest) returns (GetSeatMapLifecycleResponse);
+
+  // Schedules a seat map.
+  rpc ScheduleSeatMapExpiry(ScheduleSeatMapExpiryRequest) returns (ScheduleSeatMapExpiryResponse);
+}
+
+// The request of `ActivateSeatMap`.
+message ActivateSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  ActivateSeatMapRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateSeatMap`.
+message ActivateSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  ActivateSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendSeatMap`.
+message SuspendSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SuspendSeatMapRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendSeatMap`.
+message SuspendSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  SuspendSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateSeatMap`.
+message ReinstateSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  ReinstateSeatMapRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateSeatMap`.
+message ReinstateSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  ReinstateSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateSeatMap`.
+message TerminateSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  TerminateSeatMapRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateSeatMap`.
+message TerminateSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  TerminateSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewSeatMap`.
+message RenewSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  RenewSeatMapRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewSeatMap`.
+message RenewSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  RenewSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireSeatMap`.
+message ExpireSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  ExpireSeatMapRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireSeatMap`.
+message ExpireSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  ExpireSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSeatMapLifecycle`.
+message GetSeatMapLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSeatMapLifecycle`.
+message GetSeatMapLifecycleResponse {
+  SeatMap seat_map = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleSeatMapExpiry`.
+message ScheduleSeatMapExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  ScheduleSeatMapExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleSeatMapExpiry`.
+message ScheduleSeatMapExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  ScheduleSeatMapExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

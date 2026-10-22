@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.tours.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/tours/v1/tours.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Tours.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/tours/v1;toursv1";
+option java_multiple_files = true;
+option java_outer_classname = "TourBudgetApprovalServiceProto";
+option java_package = "com.acme.tours.v1";
+
+// Routes tour budgets through approval, with escalation and delegation.
+service TourBudgetApprovalService {
+  // Submits a tour budget.
+  rpc SubmitTourBudget(SubmitTourBudgetRequest) returns (SubmitTourBudgetResponse);
+
+  // Approves a tour budget.
+  rpc ApproveTourBudget(ApproveTourBudgetRequest) returns (ApproveTourBudgetResponse);
+
+  // Rejects a tour budget.
+  rpc RejectTourBudget(RejectTourBudgetRequest) returns (RejectTourBudgetResponse);
+
+  // Escalates a tour budget.
+  rpc EscalateTourBudget(EscalateTourBudgetRequest) returns (EscalateTourBudgetResponse);
+
+  // Lists tour budgets a page at a time.
+  rpc ListPendingTourBudgets(ListPendingTourBudgetsRequest) returns (ListPendingTourBudgetsResponse);
+
+  // Delegates a tour budget.
+  rpc DelegateTourBudgetApproval(DelegateTourBudgetApprovalRequest) returns (DelegateTourBudgetApprovalResponse);
+
+  // Recalls a tour budget.
+  rpc RecallTourBudget(RecallTourBudgetRequest) returns (RecallTourBudgetResponse);
+
+  // Returns a tour budget.
+  rpc GetTourBudgetApprovalStatus(GetTourBudgetApprovalStatusRequest) returns (GetTourBudgetApprovalStatusResponse);
+
+  // Comments a tour budget.
+  rpc CommentTourBudgetApproval(CommentTourBudgetApprovalRequest) returns (CommentTourBudgetApprovalResponse);
+}
+
+// The request of `SubmitTourBudget`.
+message SubmitTourBudgetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  SubmitTourBudgetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitTourBudget`.
+message SubmitTourBudgetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  SubmitTourBudgetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveTourBudget`.
+message ApproveTourBudgetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  ApproveTourBudgetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveTourBudget`.
+message ApproveTourBudgetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  ApproveTourBudgetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectTourBudget`.
+message RejectTourBudgetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  RejectTourBudgetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectTourBudget`.
+message RejectTourBudgetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  RejectTourBudgetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateTourBudget`.
+message EscalateTourBudgetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  EscalateTourBudgetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateTourBudget`.
+message EscalateTourBudgetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  EscalateTourBudgetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingTourBudgets`.
+message ListPendingTourBudgetsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TourBudgetStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingTourBudgetsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingTourBudgets`.
+message ListPendingTourBudgetsResponse {
+  repeated TourBudget tour_budgets = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateTourBudgetApproval`.
+message DelegateTourBudgetApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  DelegateTourBudgetApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateTourBudgetApproval`.
+message DelegateTourBudgetApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  DelegateTourBudgetApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallTourBudget`.
+message RecallTourBudgetRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  RecallTourBudgetRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallTourBudget`.
+message RecallTourBudgetResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  RecallTourBudgetResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTourBudgetApprovalStatus`.
+message GetTourBudgetApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTourBudgetApprovalStatus`.
+message GetTourBudgetApprovalStatusResponse {
+  TourBudget tour_budget = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentTourBudgetApproval`.
+message CommentTourBudgetApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  CommentTourBudgetApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentTourBudgetApproval`.
+message CommentTourBudgetApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  CommentTourBudgetApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

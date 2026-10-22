@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "GateScanWorkflowServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Runs the long-lived workflow that takes a gate scan from start to finish.
+service GateScanWorkflowService {
+  // Starts a gate scan.
+  rpc StartGateScanWorkflow(StartGateScanWorkflowRequest) returns (StartGateScanWorkflowResponse);
+
+  // Advances a gate scan.
+  rpc AdvanceGateScanWorkflow(AdvanceGateScanWorkflowRequest) returns (AdvanceGateScanWorkflowResponse);
+
+  // Retrys a gate scan.
+  rpc RetryGateScanWorkflow(RetryGateScanWorkflowRequest) returns (RetryGateScanWorkflowResponse);
+
+  // Pauses a gate scan.
+  rpc PauseGateScanWorkflow(PauseGateScanWorkflowRequest) returns (PauseGateScanWorkflowResponse);
+
+  // Resumes a gate scan.
+  rpc ResumeGateScanWorkflow(ResumeGateScanWorkflowRequest) returns (ResumeGateScanWorkflowResponse);
+
+  // Returns a gate scan.
+  rpc InspectGateScanWorkflow(InspectGateScanWorkflowRequest) returns (InspectGateScanWorkflowResponse);
+
+  // Lists gate scans a page at a time.
+  rpc ListGateScanWorkflows(ListGateScanWorkflowsRequest) returns (ListGateScanWorkflowsResponse);
+
+  // Signals a gate scan.
+  rpc SignalGateScanWorkflow(SignalGateScanWorkflowRequest) returns (SignalGateScanWorkflowResponse);
+}
+
+// The request of `StartGateScanWorkflow`.
+message StartGateScanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  StartGateScanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartGateScanWorkflow`.
+message StartGateScanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  StartGateScanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceGateScanWorkflow`.
+message AdvanceGateScanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  AdvanceGateScanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceGateScanWorkflow`.
+message AdvanceGateScanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  AdvanceGateScanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryGateScanWorkflow`.
+message RetryGateScanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  RetryGateScanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryGateScanWorkflow`.
+message RetryGateScanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  RetryGateScanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseGateScanWorkflow`.
+message PauseGateScanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  PauseGateScanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseGateScanWorkflow`.
+message PauseGateScanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  PauseGateScanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeGateScanWorkflow`.
+message ResumeGateScanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  ResumeGateScanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeGateScanWorkflow`.
+message ResumeGateScanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  ResumeGateScanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectGateScanWorkflow`.
+message InspectGateScanWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectGateScanWorkflow`.
+message InspectGateScanWorkflowResponse {
+  GateScan gate_scan = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListGateScanWorkflows`.
+message ListGateScanWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GateScanStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListGateScanWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListGateScanWorkflows`.
+message ListGateScanWorkflowsResponse {
+  repeated GateScan gate_scans = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalGateScanWorkflow`.
+message SignalGateScanWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  SignalGateScanWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalGateScanWorkflow`.
+message SignalGateScanWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  SignalGateScanWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

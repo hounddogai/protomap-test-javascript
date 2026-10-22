@@ -1,0 +1,24 @@
+{
+  "name": "@acme/live",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@12.14.0",
+  "scripts": {
+    "check": "node scripts/check.js",
+    "test": "node --test \"test/**/*.test.js\"",
+    "start": "node src/server/main.js",
+    "migrate": "node src/admin/migrate.js",
+    "sweep": "node src/jobs/sweep.js",
+    "backfill": "node src/jobs/backfill.js",
+    "admin": "node src/admin/livectl.js"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "1.14.6",
+    "@grpc/proto-loader": "0.8.1",
+    "pg": "8.23.1"
+  }
+}

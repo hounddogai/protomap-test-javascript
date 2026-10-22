@@ -1,0 +1,318 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ReplayClipCalculationServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Computes the figures of a replay clip, such as totals, taxes, and estimates.
+service ReplayClipCalculationService {
+  // Calculates a replay clip.
+  rpc CalculateReplayClip(CalculateReplayClipRequest) returns (CalculateReplayClipResponse);
+
+  // Estimates a replay clip.
+  rpc EstimateReplayClip(EstimateReplayClipRequest) returns (EstimateReplayClipResponse);
+
+  // Quotes a replay clip.
+  rpc QuoteReplayClip(QuoteReplayClipRequest) returns (QuoteReplayClipResponse);
+
+  // Compares a replay clip.
+  rpc CompareReplayClipOptions(CompareReplayClipOptionsRequest) returns (CompareReplayClipOptionsResponse);
+
+  // Recalculates a replay clip.
+  rpc RecalculateReplayClips(RecalculateReplayClipsRequest) returns (RecalculateReplayClipsResponse);
+
+  // Simulates a replay clip.
+  rpc SimulateReplayClip(SimulateReplayClipRequest) returns (SimulateReplayClipResponse);
+
+  // Explains a replay clip.
+  rpc ExplainReplayClipCalculation(ExplainReplayClipCalculationRequest) returns (ExplainReplayClipCalculationResponse);
+}
+
+// The request of `CalculateReplayClip`.
+message CalculateReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  CalculateReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateReplayClip`.
+message CalculateReplayClipResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateReplayClipResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ReplayClip replay_clip = 1;
+  CalculateReplayClipResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateReplayClip`.
+message EstimateReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  EstimateReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateReplayClip`.
+message EstimateReplayClipResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateReplayClipResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ReplayClip replay_clip = 1;
+  EstimateReplayClipResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteReplayClip`.
+message QuoteReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  QuoteReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteReplayClip`.
+message QuoteReplayClipResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteReplayClipResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ReplayClip replay_clip = 1;
+  QuoteReplayClipResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareReplayClipOptions`.
+message CompareReplayClipOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  CompareReplayClipOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareReplayClipOptions`.
+message CompareReplayClipOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareReplayClipOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ReplayClip replay_clip = 1;
+  CompareReplayClipOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateReplayClips`.
+message RecalculateReplayClipsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  RecalculateReplayClipsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateReplayClips`.
+message RecalculateReplayClipsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateReplayClipsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ReplayClip replay_clip = 1;
+  RecalculateReplayClipsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateReplayClip`.
+message SimulateReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  SimulateReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateReplayClip`.
+message SimulateReplayClipResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateReplayClipResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  ReplayClip replay_clip = 1;
+  SimulateReplayClipResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainReplayClipCalculation`.
+message ExplainReplayClipCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  ExplainReplayClipCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainReplayClipCalculation`.
+message ExplainReplayClipCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  ExplainReplayClipCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

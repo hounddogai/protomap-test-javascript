@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "CashDrawerWorkflowServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Runs the long-lived workflow that takes a cash drawer from start to finish.
+service CashDrawerWorkflowService {
+  // Starts a cash drawer.
+  rpc StartCashDrawerWorkflow(StartCashDrawerWorkflowRequest) returns (StartCashDrawerWorkflowResponse);
+
+  // Advances a cash drawer.
+  rpc AdvanceCashDrawerWorkflow(AdvanceCashDrawerWorkflowRequest) returns (AdvanceCashDrawerWorkflowResponse);
+
+  // Cancels a cash drawer.
+  rpc CancelCashDrawerWorkflow(CancelCashDrawerWorkflowRequest) returns (CancelCashDrawerWorkflowResponse);
+
+  // Retrys a cash drawer.
+  rpc RetryCashDrawerWorkflow(RetryCashDrawerWorkflowRequest) returns (RetryCashDrawerWorkflowResponse);
+
+  // Pauses a cash drawer.
+  rpc PauseCashDrawerWorkflow(PauseCashDrawerWorkflowRequest) returns (PauseCashDrawerWorkflowResponse);
+
+  // Resumes a cash drawer.
+  rpc ResumeCashDrawerWorkflow(ResumeCashDrawerWorkflowRequest) returns (ResumeCashDrawerWorkflowResponse);
+
+  // Returns a cash drawer.
+  rpc InspectCashDrawerWorkflow(InspectCashDrawerWorkflowRequest) returns (InspectCashDrawerWorkflowResponse);
+
+  // Lists cash drawers a page at a time.
+  rpc ListCashDrawerWorkflows(ListCashDrawerWorkflowsRequest) returns (ListCashDrawerWorkflowsResponse);
+
+  // Signals a cash drawer.
+  rpc SignalCashDrawerWorkflow(SignalCashDrawerWorkflowRequest) returns (SignalCashDrawerWorkflowResponse);
+}
+
+// The request of `StartCashDrawerWorkflow`.
+message StartCashDrawerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  StartCashDrawerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartCashDrawerWorkflow`.
+message StartCashDrawerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  StartCashDrawerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceCashDrawerWorkflow`.
+message AdvanceCashDrawerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  AdvanceCashDrawerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceCashDrawerWorkflow`.
+message AdvanceCashDrawerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  AdvanceCashDrawerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelCashDrawerWorkflow`.
+message CancelCashDrawerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  CancelCashDrawerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelCashDrawerWorkflow`.
+message CancelCashDrawerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  CancelCashDrawerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryCashDrawerWorkflow`.
+message RetryCashDrawerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  RetryCashDrawerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryCashDrawerWorkflow`.
+message RetryCashDrawerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  RetryCashDrawerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseCashDrawerWorkflow`.
+message PauseCashDrawerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  PauseCashDrawerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseCashDrawerWorkflow`.
+message PauseCashDrawerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  PauseCashDrawerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeCashDrawerWorkflow`.
+message ResumeCashDrawerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  ResumeCashDrawerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeCashDrawerWorkflow`.
+message ResumeCashDrawerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  ResumeCashDrawerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectCashDrawerWorkflow`.
+message InspectCashDrawerWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectCashDrawerWorkflow`.
+message InspectCashDrawerWorkflowResponse {
+  CashDrawer cash_drawer = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListCashDrawerWorkflows`.
+message ListCashDrawerWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashDrawerStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListCashDrawerWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListCashDrawerWorkflows`.
+message ListCashDrawerWorkflowsResponse {
+  repeated CashDrawer cash_drawers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalCashDrawerWorkflow`.
+message SignalCashDrawerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  SignalCashDrawerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalCashDrawerWorkflow`.
+message SignalCashDrawerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  SignalCashDrawerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "GuestListCalculationServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Computes the figures of a guest list, such as totals, taxes, and estimates.
+service GuestListCalculationService {
+  // Calculates a guest list.
+  rpc CalculateGuestList(CalculateGuestListRequest) returns (CalculateGuestListResponse);
+
+  // Estimates a guest list.
+  rpc EstimateGuestList(EstimateGuestListRequest) returns (EstimateGuestListResponse);
+
+  // Quotes a guest list.
+  rpc QuoteGuestList(QuoteGuestListRequest) returns (QuoteGuestListResponse);
+
+  // Compares a guest list.
+  rpc CompareGuestListOptions(CompareGuestListOptionsRequest) returns (CompareGuestListOptionsResponse);
+
+  // Recalculates a guest list.
+  rpc RecalculateGuestLists(RecalculateGuestListsRequest) returns (RecalculateGuestListsResponse);
+
+  // Simulates a guest list.
+  rpc SimulateGuestList(SimulateGuestListRequest) returns (SimulateGuestListResponse);
+
+  // Explains a guest list.
+  rpc ExplainGuestListCalculation(ExplainGuestListCalculationRequest) returns (ExplainGuestListCalculationResponse);
+
+  // Returns a guest list.
+  rpc GetGuestListRates(GetGuestListRatesRequest) returns (GetGuestListRatesResponse);
+}
+
+// The request of `CalculateGuestList`.
+message CalculateGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  CalculateGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateGuestList`.
+message CalculateGuestListResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateGuestListResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GuestList guest_list = 1;
+  CalculateGuestListResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateGuestList`.
+message EstimateGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  EstimateGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateGuestList`.
+message EstimateGuestListResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateGuestListResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GuestList guest_list = 1;
+  EstimateGuestListResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteGuestList`.
+message QuoteGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  QuoteGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteGuestList`.
+message QuoteGuestListResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteGuestListResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GuestList guest_list = 1;
+  QuoteGuestListResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareGuestListOptions`.
+message CompareGuestListOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  CompareGuestListOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareGuestListOptions`.
+message CompareGuestListOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareGuestListOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GuestList guest_list = 1;
+  CompareGuestListOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateGuestLists`.
+message RecalculateGuestListsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  RecalculateGuestListsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateGuestLists`.
+message RecalculateGuestListsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateGuestListsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GuestList guest_list = 1;
+  RecalculateGuestListsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateGuestList`.
+message SimulateGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  SimulateGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateGuestList`.
+message SimulateGuestListResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateGuestListResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GuestList guest_list = 1;
+  SimulateGuestListResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainGuestListCalculation`.
+message ExplainGuestListCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  ExplainGuestListCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainGuestListCalculation`.
+message ExplainGuestListCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  ExplainGuestListCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetGuestListRates`.
+message GetGuestListRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetGuestListRates`.
+message GetGuestListRatesResponse {
+  GuestList guest_list = 1;
+  acme.common.v1.OperationResult result = 2;
+}

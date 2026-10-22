@@ -1,0 +1,35 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.tours.v1;
+
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Tours.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/tours/v1;toursv1";
+option java_multiple_files = true;
+option java_outer_classname = "RefsProto";
+option java_package = "com.acme.tours.v1";
+
+// A reference to a tour of the tours domain.
+message TourRef {
+  string tour_id = 1;
+  string display_name = 2;
+  google.protobuf.Timestamp starts_at = 3;
+}
+
+// A reference to a tour stop of the tours domain.
+message TourStopRef {
+  string tour_stop_id = 1;
+  string display_name = 2;
+  google.protobuf.Timestamp starts_at = 3;
+}
+
+// A reference to a tour budget of the tours domain.
+message TourBudgetRef {
+  string tour_budget_id = 1;
+  string display_name = 2;
+  string currency_code = 3;
+}

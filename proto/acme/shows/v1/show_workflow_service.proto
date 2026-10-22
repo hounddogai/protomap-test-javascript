@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ShowWorkflowServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Runs the long-lived workflow that takes a show from start to finish.
+service ShowWorkflowService {
+  // Starts a show.
+  rpc StartShowWorkflow(StartShowWorkflowRequest) returns (StartShowWorkflowResponse);
+
+  // Advances a show.
+  rpc AdvanceShowWorkflow(AdvanceShowWorkflowRequest) returns (AdvanceShowWorkflowResponse);
+
+  // Cancels a show.
+  rpc CancelShowWorkflow(CancelShowWorkflowRequest) returns (CancelShowWorkflowResponse);
+
+  // Retrys a show.
+  rpc RetryShowWorkflow(RetryShowWorkflowRequest) returns (RetryShowWorkflowResponse);
+
+  // Pauses a show.
+  rpc PauseShowWorkflow(PauseShowWorkflowRequest) returns (PauseShowWorkflowResponse);
+
+  // Resumes a show.
+  rpc ResumeShowWorkflow(ResumeShowWorkflowRequest) returns (ResumeShowWorkflowResponse);
+
+  // Returns a show.
+  rpc InspectShowWorkflow(InspectShowWorkflowRequest) returns (InspectShowWorkflowResponse);
+
+  // Lists shows a page at a time.
+  rpc ListShowWorkflows(ListShowWorkflowsRequest) returns (ListShowWorkflowsResponse);
+
+  // Signals a show.
+  rpc SignalShowWorkflow(SignalShowWorkflowRequest) returns (SignalShowWorkflowResponse);
+}
+
+// The request of `StartShowWorkflow`.
+message StartShowWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  StartShowWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartShowWorkflow`.
+message StartShowWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  StartShowWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceShowWorkflow`.
+message AdvanceShowWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  AdvanceShowWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceShowWorkflow`.
+message AdvanceShowWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  AdvanceShowWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelShowWorkflow`.
+message CancelShowWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  CancelShowWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelShowWorkflow`.
+message CancelShowWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  CancelShowWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryShowWorkflow`.
+message RetryShowWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  RetryShowWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryShowWorkflow`.
+message RetryShowWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  RetryShowWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseShowWorkflow`.
+message PauseShowWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  PauseShowWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseShowWorkflow`.
+message PauseShowWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  PauseShowWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeShowWorkflow`.
+message ResumeShowWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  ResumeShowWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeShowWorkflow`.
+message ResumeShowWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  ResumeShowWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectShowWorkflow`.
+message InspectShowWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectShowWorkflow`.
+message InspectShowWorkflowResponse {
+  Show show = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListShowWorkflows`.
+message ListShowWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ShowStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListShowWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListShowWorkflows`.
+message ListShowWorkflowsResponse {
+  repeated Show shows = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalShowWorkflow`.
+message SignalShowWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  SignalShowWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalShowWorkflow`.
+message SignalShowWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  SignalShowWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

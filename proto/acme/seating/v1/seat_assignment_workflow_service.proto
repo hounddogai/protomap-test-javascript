@@ -1,0 +1,279 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.seating.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/seating/v1/seating.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Seating.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/seating/v1;seatingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeatAssignmentWorkflowServiceProto";
+option java_package = "com.acme.seating.v1";
+
+// Runs the long-lived workflow that takes a seat assignment from start to finish.
+service SeatAssignmentWorkflowService {
+  // Starts a seat assignment.
+  rpc StartSeatAssignmentWorkflow(StartSeatAssignmentWorkflowRequest) returns (StartSeatAssignmentWorkflowResponse);
+
+  // Advances a seat assignment.
+  rpc AdvanceSeatAssignmentWorkflow(AdvanceSeatAssignmentWorkflowRequest) returns (AdvanceSeatAssignmentWorkflowResponse);
+
+  // Cancels a seat assignment.
+  rpc CancelSeatAssignmentWorkflow(CancelSeatAssignmentWorkflowRequest) returns (CancelSeatAssignmentWorkflowResponse);
+
+  // Retrys a seat assignment.
+  rpc RetrySeatAssignmentWorkflow(RetrySeatAssignmentWorkflowRequest) returns (RetrySeatAssignmentWorkflowResponse);
+
+  // Pauses a seat assignment.
+  rpc PauseSeatAssignmentWorkflow(PauseSeatAssignmentWorkflowRequest) returns (PauseSeatAssignmentWorkflowResponse);
+
+  // Lists seat assignments a page at a time.
+  rpc ListSeatAssignmentWorkflows(ListSeatAssignmentWorkflowsRequest) returns (ListSeatAssignmentWorkflowsResponse);
+
+  // Signals a seat assignment.
+  rpc SignalSeatAssignmentWorkflow(SignalSeatAssignmentWorkflowRequest) returns (SignalSeatAssignmentWorkflowResponse);
+}
+
+// The request of `StartSeatAssignmentWorkflow`.
+message StartSeatAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  StartSeatAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartSeatAssignmentWorkflow`.
+message StartSeatAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  StartSeatAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceSeatAssignmentWorkflow`.
+message AdvanceSeatAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  AdvanceSeatAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceSeatAssignmentWorkflow`.
+message AdvanceSeatAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  AdvanceSeatAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelSeatAssignmentWorkflow`.
+message CancelSeatAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  CancelSeatAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelSeatAssignmentWorkflow`.
+message CancelSeatAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  CancelSeatAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetrySeatAssignmentWorkflow`.
+message RetrySeatAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  RetrySeatAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetrySeatAssignmentWorkflow`.
+message RetrySeatAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  RetrySeatAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseSeatAssignmentWorkflow`.
+message PauseSeatAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  PauseSeatAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseSeatAssignmentWorkflow`.
+message PauseSeatAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  PauseSeatAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListSeatAssignmentWorkflows`.
+message ListSeatAssignmentWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SeatAssignmentStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSeatAssignmentWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSeatAssignmentWorkflows`.
+message ListSeatAssignmentWorkflowsResponse {
+  repeated SeatAssignment seat_assignments = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalSeatAssignmentWorkflow`.
+message SignalSeatAssignmentWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  SignalSeatAssignmentWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalSeatAssignmentWorkflow`.
+message SignalSeatAssignmentWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  SignalSeatAssignmentWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

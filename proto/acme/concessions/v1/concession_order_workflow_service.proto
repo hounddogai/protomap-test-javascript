@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.concessions.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/concessions/v1/concessions.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Concessions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/concessions/v1;concessionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ConcessionOrderWorkflowServiceProto";
+option java_package = "com.acme.concessions.v1";
+
+// Runs the long-lived workflow that takes a concession order from start to finish.
+service ConcessionOrderWorkflowService {
+  // Starts a concession order.
+  rpc StartConcessionOrderWorkflow(StartConcessionOrderWorkflowRequest) returns (StartConcessionOrderWorkflowResponse);
+
+  // Advances a concession order.
+  rpc AdvanceConcessionOrderWorkflow(AdvanceConcessionOrderWorkflowRequest) returns (AdvanceConcessionOrderWorkflowResponse);
+
+  // Cancels a concession order.
+  rpc CancelConcessionOrderWorkflow(CancelConcessionOrderWorkflowRequest) returns (CancelConcessionOrderWorkflowResponse);
+
+  // Retrys a concession order.
+  rpc RetryConcessionOrderWorkflow(RetryConcessionOrderWorkflowRequest) returns (RetryConcessionOrderWorkflowResponse);
+
+  // Resumes a concession order.
+  rpc ResumeConcessionOrderWorkflow(ResumeConcessionOrderWorkflowRequest) returns (ResumeConcessionOrderWorkflowResponse);
+
+  // Returns a concession order.
+  rpc InspectConcessionOrderWorkflow(InspectConcessionOrderWorkflowRequest) returns (InspectConcessionOrderWorkflowResponse);
+
+  // Lists concession orders a page at a time.
+  rpc ListConcessionOrderWorkflows(ListConcessionOrderWorkflowsRequest) returns (ListConcessionOrderWorkflowsResponse);
+
+  // Signals a concession order.
+  rpc SignalConcessionOrderWorkflow(SignalConcessionOrderWorkflowRequest) returns (SignalConcessionOrderWorkflowResponse);
+}
+
+// The request of `StartConcessionOrderWorkflow`.
+message StartConcessionOrderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  StartConcessionOrderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartConcessionOrderWorkflow`.
+message StartConcessionOrderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  StartConcessionOrderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceConcessionOrderWorkflow`.
+message AdvanceConcessionOrderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  AdvanceConcessionOrderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceConcessionOrderWorkflow`.
+message AdvanceConcessionOrderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  AdvanceConcessionOrderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelConcessionOrderWorkflow`.
+message CancelConcessionOrderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  CancelConcessionOrderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelConcessionOrderWorkflow`.
+message CancelConcessionOrderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  CancelConcessionOrderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryConcessionOrderWorkflow`.
+message RetryConcessionOrderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  RetryConcessionOrderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryConcessionOrderWorkflow`.
+message RetryConcessionOrderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  RetryConcessionOrderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeConcessionOrderWorkflow`.
+message ResumeConcessionOrderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  ResumeConcessionOrderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeConcessionOrderWorkflow`.
+message ResumeConcessionOrderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  ResumeConcessionOrderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectConcessionOrderWorkflow`.
+message InspectConcessionOrderWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectConcessionOrderWorkflow`.
+message InspectConcessionOrderWorkflowResponse {
+  ConcessionOrder concession_order = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListConcessionOrderWorkflows`.
+message ListConcessionOrderWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ConcessionOrderStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListConcessionOrderWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListConcessionOrderWorkflows`.
+message ListConcessionOrderWorkflowsResponse {
+  repeated ConcessionOrder concession_orders = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalConcessionOrderWorkflow`.
+message SignalConcessionOrderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  SignalConcessionOrderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalConcessionOrderWorkflow`.
+message SignalConcessionOrderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  SignalConcessionOrderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

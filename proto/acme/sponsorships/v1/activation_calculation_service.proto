@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.sponsorships.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/sponsorships/v1/sponsorships.proto";
+import "google/protobuf/field_mask.proto";
+
+option csharp_namespace = "Acme.Sponsorships.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/sponsorships/v1;sponsorshipsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ActivationCalculationServiceProto";
+option java_package = "com.acme.sponsorships.v1";
+
+// Computes the figures of an activation, such as totals, taxes, and estimates.
+service ActivationCalculationService {
+  // Calculates an activation.
+  rpc CalculateActivation(CalculateActivationRequest) returns (CalculateActivationResponse);
+
+  // Estimates an activation.
+  rpc EstimateActivation(EstimateActivationRequest) returns (EstimateActivationResponse);
+
+  // Quotes an activation.
+  rpc QuoteActivation(QuoteActivationRequest) returns (QuoteActivationResponse);
+
+  // Compares an activation.
+  rpc CompareActivationOptions(CompareActivationOptionsRequest) returns (CompareActivationOptionsResponse);
+
+  // Recalculates an activation.
+  rpc RecalculateActivations(RecalculateActivationsRequest) returns (RecalculateActivationsResponse);
+
+  // Simulates an activation.
+  rpc SimulateActivation(SimulateActivationRequest) returns (SimulateActivationResponse);
+
+  // Returns an activation.
+  rpc GetActivationRates(GetActivationRatesRequest) returns (GetActivationRatesResponse);
+}
+
+// The request of `CalculateActivation`.
+message CalculateActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  CalculateActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateActivation`.
+message CalculateActivationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateActivationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Activation activation = 1;
+  CalculateActivationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateActivation`.
+message EstimateActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  EstimateActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateActivation`.
+message EstimateActivationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateActivationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Activation activation = 1;
+  EstimateActivationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteActivation`.
+message QuoteActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  QuoteActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteActivation`.
+message QuoteActivationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteActivationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Activation activation = 1;
+  QuoteActivationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareActivationOptions`.
+message CompareActivationOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  CompareActivationOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareActivationOptions`.
+message CompareActivationOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareActivationOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Activation activation = 1;
+  CompareActivationOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateActivations`.
+message RecalculateActivationsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  RecalculateActivationsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateActivations`.
+message RecalculateActivationsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateActivationsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Activation activation = 1;
+  RecalculateActivationsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateActivation`.
+message SimulateActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  SimulateActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateActivation`.
+message SimulateActivationResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateActivationResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Activation activation = 1;
+  SimulateActivationResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetActivationRates`.
+message GetActivationRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetActivationRates`.
+message GetActivationRatesResponse {
+  Activation activation = 1;
+  acme.common.v1.OperationResult result = 2;
+}

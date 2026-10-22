@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "LineupApprovalServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Routes lineups through approval, with escalation and delegation.
+service LineupApprovalService {
+  // Submits a lineup.
+  rpc SubmitLineup(SubmitLineupRequest) returns (SubmitLineupResponse);
+
+  // Approves a lineup.
+  rpc ApproveLineup(ApproveLineupRequest) returns (ApproveLineupResponse);
+
+  // Rejects a lineup.
+  rpc RejectLineup(RejectLineupRequest) returns (RejectLineupResponse);
+
+  // Escalates a lineup.
+  rpc EscalateLineup(EscalateLineupRequest) returns (EscalateLineupResponse);
+
+  // Lists lineups a page at a time.
+  rpc ListPendingLineups(ListPendingLineupsRequest) returns (ListPendingLineupsResponse);
+
+  // Delegates a lineup.
+  rpc DelegateLineupApproval(DelegateLineupApprovalRequest) returns (DelegateLineupApprovalResponse);
+
+  // Returns a lineup.
+  rpc GetLineupApprovalStatus(GetLineupApprovalStatusRequest) returns (GetLineupApprovalStatusResponse);
+
+  // Comments a lineup.
+  rpc CommentLineupApproval(CommentLineupApprovalRequest) returns (CommentLineupApprovalResponse);
+}
+
+// The request of `SubmitLineup`.
+message SubmitLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  SubmitLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitLineup`.
+message SubmitLineupResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  SubmitLineupResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveLineup`.
+message ApproveLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  ApproveLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveLineup`.
+message ApproveLineupResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  ApproveLineupResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectLineup`.
+message RejectLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  RejectLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectLineup`.
+message RejectLineupResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  RejectLineupResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateLineup`.
+message EscalateLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  EscalateLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateLineup`.
+message EscalateLineupResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  EscalateLineupResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingLineups`.
+message ListPendingLineupsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated LineupStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingLineupsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingLineups`.
+message ListPendingLineupsResponse {
+  repeated Lineup lineups = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateLineupApproval`.
+message DelegateLineupApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  DelegateLineupApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateLineupApproval`.
+message DelegateLineupApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  DelegateLineupApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetLineupApprovalStatus`.
+message GetLineupApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetLineupApprovalStatus`.
+message GetLineupApprovalStatusResponse {
+  Lineup lineup = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentLineupApproval`.
+message CommentLineupApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  CommentLineupApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentLineupApproval`.
+message CommentLineupApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  CommentLineupApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

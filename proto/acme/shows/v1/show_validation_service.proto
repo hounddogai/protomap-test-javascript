@@ -1,0 +1,231 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ShowValidationServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Checks shows against the rules before anything acts on them.
+service ShowValidationService {
+  // Validates a show.
+  rpc ValidateShow(ValidateShowRequest) returns (ValidateShowResponse);
+
+  // Previews a show.
+  rpc PreviewShow(PreviewShowRequest) returns (PreviewShowResponse);
+
+  // Checks a show.
+  rpc CheckShowEligibility(CheckShowEligibilityRequest) returns (CheckShowEligibilityResponse);
+
+  // Scores a show.
+  rpc ScoreShow(ScoreShowRequest) returns (ScoreShowResponse);
+
+  // Lints a show.
+  rpc LintShows(LintShowsRequest) returns (LintShowsResponse);
+
+  // Returns a show.
+  rpc GetShowRules(GetShowRulesRequest) returns (GetShowRulesResponse);
+}
+
+// The request of `ValidateShow`.
+message ValidateShowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  ValidateShowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateShow`.
+message ValidateShowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  ValidateShowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewShow`.
+message PreviewShowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  PreviewShowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewShow`.
+message PreviewShowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  PreviewShowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckShowEligibility`.
+message CheckShowEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  CheckShowEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckShowEligibility`.
+message CheckShowEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  CheckShowEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreShow`.
+message ScoreShowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  ScoreShowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreShow`.
+message ScoreShowResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreShowResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Show show = 1;
+  ScoreShowResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintShows`.
+message LintShowsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  Show show = 3;
+  LintShowsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintShows`.
+message LintShowsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Show show = 1;
+  LintShowsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetShowRules`.
+message GetShowRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string show_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetShowRules`.
+message GetShowRulesResponse {
+  Show show = 1;
+  acme.common.v1.OperationResult result = 2;
+}

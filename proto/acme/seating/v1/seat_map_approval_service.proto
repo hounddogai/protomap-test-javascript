@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.seating.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/seating/v1/seating.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Seating.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/seating/v1;seatingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeatMapApprovalServiceProto";
+option java_package = "com.acme.seating.v1";
+
+// Routes seat maps through approval, with escalation and delegation.
+service SeatMapApprovalService {
+  // Submits a seat map.
+  rpc SubmitSeatMap(SubmitSeatMapRequest) returns (SubmitSeatMapResponse);
+
+  // Approves a seat map.
+  rpc ApproveSeatMap(ApproveSeatMapRequest) returns (ApproveSeatMapResponse);
+
+  // Rejects a seat map.
+  rpc RejectSeatMap(RejectSeatMapRequest) returns (RejectSeatMapResponse);
+
+  // Lists seat maps a page at a time.
+  rpc ListPendingSeatMaps(ListPendingSeatMapsRequest) returns (ListPendingSeatMapsResponse);
+
+  // Delegates a seat map.
+  rpc DelegateSeatMapApproval(DelegateSeatMapApprovalRequest) returns (DelegateSeatMapApprovalResponse);
+
+  // Recalls a seat map.
+  rpc RecallSeatMap(RecallSeatMapRequest) returns (RecallSeatMapResponse);
+
+  // Returns a seat map.
+  rpc GetSeatMapApprovalStatus(GetSeatMapApprovalStatusRequest) returns (GetSeatMapApprovalStatusResponse);
+
+  // Comments a seat map.
+  rpc CommentSeatMapApproval(CommentSeatMapApprovalRequest) returns (CommentSeatMapApprovalResponse);
+}
+
+// The request of `SubmitSeatMap`.
+message SubmitSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  SubmitSeatMapRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitSeatMap`.
+message SubmitSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  SubmitSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveSeatMap`.
+message ApproveSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  ApproveSeatMapRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveSeatMap`.
+message ApproveSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  ApproveSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectSeatMap`.
+message RejectSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  RejectSeatMapRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectSeatMap`.
+message RejectSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  RejectSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingSeatMaps`.
+message ListPendingSeatMapsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SeatMapStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingSeatMapsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingSeatMaps`.
+message ListPendingSeatMapsResponse {
+  repeated SeatMap seat_maps = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateSeatMapApproval`.
+message DelegateSeatMapApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  DelegateSeatMapApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateSeatMapApproval`.
+message DelegateSeatMapApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  DelegateSeatMapApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallSeatMap`.
+message RecallSeatMapRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  RecallSeatMapRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallSeatMap`.
+message RecallSeatMapResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  RecallSeatMapResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSeatMapApprovalStatus`.
+message GetSeatMapApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSeatMapApprovalStatus`.
+message GetSeatMapApprovalStatusResponse {
+  SeatMap seat_map = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentSeatMapApproval`.
+message CommentSeatMapApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  CommentSeatMapApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentSeatMapApproval`.
+message CommentSeatMapApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  CommentSeatMapApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

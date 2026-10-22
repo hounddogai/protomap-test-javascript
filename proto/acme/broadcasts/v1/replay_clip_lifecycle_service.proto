@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ReplayClipLifecycleServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Moves a replay clip between the states of its lifecycle.
+service ReplayClipLifecycleService {
+  // Activates a replay clip.
+  rpc ActivateReplayClip(ActivateReplayClipRequest) returns (ActivateReplayClipResponse);
+
+  // Suspends a replay clip.
+  rpc SuspendReplayClip(SuspendReplayClipRequest) returns (SuspendReplayClipResponse);
+
+  // Reinstates a replay clip.
+  rpc ReinstateReplayClip(ReinstateReplayClipRequest) returns (ReinstateReplayClipResponse);
+
+  // Terminates a replay clip.
+  rpc TerminateReplayClip(TerminateReplayClipRequest) returns (TerminateReplayClipResponse);
+
+  // Renews a replay clip.
+  rpc RenewReplayClip(RenewReplayClipRequest) returns (RenewReplayClipResponse);
+
+  // Expires a replay clip.
+  rpc ExpireReplayClip(ExpireReplayClipRequest) returns (ExpireReplayClipResponse);
+
+  // Returns a replay clip.
+  rpc GetReplayClipLifecycle(GetReplayClipLifecycleRequest) returns (GetReplayClipLifecycleResponse);
+
+  // Schedules a replay clip.
+  rpc ScheduleReplayClipExpiry(ScheduleReplayClipExpiryRequest) returns (ScheduleReplayClipExpiryResponse);
+}
+
+// The request of `ActivateReplayClip`.
+message ActivateReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ActivateReplayClipRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateReplayClip`.
+message ActivateReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  ActivateReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendReplayClip`.
+message SuspendReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  SuspendReplayClipRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendReplayClip`.
+message SuspendReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  SuspendReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateReplayClip`.
+message ReinstateReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReinstateReplayClipRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateReplayClip`.
+message ReinstateReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  ReinstateReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateReplayClip`.
+message TerminateReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  TerminateReplayClipRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateReplayClip`.
+message TerminateReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  TerminateReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewReplayClip`.
+message RenewReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  RenewReplayClipRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewReplayClip`.
+message RenewReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  RenewReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireReplayClip`.
+message ExpireReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ExpireReplayClipRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireReplayClip`.
+message ExpireReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  ExpireReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetReplayClipLifecycle`.
+message GetReplayClipLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetReplayClipLifecycle`.
+message GetReplayClipLifecycleResponse {
+  ReplayClip replay_clip = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleReplayClipExpiry`.
+message ScheduleReplayClipExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  ScheduleReplayClipExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleReplayClipExpiry`.
+message ScheduleReplayClipExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  ScheduleReplayClipExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

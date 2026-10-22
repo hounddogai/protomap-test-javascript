@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenueSectionValidationServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Checks venue sections against the rules before anything acts on them.
+service VenueSectionValidationService {
+  // Validates a venue section.
+  rpc ValidateVenueSection(ValidateVenueSectionRequest) returns (ValidateVenueSectionResponse);
+
+  // Previews a venue section.
+  rpc PreviewVenueSection(PreviewVenueSectionRequest) returns (PreviewVenueSectionResponse);
+
+  // Checks a venue section.
+  rpc CheckVenueSectionEligibility(CheckVenueSectionEligibilityRequest) returns (CheckVenueSectionEligibilityResponse);
+
+  // Normalizes a venue section.
+  rpc NormalizeVenueSection(NormalizeVenueSectionRequest) returns (NormalizeVenueSectionResponse);
+
+  // Explains a venue section.
+  rpc ExplainVenueSectionDecision(ExplainVenueSectionDecisionRequest) returns (ExplainVenueSectionDecisionResponse);
+
+  // Scores a venue section.
+  rpc ScoreVenueSection(ScoreVenueSectionRequest) returns (ScoreVenueSectionResponse);
+
+  // Lints a venue section.
+  rpc LintVenueSections(LintVenueSectionsRequest) returns (LintVenueSectionsResponse);
+
+  // Returns a venue section.
+  rpc GetVenueSectionRules(GetVenueSectionRulesRequest) returns (GetVenueSectionRulesResponse);
+}
+
+// The request of `ValidateVenueSection`.
+message ValidateVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  ValidateVenueSectionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateVenueSection`.
+message ValidateVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  ValidateVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewVenueSection`.
+message PreviewVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  PreviewVenueSectionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewVenueSection`.
+message PreviewVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  PreviewVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckVenueSectionEligibility`.
+message CheckVenueSectionEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  CheckVenueSectionEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckVenueSectionEligibility`.
+message CheckVenueSectionEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  CheckVenueSectionEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeVenueSection`.
+message NormalizeVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  NormalizeVenueSectionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeVenueSection`.
+message NormalizeVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  NormalizeVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainVenueSectionDecision`.
+message ExplainVenueSectionDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  ExplainVenueSectionDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainVenueSectionDecision`.
+message ExplainVenueSectionDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  ExplainVenueSectionDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreVenueSection`.
+message ScoreVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  ScoreVenueSectionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreVenueSection`.
+message ScoreVenueSectionResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreVenueSectionResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  VenueSection venue_section = 1;
+  ScoreVenueSectionResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintVenueSections`.
+message LintVenueSectionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  LintVenueSectionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintVenueSections`.
+message LintVenueSectionsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  LintVenueSectionsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetVenueSectionRules`.
+message GetVenueSectionRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetVenueSectionRules`.
+message GetVenueSectionRulesResponse {
+  VenueSection venue_section = 1;
+  acme.common.v1.OperationResult result = 2;
+}

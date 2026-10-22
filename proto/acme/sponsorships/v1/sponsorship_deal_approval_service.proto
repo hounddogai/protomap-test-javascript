@@ -1,0 +1,257 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.sponsorships.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/sponsorships/v1/sponsorships.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Sponsorships.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/sponsorships/v1;sponsorshipsv1";
+option java_multiple_files = true;
+option java_outer_classname = "SponsorshipDealApprovalServiceProto";
+option java_package = "com.acme.sponsorships.v1";
+
+// Routes sponsorship deals through approval, with escalation and delegation.
+service SponsorshipDealApprovalService {
+  // Submits a sponsorship deal.
+  rpc SubmitSponsorshipDeal(SubmitSponsorshipDealRequest) returns (SubmitSponsorshipDealResponse);
+
+  // Approves a sponsorship deal.
+  rpc ApproveSponsorshipDeal(ApproveSponsorshipDealRequest) returns (ApproveSponsorshipDealResponse);
+
+  // Rejects a sponsorship deal.
+  rpc RejectSponsorshipDeal(RejectSponsorshipDealRequest) returns (RejectSponsorshipDealResponse);
+
+  // Lists sponsorship deals a page at a time.
+  rpc ListPendingSponsorshipDeals(ListPendingSponsorshipDealsRequest) returns (ListPendingSponsorshipDealsResponse);
+
+  // Delegates a sponsorship deal.
+  rpc DelegateSponsorshipDealApproval(DelegateSponsorshipDealApprovalRequest) returns (DelegateSponsorshipDealApprovalResponse);
+
+  // Returns a sponsorship deal.
+  rpc GetSponsorshipDealApprovalStatus(GetSponsorshipDealApprovalStatusRequest) returns (GetSponsorshipDealApprovalStatusResponse);
+
+  // Comments a sponsorship deal.
+  rpc CommentSponsorshipDealApproval(CommentSponsorshipDealApprovalRequest) returns (CommentSponsorshipDealApprovalResponse);
+}
+
+// The request of `SubmitSponsorshipDeal`.
+message SubmitSponsorshipDealRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  SubmitSponsorshipDealRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitSponsorshipDeal`.
+message SubmitSponsorshipDealResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  SubmitSponsorshipDealResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveSponsorshipDeal`.
+message ApproveSponsorshipDealRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  ApproveSponsorshipDealRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveSponsorshipDeal`.
+message ApproveSponsorshipDealResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  ApproveSponsorshipDealResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectSponsorshipDeal`.
+message RejectSponsorshipDealRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  RejectSponsorshipDealRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectSponsorshipDeal`.
+message RejectSponsorshipDealResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  RejectSponsorshipDealResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingSponsorshipDeals`.
+message ListPendingSponsorshipDealsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SponsorshipDealStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingSponsorshipDealsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingSponsorshipDeals`.
+message ListPendingSponsorshipDealsResponse {
+  repeated SponsorshipDeal sponsorship_deals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateSponsorshipDealApproval`.
+message DelegateSponsorshipDealApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  DelegateSponsorshipDealApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateSponsorshipDealApproval`.
+message DelegateSponsorshipDealApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  DelegateSponsorshipDealApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSponsorshipDealApprovalStatus`.
+message GetSponsorshipDealApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSponsorshipDealApprovalStatus`.
+message GetSponsorshipDealApprovalStatusResponse {
+  SponsorshipDeal sponsorship_deal = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentSponsorshipDealApproval`.
+message CommentSponsorshipDealApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  CommentSponsorshipDealApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentSponsorshipDealApproval`.
+message CommentSponsorshipDealApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  CommentSponsorshipDealApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

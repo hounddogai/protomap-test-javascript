@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "GateScanLifecycleServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Moves a gate scan between the states of its lifecycle.
+service GateScanLifecycleService {
+  // Activates a gate scan.
+  rpc ActivateGateScan(ActivateGateScanRequest) returns (ActivateGateScanResponse);
+
+  // Suspends a gate scan.
+  rpc SuspendGateScan(SuspendGateScanRequest) returns (SuspendGateScanResponse);
+
+  // Reinstates a gate scan.
+  rpc ReinstateGateScan(ReinstateGateScanRequest) returns (ReinstateGateScanResponse);
+
+  // Renews a gate scan.
+  rpc RenewGateScan(RenewGateScanRequest) returns (RenewGateScanResponse);
+
+  // Expires a gate scan.
+  rpc ExpireGateScan(ExpireGateScanRequest) returns (ExpireGateScanResponse);
+
+  // Returns a gate scan.
+  rpc GetGateScanLifecycle(GetGateScanLifecycleRequest) returns (GetGateScanLifecycleResponse);
+
+  // Schedules a gate scan.
+  rpc ScheduleGateScanExpiry(ScheduleGateScanExpiryRequest) returns (ScheduleGateScanExpiryResponse);
+}
+
+// The request of `ActivateGateScan`.
+message ActivateGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  ActivateGateScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateGateScan`.
+message ActivateGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  ActivateGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendGateScan`.
+message SuspendGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  SuspendGateScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendGateScan`.
+message SuspendGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  SuspendGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateGateScan`.
+message ReinstateGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  ReinstateGateScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateGateScan`.
+message ReinstateGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  ReinstateGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewGateScan`.
+message RenewGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  RenewGateScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewGateScan`.
+message RenewGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  RenewGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireGateScan`.
+message ExpireGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  ExpireGateScanRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireGateScan`.
+message ExpireGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  ExpireGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetGateScanLifecycle`.
+message GetGateScanLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetGateScanLifecycle`.
+message GetGateScanLifecycleResponse {
+  GateScan gate_scan = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleGateScanExpiry`.
+message ScheduleGateScanExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  ScheduleGateScanExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleGateScanExpiry`.
+message ScheduleGateScanExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  ScheduleGateScanExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

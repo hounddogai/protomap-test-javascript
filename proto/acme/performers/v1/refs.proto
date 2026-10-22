@@ -1,0 +1,33 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performers.v1;
+
+option csharp_namespace = "Acme.Performers.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performers/v1;performersv1";
+option java_multiple_files = true;
+option java_outer_classname = "RefsProto";
+option java_package = "com.acme.performers.v1";
+
+// A reference to a performer of the performers domain.
+message PerformerRef {
+  string performer_id = 1;
+  string display_name = 2;
+  string email = 3;
+}
+
+// A reference to a performer contract of the performers domain.
+message PerformerContractRef {
+  string performer_contract_id = 1;
+  string display_name = 2;
+  string number = 3;
+}
+
+// A reference to a rider of the performers domain.
+message RiderRef {
+  string rider_id = 1;
+  string display_name = 2;
+  int64 version = 3;
+}

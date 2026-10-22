@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "AdmissionApprovalServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Routes admissions through approval, with escalation and delegation.
+service AdmissionApprovalService {
+  // Submits an admission.
+  rpc SubmitAdmission(SubmitAdmissionRequest) returns (SubmitAdmissionResponse);
+
+  // Approves an admission.
+  rpc ApproveAdmission(ApproveAdmissionRequest) returns (ApproveAdmissionResponse);
+
+  // Rejects an admission.
+  rpc RejectAdmission(RejectAdmissionRequest) returns (RejectAdmissionResponse);
+
+  // Escalates an admission.
+  rpc EscalateAdmission(EscalateAdmissionRequest) returns (EscalateAdmissionResponse);
+
+  // Lists admissions a page at a time.
+  rpc ListPendingAdmissions(ListPendingAdmissionsRequest) returns (ListPendingAdmissionsResponse);
+
+  // Delegates an admission.
+  rpc DelegateAdmissionApproval(DelegateAdmissionApprovalRequest) returns (DelegateAdmissionApprovalResponse);
+
+  // Recalls an admission.
+  rpc RecallAdmission(RecallAdmissionRequest) returns (RecallAdmissionResponse);
+
+  // Returns an admission.
+  rpc GetAdmissionApprovalStatus(GetAdmissionApprovalStatusRequest) returns (GetAdmissionApprovalStatusResponse);
+
+  // Comments an admission.
+  rpc CommentAdmissionApproval(CommentAdmissionApprovalRequest) returns (CommentAdmissionApprovalResponse);
+}
+
+// The request of `SubmitAdmission`.
+message SubmitAdmissionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  SubmitAdmissionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitAdmission`.
+message SubmitAdmissionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  SubmitAdmissionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveAdmission`.
+message ApproveAdmissionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  ApproveAdmissionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveAdmission`.
+message ApproveAdmissionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  ApproveAdmissionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectAdmission`.
+message RejectAdmissionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  RejectAdmissionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectAdmission`.
+message RejectAdmissionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  RejectAdmissionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateAdmission`.
+message EscalateAdmissionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  EscalateAdmissionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateAdmission`.
+message EscalateAdmissionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  EscalateAdmissionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingAdmissions`.
+message ListPendingAdmissionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated AdmissionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingAdmissionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingAdmissions`.
+message ListPendingAdmissionsResponse {
+  repeated Admission admissions = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateAdmissionApproval`.
+message DelegateAdmissionApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  DelegateAdmissionApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateAdmissionApproval`.
+message DelegateAdmissionApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  DelegateAdmissionApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallAdmission`.
+message RecallAdmissionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  RecallAdmissionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallAdmission`.
+message RecallAdmissionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  RecallAdmissionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetAdmissionApprovalStatus`.
+message GetAdmissionApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetAdmissionApprovalStatus`.
+message GetAdmissionApprovalStatusResponse {
+  Admission admission = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentAdmissionApproval`.
+message CommentAdmissionApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string admission_id = 2;
+  Admission admission = 3;
+  CommentAdmissionApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentAdmissionApproval`.
+message CommentAdmissionApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Admission admission = 1;
+  CommentAdmissionApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

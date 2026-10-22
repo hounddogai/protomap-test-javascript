@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "GuestListApprovalServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Routes guest lists through approval, with escalation and delegation.
+service GuestListApprovalService {
+  // Submits a guest list.
+  rpc SubmitGuestList(SubmitGuestListRequest) returns (SubmitGuestListResponse);
+
+  // Approves a guest list.
+  rpc ApproveGuestList(ApproveGuestListRequest) returns (ApproveGuestListResponse);
+
+  // Rejects a guest list.
+  rpc RejectGuestList(RejectGuestListRequest) returns (RejectGuestListResponse);
+
+  // Escalates a guest list.
+  rpc EscalateGuestList(EscalateGuestListRequest) returns (EscalateGuestListResponse);
+
+  // Lists guest lists a page at a time.
+  rpc ListPendingGuestLists(ListPendingGuestListsRequest) returns (ListPendingGuestListsResponse);
+
+  // Delegates a guest list.
+  rpc DelegateGuestListApproval(DelegateGuestListApprovalRequest) returns (DelegateGuestListApprovalResponse);
+
+  // Recalls a guest list.
+  rpc RecallGuestList(RecallGuestListRequest) returns (RecallGuestListResponse);
+
+  // Returns a guest list.
+  rpc GetGuestListApprovalStatus(GetGuestListApprovalStatusRequest) returns (GetGuestListApprovalStatusResponse);
+}
+
+// The request of `SubmitGuestList`.
+message SubmitGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  SubmitGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitGuestList`.
+message SubmitGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  SubmitGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveGuestList`.
+message ApproveGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  ApproveGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveGuestList`.
+message ApproveGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  ApproveGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectGuestList`.
+message RejectGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  RejectGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectGuestList`.
+message RejectGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  RejectGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateGuestList`.
+message EscalateGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  EscalateGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateGuestList`.
+message EscalateGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  EscalateGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingGuestLists`.
+message ListPendingGuestListsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GuestListStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingGuestListsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingGuestLists`.
+message ListPendingGuestListsResponse {
+  repeated GuestList guest_lists = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateGuestListApproval`.
+message DelegateGuestListApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  DelegateGuestListApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateGuestListApproval`.
+message DelegateGuestListApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  DelegateGuestListApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallGuestList`.
+message RecallGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  RecallGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallGuestList`.
+message RecallGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  RecallGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetGuestListApprovalStatus`.
+message GetGuestListApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetGuestListApprovalStatus`.
+message GetGuestListApprovalStatusResponse {
+  GuestList guest_list = 1;
+  acme.common.v1.OperationResult result = 2;
+}

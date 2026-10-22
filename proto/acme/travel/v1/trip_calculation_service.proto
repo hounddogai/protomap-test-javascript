@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.travel.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/travel/v1/travel.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Travel.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/travel/v1;travelv1";
+option java_multiple_files = true;
+option java_outer_classname = "TripCalculationServiceProto";
+option java_package = "com.acme.travel.v1";
+
+// Computes the figures of a trip, such as totals, taxes, and estimates.
+service TripCalculationService {
+  // Calculates a trip.
+  rpc CalculateTrip(CalculateTripRequest) returns (CalculateTripResponse);
+
+  // Estimates a trip.
+  rpc EstimateTrip(EstimateTripRequest) returns (EstimateTripResponse);
+
+  // Quotes a trip.
+  rpc QuoteTrip(QuoteTripRequest) returns (QuoteTripResponse);
+
+  // Compares a trip.
+  rpc CompareTripOptions(CompareTripOptionsRequest) returns (CompareTripOptionsResponse);
+
+  // Recalculates a trip.
+  rpc RecalculateTrips(RecalculateTripsRequest) returns (RecalculateTripsResponse);
+
+  // Simulates a trip.
+  rpc SimulateTrip(SimulateTripRequest) returns (SimulateTripResponse);
+
+  // Explains a trip.
+  rpc ExplainTripCalculation(ExplainTripCalculationRequest) returns (ExplainTripCalculationResponse);
+
+  // Returns a trip.
+  rpc GetTripRates(GetTripRatesRequest) returns (GetTripRatesResponse);
+}
+
+// The request of `CalculateTrip`.
+message CalculateTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  CalculateTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateTrip`.
+message CalculateTripResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateTripResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Trip trip = 1;
+  CalculateTripResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateTrip`.
+message EstimateTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  EstimateTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateTrip`.
+message EstimateTripResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateTripResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Trip trip = 1;
+  EstimateTripResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteTrip`.
+message QuoteTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  QuoteTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteTrip`.
+message QuoteTripResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteTripResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Trip trip = 1;
+  QuoteTripResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareTripOptions`.
+message CompareTripOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  CompareTripOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareTripOptions`.
+message CompareTripOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareTripOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Trip trip = 1;
+  CompareTripOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateTrips`.
+message RecalculateTripsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  RecalculateTripsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateTrips`.
+message RecalculateTripsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateTripsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Trip trip = 1;
+  RecalculateTripsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateTrip`.
+message SimulateTripRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  SimulateTripRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateTrip`.
+message SimulateTripResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateTripResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Trip trip = 1;
+  SimulateTripResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainTripCalculation`.
+message ExplainTripCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  Trip trip = 3;
+  ExplainTripCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainTripCalculation`.
+message ExplainTripCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Trip trip = 1;
+  ExplainTripCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTripRates`.
+message GetTripRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string trip_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTripRates`.
+message GetTripRatesResponse {
+  Trip trip = 1;
+  acme.common.v1.OperationResult result = 2;
+}

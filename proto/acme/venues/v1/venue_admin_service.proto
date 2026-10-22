@@ -1,0 +1,293 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenueAdminServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Operator actions on venues that support staff run by hand.
+service VenueAdminService {
+  // Archives a venue.
+  rpc ArchiveVenue(ArchiveVenueRequest) returns (ArchiveVenueResponse);
+
+  // Restores a venue.
+  rpc RestoreVenue(RestoreVenueRequest) returns (RestoreVenueResponse);
+
+  // Reassigns a venue.
+  rpc ReassignVenue(ReassignVenueRequest) returns (ReassignVenueResponse);
+
+  // Locks a venue.
+  rpc LockVenue(LockVenueRequest) returns (LockVenueResponse);
+
+  // Unlocks a venue.
+  rpc UnlockVenue(UnlockVenueRequest) returns (UnlockVenueResponse);
+
+  // Transfers a venue.
+  rpc TransferVenue(TransferVenueRequest) returns (TransferVenueResponse);
+
+  // Repairs a venue.
+  rpc RepairVenue(RepairVenueRequest) returns (RepairVenueResponse);
+
+  // Returns a venue.
+  rpc InspectVenue(InspectVenueRequest) returns (InspectVenueResponse);
+}
+
+// The request of `ArchiveVenue`.
+message ArchiveVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  ArchiveVenueRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ArchiveVenue`.
+message ArchiveVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  ArchiveVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RestoreVenue`.
+message RestoreVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  RestoreVenueRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RestoreVenue`.
+message RestoreVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  RestoreVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReassignVenue`.
+message ReassignVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.identity.v1.UserRef assignee = 1;
+    string queue = 2;
+    int32 capacity = 3;
+    string assignee_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  ReassignVenueRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReassignVenue`.
+message ReassignVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  ReassignVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LockVenue`.
+message LockVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  LockVenueRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `LockVenue`.
+message LockVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  LockVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnlockVenue`.
+message UnlockVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  UnlockVenueRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnlockVenue`.
+message UnlockVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  UnlockVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TransferVenue`.
+message TransferVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  TransferVenueRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TransferVenue`.
+message TransferVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  TransferVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RepairVenue`.
+message RepairVenueRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  Venue venue = 3;
+  RepairVenueRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RepairVenue`.
+message RepairVenueResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Venue venue = 1;
+  RepairVenueResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectVenue`.
+message InspectVenueRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectVenue`.
+message InspectVenueResponse {
+  Venue venue = 1;
+  acme.common.v1.OperationResult result = 2;
+}

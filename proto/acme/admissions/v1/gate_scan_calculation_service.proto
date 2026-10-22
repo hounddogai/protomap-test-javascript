@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "GateScanCalculationServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Computes the figures of a gate scan, such as totals, taxes, and estimates.
+service GateScanCalculationService {
+  // Calculates a gate scan.
+  rpc CalculateGateScan(CalculateGateScanRequest) returns (CalculateGateScanResponse);
+
+  // Estimates a gate scan.
+  rpc EstimateGateScan(EstimateGateScanRequest) returns (EstimateGateScanResponse);
+
+  // Quotes a gate scan.
+  rpc QuoteGateScan(QuoteGateScanRequest) returns (QuoteGateScanResponse);
+
+  // Compares a gate scan.
+  rpc CompareGateScanOptions(CompareGateScanOptionsRequest) returns (CompareGateScanOptionsResponse);
+
+  // Recalculates a gate scan.
+  rpc RecalculateGateScans(RecalculateGateScansRequest) returns (RecalculateGateScansResponse);
+
+  // Simulates a gate scan.
+  rpc SimulateGateScan(SimulateGateScanRequest) returns (SimulateGateScanResponse);
+
+  // Explains a gate scan.
+  rpc ExplainGateScanCalculation(ExplainGateScanCalculationRequest) returns (ExplainGateScanCalculationResponse);
+
+  // Returns a gate scan.
+  rpc GetGateScanRates(GetGateScanRatesRequest) returns (GetGateScanRatesResponse);
+}
+
+// The request of `CalculateGateScan`.
+message CalculateGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  CalculateGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateGateScan`.
+message CalculateGateScanResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateGateScanResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GateScan gate_scan = 1;
+  CalculateGateScanResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateGateScan`.
+message EstimateGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  EstimateGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateGateScan`.
+message EstimateGateScanResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateGateScanResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GateScan gate_scan = 1;
+  EstimateGateScanResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteGateScan`.
+message QuoteGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  QuoteGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteGateScan`.
+message QuoteGateScanResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteGateScanResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GateScan gate_scan = 1;
+  QuoteGateScanResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareGateScanOptions`.
+message CompareGateScanOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  CompareGateScanOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareGateScanOptions`.
+message CompareGateScanOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareGateScanOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GateScan gate_scan = 1;
+  CompareGateScanOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateGateScans`.
+message RecalculateGateScansRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  RecalculateGateScansRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateGateScans`.
+message RecalculateGateScansResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateGateScansResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GateScan gate_scan = 1;
+  RecalculateGateScansResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateGateScan`.
+message SimulateGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  SimulateGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateGateScan`.
+message SimulateGateScanResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateGateScanResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GateScan gate_scan = 1;
+  SimulateGateScanResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainGateScanCalculation`.
+message ExplainGateScanCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  ExplainGateScanCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainGateScanCalculation`.
+message ExplainGateScanCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  ExplainGateScanCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetGateScanRates`.
+message GetGateScanRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetGateScanRates`.
+message GetGateScanRatesResponse {
+  GateScan gate_scan = 1;
+  acme.common.v1.OperationResult result = 2;
+}

@@ -1,0 +1,241 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.seating.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/seating/v1/seating.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Seating.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/seating/v1;seatingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeatHoldWorkflowServiceProto";
+option java_package = "com.acme.seating.v1";
+
+// Runs the long-lived workflow that takes a seat hold from start to finish.
+service SeatHoldWorkflowService {
+  // Starts a seat hold.
+  rpc StartSeatHoldWorkflow(StartSeatHoldWorkflowRequest) returns (StartSeatHoldWorkflowResponse);
+
+  // Advances a seat hold.
+  rpc AdvanceSeatHoldWorkflow(AdvanceSeatHoldWorkflowRequest) returns (AdvanceSeatHoldWorkflowResponse);
+
+  // Cancels a seat hold.
+  rpc CancelSeatHoldWorkflow(CancelSeatHoldWorkflowRequest) returns (CancelSeatHoldWorkflowResponse);
+
+  // Resumes a seat hold.
+  rpc ResumeSeatHoldWorkflow(ResumeSeatHoldWorkflowRequest) returns (ResumeSeatHoldWorkflowResponse);
+
+  // Lists seat holds a page at a time.
+  rpc ListSeatHoldWorkflows(ListSeatHoldWorkflowsRequest) returns (ListSeatHoldWorkflowsResponse);
+
+  // Signals a seat hold.
+  rpc SignalSeatHoldWorkflow(SignalSeatHoldWorkflowRequest) returns (SignalSeatHoldWorkflowResponse);
+}
+
+// The request of `StartSeatHoldWorkflow`.
+message StartSeatHoldWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  StartSeatHoldWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartSeatHoldWorkflow`.
+message StartSeatHoldWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  StartSeatHoldWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceSeatHoldWorkflow`.
+message AdvanceSeatHoldWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  AdvanceSeatHoldWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceSeatHoldWorkflow`.
+message AdvanceSeatHoldWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  AdvanceSeatHoldWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelSeatHoldWorkflow`.
+message CancelSeatHoldWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  CancelSeatHoldWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelSeatHoldWorkflow`.
+message CancelSeatHoldWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  CancelSeatHoldWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeSeatHoldWorkflow`.
+message ResumeSeatHoldWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  ResumeSeatHoldWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeSeatHoldWorkflow`.
+message ResumeSeatHoldWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  ResumeSeatHoldWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListSeatHoldWorkflows`.
+message ListSeatHoldWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SeatHoldStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSeatHoldWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSeatHoldWorkflows`.
+message ListSeatHoldWorkflowsResponse {
+  repeated SeatHold seat_holds = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalSeatHoldWorkflow`.
+message SignalSeatHoldWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  SignalSeatHoldWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalSeatHoldWorkflow`.
+message SignalSeatHoldWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  SignalSeatHoldWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

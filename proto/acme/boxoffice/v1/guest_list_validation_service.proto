@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "GuestListValidationServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Checks guest lists against the rules before anything acts on them.
+service GuestListValidationService {
+  // Validates a guest list.
+  rpc ValidateGuestList(ValidateGuestListRequest) returns (ValidateGuestListResponse);
+
+  // Previews a guest list.
+  rpc PreviewGuestList(PreviewGuestListRequest) returns (PreviewGuestListResponse);
+
+  // Checks a guest list.
+  rpc CheckGuestListEligibility(CheckGuestListEligibilityRequest) returns (CheckGuestListEligibilityResponse);
+
+  // Normalizes a guest list.
+  rpc NormalizeGuestList(NormalizeGuestListRequest) returns (NormalizeGuestListResponse);
+
+  // Explains a guest list.
+  rpc ExplainGuestListDecision(ExplainGuestListDecisionRequest) returns (ExplainGuestListDecisionResponse);
+
+  // Scores a guest list.
+  rpc ScoreGuestList(ScoreGuestListRequest) returns (ScoreGuestListResponse);
+
+  // Lints a guest list.
+  rpc LintGuestLists(LintGuestListsRequest) returns (LintGuestListsResponse);
+
+  // Returns a guest list.
+  rpc GetGuestListRules(GetGuestListRulesRequest) returns (GetGuestListRulesResponse);
+}
+
+// The request of `ValidateGuestList`.
+message ValidateGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  ValidateGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateGuestList`.
+message ValidateGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  ValidateGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewGuestList`.
+message PreviewGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  PreviewGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewGuestList`.
+message PreviewGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  PreviewGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckGuestListEligibility`.
+message CheckGuestListEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  CheckGuestListEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckGuestListEligibility`.
+message CheckGuestListEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  CheckGuestListEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeGuestList`.
+message NormalizeGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  NormalizeGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeGuestList`.
+message NormalizeGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  NormalizeGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainGuestListDecision`.
+message ExplainGuestListDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  ExplainGuestListDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainGuestListDecision`.
+message ExplainGuestListDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  ExplainGuestListDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreGuestList`.
+message ScoreGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  ScoreGuestListRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreGuestList`.
+message ScoreGuestListResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreGuestListResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GuestList guest_list = 1;
+  ScoreGuestListResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintGuestLists`.
+message LintGuestListsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  LintGuestListsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintGuestLists`.
+message LintGuestListsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  LintGuestListsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetGuestListRules`.
+message GetGuestListRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetGuestListRules`.
+message GetGuestListRulesResponse {
+  GuestList guest_list = 1;
+  acme.common.v1.OperationResult result = 2;
+}

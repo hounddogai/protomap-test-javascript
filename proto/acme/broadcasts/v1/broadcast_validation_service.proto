@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "BroadcastValidationServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Checks broadcasts against the rules before anything acts on them.
+service BroadcastValidationService {
+  // Validates a broadcast.
+  rpc ValidateBroadcast(ValidateBroadcastRequest) returns (ValidateBroadcastResponse);
+
+  // Previews a broadcast.
+  rpc PreviewBroadcast(PreviewBroadcastRequest) returns (PreviewBroadcastResponse);
+
+  // Checks a broadcast.
+  rpc CheckBroadcastEligibility(CheckBroadcastEligibilityRequest) returns (CheckBroadcastEligibilityResponse);
+
+  // Normalizes a broadcast.
+  rpc NormalizeBroadcast(NormalizeBroadcastRequest) returns (NormalizeBroadcastResponse);
+
+  // Explains a broadcast.
+  rpc ExplainBroadcastDecision(ExplainBroadcastDecisionRequest) returns (ExplainBroadcastDecisionResponse);
+
+  // Scores a broadcast.
+  rpc ScoreBroadcast(ScoreBroadcastRequest) returns (ScoreBroadcastResponse);
+
+  // Lints a broadcast.
+  rpc LintBroadcasts(LintBroadcastsRequest) returns (LintBroadcastsResponse);
+
+  // Returns a broadcast.
+  rpc GetBroadcastRules(GetBroadcastRulesRequest) returns (GetBroadcastRulesResponse);
+}
+
+// The request of `ValidateBroadcast`.
+message ValidateBroadcastRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  ValidateBroadcastRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateBroadcast`.
+message ValidateBroadcastResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  ValidateBroadcastResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewBroadcast`.
+message PreviewBroadcastRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  PreviewBroadcastRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewBroadcast`.
+message PreviewBroadcastResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  PreviewBroadcastResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckBroadcastEligibility`.
+message CheckBroadcastEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  CheckBroadcastEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckBroadcastEligibility`.
+message CheckBroadcastEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  CheckBroadcastEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeBroadcast`.
+message NormalizeBroadcastRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  NormalizeBroadcastRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeBroadcast`.
+message NormalizeBroadcastResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  NormalizeBroadcastResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainBroadcastDecision`.
+message ExplainBroadcastDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  ExplainBroadcastDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainBroadcastDecision`.
+message ExplainBroadcastDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  ExplainBroadcastDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreBroadcast`.
+message ScoreBroadcastRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  ScoreBroadcastRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreBroadcast`.
+message ScoreBroadcastResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreBroadcastResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Broadcast broadcast = 1;
+  ScoreBroadcastResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintBroadcasts`.
+message LintBroadcastsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  LintBroadcastsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintBroadcasts`.
+message LintBroadcastsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  LintBroadcastsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetBroadcastRules`.
+message GetBroadcastRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetBroadcastRules`.
+message GetBroadcastRulesResponse {
+  Broadcast broadcast = 1;
+  acme.common.v1.OperationResult result = 2;
+}

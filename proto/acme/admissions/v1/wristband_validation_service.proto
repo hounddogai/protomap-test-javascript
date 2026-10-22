@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "WristbandValidationServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Checks wristbands against the rules before anything acts on them.
+service WristbandValidationService {
+  // Validates a wristband.
+  rpc ValidateWristband(ValidateWristbandRequest) returns (ValidateWristbandResponse);
+
+  // Previews a wristband.
+  rpc PreviewWristband(PreviewWristbandRequest) returns (PreviewWristbandResponse);
+
+  // Checks a wristband.
+  rpc CheckWristbandEligibility(CheckWristbandEligibilityRequest) returns (CheckWristbandEligibilityResponse);
+
+  // Normalizes a wristband.
+  rpc NormalizeWristband(NormalizeWristbandRequest) returns (NormalizeWristbandResponse);
+
+  // Explains a wristband.
+  rpc ExplainWristbandDecision(ExplainWristbandDecisionRequest) returns (ExplainWristbandDecisionResponse);
+
+  // Scores a wristband.
+  rpc ScoreWristband(ScoreWristbandRequest) returns (ScoreWristbandResponse);
+
+  // Lints a wristband.
+  rpc LintWristbands(LintWristbandsRequest) returns (LintWristbandsResponse);
+
+  // Returns a wristband.
+  rpc GetWristbandRules(GetWristbandRulesRequest) returns (GetWristbandRulesResponse);
+}
+
+// The request of `ValidateWristband`.
+message ValidateWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  ValidateWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateWristband`.
+message ValidateWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  ValidateWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewWristband`.
+message PreviewWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  PreviewWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewWristband`.
+message PreviewWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  PreviewWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckWristbandEligibility`.
+message CheckWristbandEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  CheckWristbandEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckWristbandEligibility`.
+message CheckWristbandEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  CheckWristbandEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeWristband`.
+message NormalizeWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  NormalizeWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeWristband`.
+message NormalizeWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  NormalizeWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainWristbandDecision`.
+message ExplainWristbandDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  ExplainWristbandDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainWristbandDecision`.
+message ExplainWristbandDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  ExplainWristbandDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreWristband`.
+message ScoreWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  ScoreWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreWristband`.
+message ScoreWristbandResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreWristbandResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Wristband wristband = 1;
+  ScoreWristbandResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintWristbands`.
+message LintWristbandsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  LintWristbandsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintWristbands`.
+message LintWristbandsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  LintWristbandsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetWristbandRules`.
+message GetWristbandRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetWristbandRules`.
+message GetWristbandRulesResponse {
+  Wristband wristband = 1;
+  acme.common.v1.OperationResult result = 2;
+}

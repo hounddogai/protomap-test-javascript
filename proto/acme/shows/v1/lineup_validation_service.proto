@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "LineupValidationServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Checks lineups against the rules before anything acts on them.
+service LineupValidationService {
+  // Validates a lineup.
+  rpc ValidateLineup(ValidateLineupRequest) returns (ValidateLineupResponse);
+
+  // Previews a lineup.
+  rpc PreviewLineup(PreviewLineupRequest) returns (PreviewLineupResponse);
+
+  // Checks a lineup.
+  rpc CheckLineupEligibility(CheckLineupEligibilityRequest) returns (CheckLineupEligibilityResponse);
+
+  // Normalizes a lineup.
+  rpc NormalizeLineup(NormalizeLineupRequest) returns (NormalizeLineupResponse);
+
+  // Explains a lineup.
+  rpc ExplainLineupDecision(ExplainLineupDecisionRequest) returns (ExplainLineupDecisionResponse);
+
+  // Scores a lineup.
+  rpc ScoreLineup(ScoreLineupRequest) returns (ScoreLineupResponse);
+
+  // Lints a lineup.
+  rpc LintLineups(LintLineupsRequest) returns (LintLineupsResponse);
+
+  // Returns a lineup.
+  rpc GetLineupRules(GetLineupRulesRequest) returns (GetLineupRulesResponse);
+}
+
+// The request of `ValidateLineup`.
+message ValidateLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  ValidateLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateLineup`.
+message ValidateLineupResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  ValidateLineupResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewLineup`.
+message PreviewLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  PreviewLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewLineup`.
+message PreviewLineupResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  PreviewLineupResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckLineupEligibility`.
+message CheckLineupEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  CheckLineupEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckLineupEligibility`.
+message CheckLineupEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  CheckLineupEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeLineup`.
+message NormalizeLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  NormalizeLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeLineup`.
+message NormalizeLineupResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  NormalizeLineupResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainLineupDecision`.
+message ExplainLineupDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  ExplainLineupDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainLineupDecision`.
+message ExplainLineupDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  ExplainLineupDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreLineup`.
+message ScoreLineupRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  ScoreLineupRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreLineup`.
+message ScoreLineupResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreLineupResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Lineup lineup = 1;
+  ScoreLineupResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintLineups`.
+message LintLineupsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  Lineup lineup = 3;
+  LintLineupsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintLineups`.
+message LintLineupsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Lineup lineup = 1;
+  LintLineupsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetLineupRules`.
+message GetLineupRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string lineup_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetLineupRules`.
+message GetLineupRulesResponse {
+  Lineup lineup = 1;
+  acme.common.v1.OperationResult result = 2;
+}

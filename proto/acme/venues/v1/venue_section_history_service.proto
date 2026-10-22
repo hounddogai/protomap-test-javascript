@@ -1,0 +1,215 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenueSectionHistoryServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Keeps every version of a venue section and restores earlier ones.
+service VenueSectionHistoryService {
+  // Records a venue section.
+  rpc RecordVenueSectionVersion(RecordVenueSectionVersionRequest) returns (RecordVenueSectionVersionResponse);
+
+  // Lists venue sections a page at a time.
+  rpc ListVenueSectionVersions(ListVenueSectionVersionsRequest) returns (ListVenueSectionVersionsResponse);
+
+  // Compares a venue section.
+  rpc CompareVenueSectionVersions(CompareVenueSectionVersionsRequest) returns (CompareVenueSectionVersionsResponse);
+
+  // Reverts a venue section.
+  rpc RevertVenueSection(RevertVenueSectionRequest) returns (RevertVenueSectionResponse);
+
+  // Annotates a venue section.
+  rpc AnnotateVenueSectionVersion(AnnotateVenueSectionVersionRequest) returns (AnnotateVenueSectionVersionResponse);
+
+  // Deletes a venue section.
+  rpc PruneVenueSectionVersions(PruneVenueSectionVersionsRequest) returns (PruneVenueSectionVersionsResponse);
+}
+
+// The request of `RecordVenueSectionVersion`.
+message RecordVenueSectionVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  RecordVenueSectionVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecordVenueSectionVersion`.
+message RecordVenueSectionVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  RecordVenueSectionVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListVenueSectionVersions`.
+message ListVenueSectionVersionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated VenueSectionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListVenueSectionVersionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListVenueSectionVersions`.
+message ListVenueSectionVersionsResponse {
+  repeated VenueSection venue_sections = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareVenueSectionVersions`.
+message CompareVenueSectionVersionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  CompareVenueSectionVersionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareVenueSectionVersions`.
+message CompareVenueSectionVersionsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  CompareVenueSectionVersionsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RevertVenueSection`.
+message RevertVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  RevertVenueSectionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RevertVenueSection`.
+message RevertVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  RevertVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AnnotateVenueSectionVersion`.
+message AnnotateVenueSectionVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  AnnotateVenueSectionVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AnnotateVenueSectionVersion`.
+message AnnotateVenueSectionVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  AnnotateVenueSectionVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PruneVenueSectionVersions`.
+message PruneVenueSectionVersionsRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `PruneVenueSectionVersions`.
+message PruneVenueSectionVersionsResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}

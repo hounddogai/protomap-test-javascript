@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "GuestListLifecycleServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Moves a guest list between the states of its lifecycle.
+service GuestListLifecycleService {
+  // Activates a guest list.
+  rpc ActivateGuestList(ActivateGuestListRequest) returns (ActivateGuestListResponse);
+
+  // Suspends a guest list.
+  rpc SuspendGuestList(SuspendGuestListRequest) returns (SuspendGuestListResponse);
+
+  // Reinstates a guest list.
+  rpc ReinstateGuestList(ReinstateGuestListRequest) returns (ReinstateGuestListResponse);
+
+  // Terminates a guest list.
+  rpc TerminateGuestList(TerminateGuestListRequest) returns (TerminateGuestListResponse);
+
+  // Renews a guest list.
+  rpc RenewGuestList(RenewGuestListRequest) returns (RenewGuestListResponse);
+
+  // Expires a guest list.
+  rpc ExpireGuestList(ExpireGuestListRequest) returns (ExpireGuestListResponse);
+
+  // Returns a guest list.
+  rpc GetGuestListLifecycle(GetGuestListLifecycleRequest) returns (GetGuestListLifecycleResponse);
+
+  // Schedules a guest list.
+  rpc ScheduleGuestListExpiry(ScheduleGuestListExpiryRequest) returns (ScheduleGuestListExpiryResponse);
+}
+
+// The request of `ActivateGuestList`.
+message ActivateGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  ActivateGuestListRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateGuestList`.
+message ActivateGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  ActivateGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendGuestList`.
+message SuspendGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  SuspendGuestListRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendGuestList`.
+message SuspendGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  SuspendGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateGuestList`.
+message ReinstateGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  ReinstateGuestListRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateGuestList`.
+message ReinstateGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  ReinstateGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateGuestList`.
+message TerminateGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  TerminateGuestListRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateGuestList`.
+message TerminateGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  TerminateGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewGuestList`.
+message RenewGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  RenewGuestListRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewGuestList`.
+message RenewGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  RenewGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireGuestList`.
+message ExpireGuestListRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  ExpireGuestListRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireGuestList`.
+message ExpireGuestListResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  ExpireGuestListResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetGuestListLifecycle`.
+message GetGuestListLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetGuestListLifecycle`.
+message GetGuestListLifecycleResponse {
+  GuestList guest_list = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleGuestListExpiry`.
+message ScheduleGuestListExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  ScheduleGuestListExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleGuestListExpiry`.
+message ScheduleGuestListExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  ScheduleGuestListExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

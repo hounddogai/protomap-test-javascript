@@ -1,0 +1,158 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "PerformanceQueryServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Answers read-only questions about performances, for screens and reports.
+service PerformanceQueryService {
+  // Returns a performance.
+  rpc LookupPerformance(LookupPerformanceRequest) returns (LookupPerformanceResponse);
+
+  // Lists performances a page at a time.
+  rpc BrowsePerformances(BrowsePerformancesRequest) returns (BrowsePerformancesResponse);
+
+  // Lists performances a page at a time.
+  rpc FindPerformances(FindPerformancesRequest) returns (FindPerformancesResponse);
+
+  // Returns several performances at once.
+  rpc ResolvePerformances(ResolvePerformancesRequest) returns (ResolvePerformancesResponse);
+
+  // Streams every matching performance.
+  rpc ExportPerformances(ExportPerformancesRequest) returns (stream ExportPerformancesResponse);
+
+  // Returns a performance.
+  rpc PeekPerformance(PeekPerformanceRequest) returns (PeekPerformanceResponse);
+}
+
+// The request of `LookupPerformance`.
+message LookupPerformanceRequest {
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupPerformance`.
+message LookupPerformanceResponse {
+  Performance performance = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowsePerformances`.
+message BrowsePerformancesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PerformanceStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowsePerformancesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowsePerformances`.
+message BrowsePerformancesResponse {
+  repeated Performance performances = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindPerformances`.
+message FindPerformancesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PerformanceStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindPerformancesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindPerformances`.
+message FindPerformancesResponse {
+  repeated Performance performances = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolvePerformances`.
+message ResolvePerformancesRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string performance_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolvePerformances`.
+message ResolvePerformancesResponse {
+  repeated Performance performances = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportPerformances`.
+message ExportPerformancesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PerformanceStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportPerformancesRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportPerformances`.
+message ExportPerformancesResponse {
+  Performance performance = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `PeekPerformance`.
+message PeekPerformanceRequest {
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekPerformance`.
+message PeekPerformanceResponse {
+  Performance performance = 1;
+  acme.common.v1.OperationResult result = 2;
+}

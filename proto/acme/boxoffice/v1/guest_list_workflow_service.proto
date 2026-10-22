@@ -1,0 +1,229 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "GuestListWorkflowServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Runs the long-lived workflow that takes a guest list from start to finish.
+service GuestListWorkflowService {
+  // Starts a guest list.
+  rpc StartGuestListWorkflow(StartGuestListWorkflowRequest) returns (StartGuestListWorkflowResponse);
+
+  // Advances a guest list.
+  rpc AdvanceGuestListWorkflow(AdvanceGuestListWorkflowRequest) returns (AdvanceGuestListWorkflowResponse);
+
+  // Cancels a guest list.
+  rpc CancelGuestListWorkflow(CancelGuestListWorkflowRequest) returns (CancelGuestListWorkflowResponse);
+
+  // Retrys a guest list.
+  rpc RetryGuestListWorkflow(RetryGuestListWorkflowRequest) returns (RetryGuestListWorkflowResponse);
+
+  // Pauses a guest list.
+  rpc PauseGuestListWorkflow(PauseGuestListWorkflowRequest) returns (PauseGuestListWorkflowResponse);
+
+  // Returns a guest list.
+  rpc InspectGuestListWorkflow(InspectGuestListWorkflowRequest) returns (InspectGuestListWorkflowResponse);
+}
+
+// The request of `StartGuestListWorkflow`.
+message StartGuestListWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  StartGuestListWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartGuestListWorkflow`.
+message StartGuestListWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  StartGuestListWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceGuestListWorkflow`.
+message AdvanceGuestListWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  AdvanceGuestListWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceGuestListWorkflow`.
+message AdvanceGuestListWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  AdvanceGuestListWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelGuestListWorkflow`.
+message CancelGuestListWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  CancelGuestListWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelGuestListWorkflow`.
+message CancelGuestListWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  CancelGuestListWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryGuestListWorkflow`.
+message RetryGuestListWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  RetryGuestListWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryGuestListWorkflow`.
+message RetryGuestListWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  RetryGuestListWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseGuestListWorkflow`.
+message PauseGuestListWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  GuestList guest_list = 3;
+  PauseGuestListWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseGuestListWorkflow`.
+message PauseGuestListWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GuestList guest_list = 1;
+  PauseGuestListWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectGuestListWorkflow`.
+message InspectGuestListWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string guest_list_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectGuestListWorkflow`.
+message InspectGuestListWorkflowResponse {
+  GuestList guest_list = 1;
+  acme.common.v1.OperationResult result = 2;
+}

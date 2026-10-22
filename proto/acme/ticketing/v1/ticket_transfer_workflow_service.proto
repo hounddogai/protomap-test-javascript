@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.ticketing.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/ticketing/v1/ticketing.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Ticketing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/ticketing/v1;ticketingv1";
+option java_multiple_files = true;
+option java_outer_classname = "TicketTransferWorkflowServiceProto";
+option java_package = "com.acme.ticketing.v1";
+
+// Runs the long-lived workflow that takes a ticket transfer from start to finish.
+service TicketTransferWorkflowService {
+  // Starts a ticket transfer.
+  rpc StartTicketTransferWorkflow(StartTicketTransferWorkflowRequest) returns (StartTicketTransferWorkflowResponse);
+
+  // Advances a ticket transfer.
+  rpc AdvanceTicketTransferWorkflow(AdvanceTicketTransferWorkflowRequest) returns (AdvanceTicketTransferWorkflowResponse);
+
+  // Cancels a ticket transfer.
+  rpc CancelTicketTransferWorkflow(CancelTicketTransferWorkflowRequest) returns (CancelTicketTransferWorkflowResponse);
+
+  // Retrys a ticket transfer.
+  rpc RetryTicketTransferWorkflow(RetryTicketTransferWorkflowRequest) returns (RetryTicketTransferWorkflowResponse);
+
+  // Pauses a ticket transfer.
+  rpc PauseTicketTransferWorkflow(PauseTicketTransferWorkflowRequest) returns (PauseTicketTransferWorkflowResponse);
+
+  // Resumes a ticket transfer.
+  rpc ResumeTicketTransferWorkflow(ResumeTicketTransferWorkflowRequest) returns (ResumeTicketTransferWorkflowResponse);
+
+  // Returns a ticket transfer.
+  rpc InspectTicketTransferWorkflow(InspectTicketTransferWorkflowRequest) returns (InspectTicketTransferWorkflowResponse);
+
+  // Lists ticket transfers a page at a time.
+  rpc ListTicketTransferWorkflows(ListTicketTransferWorkflowsRequest) returns (ListTicketTransferWorkflowsResponse);
+}
+
+// The request of `StartTicketTransferWorkflow`.
+message StartTicketTransferWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  StartTicketTransferWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartTicketTransferWorkflow`.
+message StartTicketTransferWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  StartTicketTransferWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceTicketTransferWorkflow`.
+message AdvanceTicketTransferWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  AdvanceTicketTransferWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceTicketTransferWorkflow`.
+message AdvanceTicketTransferWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  AdvanceTicketTransferWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelTicketTransferWorkflow`.
+message CancelTicketTransferWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  CancelTicketTransferWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelTicketTransferWorkflow`.
+message CancelTicketTransferWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  CancelTicketTransferWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryTicketTransferWorkflow`.
+message RetryTicketTransferWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  RetryTicketTransferWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryTicketTransferWorkflow`.
+message RetryTicketTransferWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  RetryTicketTransferWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseTicketTransferWorkflow`.
+message PauseTicketTransferWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  PauseTicketTransferWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseTicketTransferWorkflow`.
+message PauseTicketTransferWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  PauseTicketTransferWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeTicketTransferWorkflow`.
+message ResumeTicketTransferWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  ResumeTicketTransferWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeTicketTransferWorkflow`.
+message ResumeTicketTransferWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  ResumeTicketTransferWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectTicketTransferWorkflow`.
+message InspectTicketTransferWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectTicketTransferWorkflow`.
+message InspectTicketTransferWorkflowResponse {
+  TicketTransfer ticket_transfer = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListTicketTransferWorkflows`.
+message ListTicketTransferWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TicketTransferStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListTicketTransferWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListTicketTransferWorkflows`.
+message ListTicketTransferWorkflowsResponse {
+  repeated TicketTransfer ticket_transfers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

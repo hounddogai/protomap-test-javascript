@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "PerformanceApprovalServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Routes performances through approval, with escalation and delegation.
+service PerformanceApprovalService {
+  // Submits a performance.
+  rpc SubmitPerformance(SubmitPerformanceRequest) returns (SubmitPerformanceResponse);
+
+  // Approves a performance.
+  rpc ApprovePerformance(ApprovePerformanceRequest) returns (ApprovePerformanceResponse);
+
+  // Rejects a performance.
+  rpc RejectPerformance(RejectPerformanceRequest) returns (RejectPerformanceResponse);
+
+  // Escalates a performance.
+  rpc EscalatePerformance(EscalatePerformanceRequest) returns (EscalatePerformanceResponse);
+
+  // Lists performances a page at a time.
+  rpc ListPendingPerformances(ListPendingPerformancesRequest) returns (ListPendingPerformancesResponse);
+
+  // Delegates a performance.
+  rpc DelegatePerformanceApproval(DelegatePerformanceApprovalRequest) returns (DelegatePerformanceApprovalResponse);
+
+  // Recalls a performance.
+  rpc RecallPerformance(RecallPerformanceRequest) returns (RecallPerformanceResponse);
+
+  // Returns a performance.
+  rpc GetPerformanceApprovalStatus(GetPerformanceApprovalStatusRequest) returns (GetPerformanceApprovalStatusResponse);
+
+  // Comments a performance.
+  rpc CommentPerformanceApproval(CommentPerformanceApprovalRequest) returns (CommentPerformanceApprovalResponse);
+}
+
+// The request of `SubmitPerformance`.
+message SubmitPerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  SubmitPerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitPerformance`.
+message SubmitPerformanceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  SubmitPerformanceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApprovePerformance`.
+message ApprovePerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  ApprovePerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApprovePerformance`.
+message ApprovePerformanceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  ApprovePerformanceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectPerformance`.
+message RejectPerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  RejectPerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectPerformance`.
+message RejectPerformanceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  RejectPerformanceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalatePerformance`.
+message EscalatePerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  EscalatePerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalatePerformance`.
+message EscalatePerformanceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  EscalatePerformanceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingPerformances`.
+message ListPendingPerformancesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PerformanceStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingPerformancesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingPerformances`.
+message ListPendingPerformancesResponse {
+  repeated Performance performances = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegatePerformanceApproval`.
+message DelegatePerformanceApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  DelegatePerformanceApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegatePerformanceApproval`.
+message DelegatePerformanceApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  DelegatePerformanceApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallPerformance`.
+message RecallPerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  RecallPerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallPerformance`.
+message RecallPerformanceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  RecallPerformanceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetPerformanceApprovalStatus`.
+message GetPerformanceApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetPerformanceApprovalStatus`.
+message GetPerformanceApprovalStatusResponse {
+  Performance performance = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentPerformanceApproval`.
+message CommentPerformanceApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  CommentPerformanceApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentPerformanceApproval`.
+message CommentPerformanceApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  CommentPerformanceApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

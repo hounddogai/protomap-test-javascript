@@ -1,0 +1,267 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "BroadcastWorkflowServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Runs the long-lived workflow that takes a broadcast from start to finish.
+service BroadcastWorkflowService {
+  // Starts a broadcast.
+  rpc StartBroadcastWorkflow(StartBroadcastWorkflowRequest) returns (StartBroadcastWorkflowResponse);
+
+  // Advances a broadcast.
+  rpc AdvanceBroadcastWorkflow(AdvanceBroadcastWorkflowRequest) returns (AdvanceBroadcastWorkflowResponse);
+
+  // Cancels a broadcast.
+  rpc CancelBroadcastWorkflow(CancelBroadcastWorkflowRequest) returns (CancelBroadcastWorkflowResponse);
+
+  // Pauses a broadcast.
+  rpc PauseBroadcastWorkflow(PauseBroadcastWorkflowRequest) returns (PauseBroadcastWorkflowResponse);
+
+  // Resumes a broadcast.
+  rpc ResumeBroadcastWorkflow(ResumeBroadcastWorkflowRequest) returns (ResumeBroadcastWorkflowResponse);
+
+  // Returns a broadcast.
+  rpc InspectBroadcastWorkflow(InspectBroadcastWorkflowRequest) returns (InspectBroadcastWorkflowResponse);
+
+  // Signals a broadcast.
+  rpc SignalBroadcastWorkflow(SignalBroadcastWorkflowRequest) returns (SignalBroadcastWorkflowResponse);
+}
+
+// The request of `StartBroadcastWorkflow`.
+message StartBroadcastWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  StartBroadcastWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartBroadcastWorkflow`.
+message StartBroadcastWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  StartBroadcastWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceBroadcastWorkflow`.
+message AdvanceBroadcastWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  AdvanceBroadcastWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceBroadcastWorkflow`.
+message AdvanceBroadcastWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  AdvanceBroadcastWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelBroadcastWorkflow`.
+message CancelBroadcastWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  CancelBroadcastWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelBroadcastWorkflow`.
+message CancelBroadcastWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  CancelBroadcastWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseBroadcastWorkflow`.
+message PauseBroadcastWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  PauseBroadcastWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseBroadcastWorkflow`.
+message PauseBroadcastWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  PauseBroadcastWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeBroadcastWorkflow`.
+message ResumeBroadcastWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  ResumeBroadcastWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeBroadcastWorkflow`.
+message ResumeBroadcastWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  ResumeBroadcastWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectBroadcastWorkflow`.
+message InspectBroadcastWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectBroadcastWorkflow`.
+message InspectBroadcastWorkflowResponse {
+  Broadcast broadcast = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `SignalBroadcastWorkflow`.
+message SignalBroadcastWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  SignalBroadcastWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalBroadcastWorkflow`.
+message SignalBroadcastWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  SignalBroadcastWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,195 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenuePolicyHistoryServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Keeps every version of a venue policy and restores earlier ones.
+service VenuePolicyHistoryService {
+  // Records a venue policy.
+  rpc RecordVenuePolicyVersion(RecordVenuePolicyVersionRequest) returns (RecordVenuePolicyVersionResponse);
+
+  // Lists venue policies a page at a time.
+  rpc ListVenuePolicyVersions(ListVenuePolicyVersionsRequest) returns (ListVenuePolicyVersionsResponse);
+
+  // Returns a venue policy.
+  rpc GetVenuePolicyVersion(GetVenuePolicyVersionRequest) returns (GetVenuePolicyVersionResponse);
+
+  // Compares a venue policy.
+  rpc CompareVenuePolicyVersions(CompareVenuePolicyVersionsRequest) returns (CompareVenuePolicyVersionsResponse);
+
+  // Annotates a venue policy.
+  rpc AnnotateVenuePolicyVersion(AnnotateVenuePolicyVersionRequest) returns (AnnotateVenuePolicyVersionResponse);
+
+  // Deletes a venue policy.
+  rpc PruneVenuePolicyVersions(PruneVenuePolicyVersionsRequest) returns (PruneVenuePolicyVersionsResponse);
+}
+
+// The request of `RecordVenuePolicyVersion`.
+message RecordVenuePolicyVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  RecordVenuePolicyVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecordVenuePolicyVersion`.
+message RecordVenuePolicyVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  RecordVenuePolicyVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListVenuePolicyVersions`.
+message ListVenuePolicyVersionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated VenuePolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListVenuePolicyVersionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListVenuePolicyVersions`.
+message ListVenuePolicyVersionsResponse {
+  repeated VenuePolicy venue_policies = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetVenuePolicyVersion`.
+message GetVenuePolicyVersionRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetVenuePolicyVersion`.
+message GetVenuePolicyVersionResponse {
+  VenuePolicy venue_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CompareVenuePolicyVersions`.
+message CompareVenuePolicyVersionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  CompareVenuePolicyVersionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareVenuePolicyVersions`.
+message CompareVenuePolicyVersionsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  CompareVenuePolicyVersionsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AnnotateVenuePolicyVersion`.
+message AnnotateVenuePolicyVersionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    int64 version = 1;
+    int64 other_version = 2;
+    bytes snapshot = 3;
+    string author_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  AnnotateVenuePolicyVersionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AnnotateVenuePolicyVersion`.
+message AnnotateVenuePolicyVersionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  AnnotateVenuePolicyVersionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PruneVenuePolicyVersions`.
+message PruneVenuePolicyVersionsRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `PruneVenuePolicyVersions`.
+message PruneVenuePolicyVersionsResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}

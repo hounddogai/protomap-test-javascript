@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "GateScanValidationServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Checks gate scans against the rules before anything acts on them.
+service GateScanValidationService {
+  // Validates a gate scan.
+  rpc ValidateGateScan(ValidateGateScanRequest) returns (ValidateGateScanResponse);
+
+  // Previews a gate scan.
+  rpc PreviewGateScan(PreviewGateScanRequest) returns (PreviewGateScanResponse);
+
+  // Checks a gate scan.
+  rpc CheckGateScanEligibility(CheckGateScanEligibilityRequest) returns (CheckGateScanEligibilityResponse);
+
+  // Normalizes a gate scan.
+  rpc NormalizeGateScan(NormalizeGateScanRequest) returns (NormalizeGateScanResponse);
+
+  // Explains a gate scan.
+  rpc ExplainGateScanDecision(ExplainGateScanDecisionRequest) returns (ExplainGateScanDecisionResponse);
+
+  // Scores a gate scan.
+  rpc ScoreGateScan(ScoreGateScanRequest) returns (ScoreGateScanResponse);
+
+  // Lints a gate scan.
+  rpc LintGateScans(LintGateScansRequest) returns (LintGateScansResponse);
+
+  // Returns a gate scan.
+  rpc GetGateScanRules(GetGateScanRulesRequest) returns (GetGateScanRulesResponse);
+}
+
+// The request of `ValidateGateScan`.
+message ValidateGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  ValidateGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateGateScan`.
+message ValidateGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  ValidateGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewGateScan`.
+message PreviewGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  PreviewGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewGateScan`.
+message PreviewGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  PreviewGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckGateScanEligibility`.
+message CheckGateScanEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  CheckGateScanEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckGateScanEligibility`.
+message CheckGateScanEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  CheckGateScanEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeGateScan`.
+message NormalizeGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  NormalizeGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeGateScan`.
+message NormalizeGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  NormalizeGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainGateScanDecision`.
+message ExplainGateScanDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  ExplainGateScanDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainGateScanDecision`.
+message ExplainGateScanDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  ExplainGateScanDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreGateScan`.
+message ScoreGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  ScoreGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreGateScan`.
+message ScoreGateScanResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreGateScanResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  GateScan gate_scan = 1;
+  ScoreGateScanResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintGateScans`.
+message LintGateScansRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  LintGateScansRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintGateScans`.
+message LintGateScansResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  LintGateScansResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetGateScanRules`.
+message GetGateScanRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetGateScanRules`.
+message GetGateScanRulesResponse {
+  GateScan gate_scan = 1;
+  acme.common.v1.OperationResult result = 2;
+}

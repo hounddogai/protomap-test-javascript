@@ -1,0 +1,246 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenueSectionSyncServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Keeps venue sections in step with the systems of record in other regions.
+service VenueSectionSyncService {
+  // Syncs a venue section.
+  rpc SyncVenueSections(SyncVenueSectionsRequest) returns (SyncVenueSectionsResponse);
+
+  // Pushs a venue section.
+  rpc PushVenueSection(PushVenueSectionRequest) returns (PushVenueSectionResponse);
+
+  // Reconciles a venue section.
+  rpc ReconcileVenueSections(ReconcileVenueSectionsRequest) returns (ReconcileVenueSectionsResponse);
+
+  // Exchanges changes of venue sections with a peer.
+  rpc StreamVenueSectionChanges(stream StreamVenueSectionChangesRequest) returns (stream StreamVenueSectionChangesResponse);
+
+  // Resolves a venue section.
+  rpc ResolveVenueSectionConflict(ResolveVenueSectionConflictRequest) returns (ResolveVenueSectionConflictResponse);
+
+  // Returns a venue section.
+  rpc GetVenueSectionSyncState(GetVenueSectionSyncStateRequest) returns (GetVenueSectionSyncStateResponse);
+
+  // Lists venue sections a page at a time.
+  rpc ListVenueSectionConflicts(ListVenueSectionConflictsRequest) returns (ListVenueSectionConflictsResponse);
+}
+
+// The request of `SyncVenueSections`.
+message SyncVenueSectionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  SyncVenueSectionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SyncVenueSections`.
+message SyncVenueSectionsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  SyncVenueSectionsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PushVenueSection`.
+message PushVenueSectionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  PushVenueSectionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PushVenueSection`.
+message PushVenueSectionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  PushVenueSectionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReconcileVenueSections`.
+message ReconcileVenueSectionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  ReconcileVenueSectionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ReconcileVenueSections`.
+message ReconcileVenueSectionsResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  ReconcileVenueSectionsResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `StreamVenueSectionChanges`.
+message StreamVenueSectionChangesRequest {
+  // An acknowledgment of a change the peer sent.
+  message ChangeAck {
+    int64 sequence = 1;
+    string status = 2;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof frame {
+    VenueSection change = 2;
+    StreamVenueSectionChangesRequest.ChangeAck ack = 3;
+  }
+  string cursor = 4;
+}
+
+// The response of `StreamVenueSectionChanges`.
+message StreamVenueSectionChangesResponse {
+  VenueSection venue_section = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `ResolveVenueSectionConflict`.
+message ResolveVenueSectionConflictRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  VenueSection venue_section = 3;
+  ResolveVenueSectionConflictRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResolveVenueSectionConflict`.
+message ResolveVenueSectionConflictResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenueSection venue_section = 1;
+  ResolveVenueSectionConflictResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetVenueSectionSyncState`.
+message GetVenueSectionSyncStateRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_section_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetVenueSectionSyncState`.
+message GetVenueSectionSyncStateResponse {
+  VenueSection venue_section = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListVenueSectionConflicts`.
+message ListVenueSectionConflictsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated VenueSectionStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListVenueSectionConflictsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListVenueSectionConflicts`.
+message ListVenueSectionConflictsResponse {
+  repeated VenueSection venue_sections = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

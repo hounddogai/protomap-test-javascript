@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.seating.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/seating/v1/seating.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Seating.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/seating/v1;seatingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeatMapWorkflowServiceProto";
+option java_package = "com.acme.seating.v1";
+
+// Runs the long-lived workflow that takes a seat map from start to finish.
+service SeatMapWorkflowService {
+  // Starts a seat map.
+  rpc StartSeatMapWorkflow(StartSeatMapWorkflowRequest) returns (StartSeatMapWorkflowResponse);
+
+  // Advances a seat map.
+  rpc AdvanceSeatMapWorkflow(AdvanceSeatMapWorkflowRequest) returns (AdvanceSeatMapWorkflowResponse);
+
+  // Retrys a seat map.
+  rpc RetrySeatMapWorkflow(RetrySeatMapWorkflowRequest) returns (RetrySeatMapWorkflowResponse);
+
+  // Pauses a seat map.
+  rpc PauseSeatMapWorkflow(PauseSeatMapWorkflowRequest) returns (PauseSeatMapWorkflowResponse);
+
+  // Resumes a seat map.
+  rpc ResumeSeatMapWorkflow(ResumeSeatMapWorkflowRequest) returns (ResumeSeatMapWorkflowResponse);
+
+  // Returns a seat map.
+  rpc InspectSeatMapWorkflow(InspectSeatMapWorkflowRequest) returns (InspectSeatMapWorkflowResponse);
+
+  // Lists seat maps a page at a time.
+  rpc ListSeatMapWorkflows(ListSeatMapWorkflowsRequest) returns (ListSeatMapWorkflowsResponse);
+
+  // Signals a seat map.
+  rpc SignalSeatMapWorkflow(SignalSeatMapWorkflowRequest) returns (SignalSeatMapWorkflowResponse);
+}
+
+// The request of `StartSeatMapWorkflow`.
+message StartSeatMapWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  StartSeatMapWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartSeatMapWorkflow`.
+message StartSeatMapWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  StartSeatMapWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceSeatMapWorkflow`.
+message AdvanceSeatMapWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  AdvanceSeatMapWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceSeatMapWorkflow`.
+message AdvanceSeatMapWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  AdvanceSeatMapWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetrySeatMapWorkflow`.
+message RetrySeatMapWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  RetrySeatMapWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetrySeatMapWorkflow`.
+message RetrySeatMapWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  RetrySeatMapWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseSeatMapWorkflow`.
+message PauseSeatMapWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  PauseSeatMapWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseSeatMapWorkflow`.
+message PauseSeatMapWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  PauseSeatMapWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeSeatMapWorkflow`.
+message ResumeSeatMapWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  ResumeSeatMapWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeSeatMapWorkflow`.
+message ResumeSeatMapWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  ResumeSeatMapWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectSeatMapWorkflow`.
+message InspectSeatMapWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectSeatMapWorkflow`.
+message InspectSeatMapWorkflowResponse {
+  SeatMap seat_map = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListSeatMapWorkflows`.
+message ListSeatMapWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SeatMapStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSeatMapWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSeatMapWorkflows`.
+message ListSeatMapWorkflowsResponse {
+  repeated SeatMap seat_maps = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalSeatMapWorkflow`.
+message SignalSeatMapWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_map_id = 2;
+  SeatMap seat_map = 3;
+  SignalSeatMapWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalSeatMapWorkflow`.
+message SignalSeatMapWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatMap seat_map = 1;
+  SignalSeatMapWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

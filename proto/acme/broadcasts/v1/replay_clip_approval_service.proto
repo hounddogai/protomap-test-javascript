@@ -1,0 +1,249 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ReplayClipApprovalServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Routes replay clips through approval, with escalation and delegation.
+service ReplayClipApprovalService {
+  // Submits a replay clip.
+  rpc SubmitReplayClip(SubmitReplayClipRequest) returns (SubmitReplayClipResponse);
+
+  // Approves a replay clip.
+  rpc ApproveReplayClip(ApproveReplayClipRequest) returns (ApproveReplayClipResponse);
+
+  // Rejects a replay clip.
+  rpc RejectReplayClip(RejectReplayClipRequest) returns (RejectReplayClipResponse);
+
+  // Escalates a replay clip.
+  rpc EscalateReplayClip(EscalateReplayClipRequest) returns (EscalateReplayClipResponse);
+
+  // Delegates a replay clip.
+  rpc DelegateReplayClipApproval(DelegateReplayClipApprovalRequest) returns (DelegateReplayClipApprovalResponse);
+
+  // Comments a replay clip.
+  rpc CommentReplayClipApproval(CommentReplayClipApprovalRequest) returns (CommentReplayClipApprovalResponse);
+}
+
+// The request of `SubmitReplayClip`.
+message SubmitReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  SubmitReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitReplayClip`.
+message SubmitReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  SubmitReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveReplayClip`.
+message ApproveReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  ApproveReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveReplayClip`.
+message ApproveReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  ApproveReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectReplayClip`.
+message RejectReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  RejectReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectReplayClip`.
+message RejectReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  RejectReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateReplayClip`.
+message EscalateReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  EscalateReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateReplayClip`.
+message EscalateReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  EscalateReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateReplayClipApproval`.
+message DelegateReplayClipApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  DelegateReplayClipApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateReplayClipApproval`.
+message DelegateReplayClipApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  DelegateReplayClipApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CommentReplayClipApproval`.
+message CommentReplayClipApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  CommentReplayClipApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentReplayClipApproval`.
+message CommentReplayClipApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  CommentReplayClipApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

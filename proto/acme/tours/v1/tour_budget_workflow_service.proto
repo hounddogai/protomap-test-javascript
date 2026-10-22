@@ -1,0 +1,334 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.tours.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/tours/v1/tours.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Tours.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/tours/v1;toursv1";
+option java_multiple_files = true;
+option java_outer_classname = "TourBudgetWorkflowServiceProto";
+option java_package = "com.acme.tours.v1";
+
+// Runs the long-lived workflow that takes a tour budget from start to finish.
+service TourBudgetWorkflowService {
+  // Starts a tour budget.
+  rpc StartTourBudgetWorkflow(StartTourBudgetWorkflowRequest) returns (StartTourBudgetWorkflowResponse);
+
+  // Advances a tour budget.
+  rpc AdvanceTourBudgetWorkflow(AdvanceTourBudgetWorkflowRequest) returns (AdvanceTourBudgetWorkflowResponse);
+
+  // Cancels a tour budget.
+  rpc CancelTourBudgetWorkflow(CancelTourBudgetWorkflowRequest) returns (CancelTourBudgetWorkflowResponse);
+
+  // Retrys a tour budget.
+  rpc RetryTourBudgetWorkflow(RetryTourBudgetWorkflowRequest) returns (RetryTourBudgetWorkflowResponse);
+
+  // Pauses a tour budget.
+  rpc PauseTourBudgetWorkflow(PauseTourBudgetWorkflowRequest) returns (PauseTourBudgetWorkflowResponse);
+
+  // Resumes a tour budget.
+  rpc ResumeTourBudgetWorkflow(ResumeTourBudgetWorkflowRequest) returns (ResumeTourBudgetWorkflowResponse);
+
+  // Returns a tour budget.
+  rpc InspectTourBudgetWorkflow(InspectTourBudgetWorkflowRequest) returns (InspectTourBudgetWorkflowResponse);
+
+  // Lists tour budgets a page at a time.
+  rpc ListTourBudgetWorkflows(ListTourBudgetWorkflowsRequest) returns (ListTourBudgetWorkflowsResponse);
+
+  // Signals a tour budget.
+  rpc SignalTourBudgetWorkflow(SignalTourBudgetWorkflowRequest) returns (SignalTourBudgetWorkflowResponse);
+}
+
+// The request of `StartTourBudgetWorkflow`.
+message StartTourBudgetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  StartTourBudgetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartTourBudgetWorkflow`.
+message StartTourBudgetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  StartTourBudgetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceTourBudgetWorkflow`.
+message AdvanceTourBudgetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  AdvanceTourBudgetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceTourBudgetWorkflow`.
+message AdvanceTourBudgetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  AdvanceTourBudgetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelTourBudgetWorkflow`.
+message CancelTourBudgetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  CancelTourBudgetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelTourBudgetWorkflow`.
+message CancelTourBudgetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  CancelTourBudgetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryTourBudgetWorkflow`.
+message RetryTourBudgetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  RetryTourBudgetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryTourBudgetWorkflow`.
+message RetryTourBudgetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  RetryTourBudgetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseTourBudgetWorkflow`.
+message PauseTourBudgetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  PauseTourBudgetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseTourBudgetWorkflow`.
+message PauseTourBudgetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  PauseTourBudgetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeTourBudgetWorkflow`.
+message ResumeTourBudgetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  ResumeTourBudgetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeTourBudgetWorkflow`.
+message ResumeTourBudgetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  ResumeTourBudgetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectTourBudgetWorkflow`.
+message InspectTourBudgetWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectTourBudgetWorkflow`.
+message InspectTourBudgetWorkflowResponse {
+  TourBudget tour_budget = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListTourBudgetWorkflows`.
+message ListTourBudgetWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TourBudgetStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListTourBudgetWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListTourBudgetWorkflows`.
+message ListTourBudgetWorkflowsResponse {
+  repeated TourBudget tour_budgets = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalTourBudgetWorkflow`.
+message SignalTourBudgetWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_budget_id = 2;
+  TourBudget tour_budget = 3;
+  SignalTourBudgetWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalTourBudgetWorkflow`.
+message SignalTourBudgetWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TourBudget tour_budget = 1;
+  SignalTourBudgetWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

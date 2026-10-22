@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.ticketing.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/ticketing/v1/ticketing.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Ticketing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/ticketing/v1;ticketingv1";
+option java_multiple_files = true;
+option java_outer_classname = "TicketTransferApprovalServiceProto";
+option java_package = "com.acme.ticketing.v1";
+
+// Routes ticket transfers through approval, with escalation and delegation.
+service TicketTransferApprovalService {
+  // Submits a ticket transfer.
+  rpc SubmitTicketTransfer(SubmitTicketTransferRequest) returns (SubmitTicketTransferResponse);
+
+  // Approves a ticket transfer.
+  rpc ApproveTicketTransfer(ApproveTicketTransferRequest) returns (ApproveTicketTransferResponse);
+
+  // Rejects a ticket transfer.
+  rpc RejectTicketTransfer(RejectTicketTransferRequest) returns (RejectTicketTransferResponse);
+
+  // Escalates a ticket transfer.
+  rpc EscalateTicketTransfer(EscalateTicketTransferRequest) returns (EscalateTicketTransferResponse);
+
+  // Lists ticket transfers a page at a time.
+  rpc ListPendingTicketTransfers(ListPendingTicketTransfersRequest) returns (ListPendingTicketTransfersResponse);
+
+  // Delegates a ticket transfer.
+  rpc DelegateTicketTransferApproval(DelegateTicketTransferApprovalRequest) returns (DelegateTicketTransferApprovalResponse);
+
+  // Recalls a ticket transfer.
+  rpc RecallTicketTransfer(RecallTicketTransferRequest) returns (RecallTicketTransferResponse);
+
+  // Returns a ticket transfer.
+  rpc GetTicketTransferApprovalStatus(GetTicketTransferApprovalStatusRequest) returns (GetTicketTransferApprovalStatusResponse);
+
+  // Comments a ticket transfer.
+  rpc CommentTicketTransferApproval(CommentTicketTransferApprovalRequest) returns (CommentTicketTransferApprovalResponse);
+}
+
+// The request of `SubmitTicketTransfer`.
+message SubmitTicketTransferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  SubmitTicketTransferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitTicketTransfer`.
+message SubmitTicketTransferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  SubmitTicketTransferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveTicketTransfer`.
+message ApproveTicketTransferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  ApproveTicketTransferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveTicketTransfer`.
+message ApproveTicketTransferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  ApproveTicketTransferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectTicketTransfer`.
+message RejectTicketTransferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  RejectTicketTransferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectTicketTransfer`.
+message RejectTicketTransferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  RejectTicketTransferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateTicketTransfer`.
+message EscalateTicketTransferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  EscalateTicketTransferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateTicketTransfer`.
+message EscalateTicketTransferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  EscalateTicketTransferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingTicketTransfers`.
+message ListPendingTicketTransfersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TicketTransferStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingTicketTransfersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingTicketTransfers`.
+message ListPendingTicketTransfersResponse {
+  repeated TicketTransfer ticket_transfers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateTicketTransferApproval`.
+message DelegateTicketTransferApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  DelegateTicketTransferApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateTicketTransferApproval`.
+message DelegateTicketTransferApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  DelegateTicketTransferApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallTicketTransfer`.
+message RecallTicketTransferRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  RecallTicketTransferRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallTicketTransfer`.
+message RecallTicketTransferResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  RecallTicketTransferResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetTicketTransferApprovalStatus`.
+message GetTicketTransferApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetTicketTransferApprovalStatus`.
+message GetTicketTransferApprovalStatusResponse {
+  TicketTransfer ticket_transfer = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentTicketTransferApproval`.
+message CommentTicketTransferApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_transfer_id = 2;
+  TicketTransfer ticket_transfer = 3;
+  CommentTicketTransferApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentTicketTransferApproval`.
+message CommentTicketTransferApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTransfer ticket_transfer = 1;
+  CommentTicketTransferApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

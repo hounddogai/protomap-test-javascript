@@ -1,0 +1,295 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "BroadcastApprovalServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Routes broadcasts through approval, with escalation and delegation.
+service BroadcastApprovalService {
+  // Submits a broadcast.
+  rpc SubmitBroadcast(SubmitBroadcastRequest) returns (SubmitBroadcastResponse);
+
+  // Approves a broadcast.
+  rpc ApproveBroadcast(ApproveBroadcastRequest) returns (ApproveBroadcastResponse);
+
+  // Rejects a broadcast.
+  rpc RejectBroadcast(RejectBroadcastRequest) returns (RejectBroadcastResponse);
+
+  // Escalates a broadcast.
+  rpc EscalateBroadcast(EscalateBroadcastRequest) returns (EscalateBroadcastResponse);
+
+  // Lists broadcasts a page at a time.
+  rpc ListPendingBroadcasts(ListPendingBroadcastsRequest) returns (ListPendingBroadcastsResponse);
+
+  // Delegates a broadcast.
+  rpc DelegateBroadcastApproval(DelegateBroadcastApprovalRequest) returns (DelegateBroadcastApprovalResponse);
+
+  // Returns a broadcast.
+  rpc GetBroadcastApprovalStatus(GetBroadcastApprovalStatusRequest) returns (GetBroadcastApprovalStatusResponse);
+
+  // Comments a broadcast.
+  rpc CommentBroadcastApproval(CommentBroadcastApprovalRequest) returns (CommentBroadcastApprovalResponse);
+}
+
+// The request of `SubmitBroadcast`.
+message SubmitBroadcastRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  SubmitBroadcastRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitBroadcast`.
+message SubmitBroadcastResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  SubmitBroadcastResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveBroadcast`.
+message ApproveBroadcastRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  ApproveBroadcastRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveBroadcast`.
+message ApproveBroadcastResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  ApproveBroadcastResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectBroadcast`.
+message RejectBroadcastRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  RejectBroadcastRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectBroadcast`.
+message RejectBroadcastResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  RejectBroadcastResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateBroadcast`.
+message EscalateBroadcastRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  EscalateBroadcastRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateBroadcast`.
+message EscalateBroadcastResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  EscalateBroadcastResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingBroadcasts`.
+message ListPendingBroadcastsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated BroadcastStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingBroadcastsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingBroadcasts`.
+message ListPendingBroadcastsResponse {
+  repeated Broadcast broadcasts = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateBroadcastApproval`.
+message DelegateBroadcastApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  DelegateBroadcastApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateBroadcastApproval`.
+message DelegateBroadcastApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  DelegateBroadcastApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetBroadcastApprovalStatus`.
+message GetBroadcastApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetBroadcastApprovalStatus`.
+message GetBroadcastApprovalStatusResponse {
+  Broadcast broadcast = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentBroadcastApproval`.
+message CommentBroadcastApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string broadcast_id = 2;
+  Broadcast broadcast = 3;
+  CommentBroadcastApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentBroadcastApproval`.
+message CommentBroadcastApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Broadcast broadcast = 1;
+  CommentBroadcastApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

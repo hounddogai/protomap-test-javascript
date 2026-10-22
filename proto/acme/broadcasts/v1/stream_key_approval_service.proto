@@ -1,0 +1,278 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "StreamKeyApprovalServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Routes stream keys through approval, with escalation and delegation.
+service StreamKeyApprovalService {
+  // Submits a stream key.
+  rpc SubmitStreamKey(SubmitStreamKeyRequest) returns (SubmitStreamKeyResponse);
+
+  // Approves a stream key.
+  rpc ApproveStreamKey(ApproveStreamKeyRequest) returns (ApproveStreamKeyResponse);
+
+  // Escalates a stream key.
+  rpc EscalateStreamKey(EscalateStreamKeyRequest) returns (EscalateStreamKeyResponse);
+
+  // Lists stream keys a page at a time.
+  rpc ListPendingStreamKeys(ListPendingStreamKeysRequest) returns (ListPendingStreamKeysResponse);
+
+  // Delegates a stream key.
+  rpc DelegateStreamKeyApproval(DelegateStreamKeyApprovalRequest) returns (DelegateStreamKeyApprovalResponse);
+
+  // Recalls a stream key.
+  rpc RecallStreamKey(RecallStreamKeyRequest) returns (RecallStreamKeyResponse);
+
+  // Comments a stream key.
+  rpc CommentStreamKeyApproval(CommentStreamKeyApprovalRequest) returns (CommentStreamKeyApprovalResponse);
+}
+
+// The request of `SubmitStreamKey`.
+message SubmitStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  SubmitStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitStreamKey`.
+message SubmitStreamKeyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  SubmitStreamKeyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveStreamKey`.
+message ApproveStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  ApproveStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveStreamKey`.
+message ApproveStreamKeyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  ApproveStreamKeyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateStreamKey`.
+message EscalateStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  EscalateStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateStreamKey`.
+message EscalateStreamKeyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  EscalateStreamKeyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingStreamKeys`.
+message ListPendingStreamKeysRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated StreamKeyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingStreamKeysRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingStreamKeys`.
+message ListPendingStreamKeysResponse {
+  repeated StreamKey stream_keys = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateStreamKeyApproval`.
+message DelegateStreamKeyApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  DelegateStreamKeyApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateStreamKeyApproval`.
+message DelegateStreamKeyApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  DelegateStreamKeyApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallStreamKey`.
+message RecallStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  RecallStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallStreamKey`.
+message RecallStreamKeyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  RecallStreamKeyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CommentStreamKeyApproval`.
+message CommentStreamKeyApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  CommentStreamKeyApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentStreamKeyApproval`.
+message CommentStreamKeyApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  CommentStreamKeyApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

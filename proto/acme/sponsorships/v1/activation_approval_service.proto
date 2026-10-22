@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.sponsorships.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/sponsorships/v1/sponsorships.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Sponsorships.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/sponsorships/v1;sponsorshipsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ActivationApprovalServiceProto";
+option java_package = "com.acme.sponsorships.v1";
+
+// Routes activations through approval, with escalation and delegation.
+service ActivationApprovalService {
+  // Submits an activation.
+  rpc SubmitActivation(SubmitActivationRequest) returns (SubmitActivationResponse);
+
+  // Approves an activation.
+  rpc ApproveActivation(ApproveActivationRequest) returns (ApproveActivationResponse);
+
+  // Rejects an activation.
+  rpc RejectActivation(RejectActivationRequest) returns (RejectActivationResponse);
+
+  // Escalates an activation.
+  rpc EscalateActivation(EscalateActivationRequest) returns (EscalateActivationResponse);
+
+  // Lists activations a page at a time.
+  rpc ListPendingActivations(ListPendingActivationsRequest) returns (ListPendingActivationsResponse);
+
+  // Delegates an activation.
+  rpc DelegateActivationApproval(DelegateActivationApprovalRequest) returns (DelegateActivationApprovalResponse);
+
+  // Recalls an activation.
+  rpc RecallActivation(RecallActivationRequest) returns (RecallActivationResponse);
+
+  // Returns an activation.
+  rpc GetActivationApprovalStatus(GetActivationApprovalStatusRequest) returns (GetActivationApprovalStatusResponse);
+
+  // Comments an activation.
+  rpc CommentActivationApproval(CommentActivationApprovalRequest) returns (CommentActivationApprovalResponse);
+}
+
+// The request of `SubmitActivation`.
+message SubmitActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  SubmitActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitActivation`.
+message SubmitActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  SubmitActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveActivation`.
+message ApproveActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  ApproveActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveActivation`.
+message ApproveActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  ApproveActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectActivation`.
+message RejectActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  RejectActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectActivation`.
+message RejectActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  RejectActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateActivation`.
+message EscalateActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  EscalateActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateActivation`.
+message EscalateActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  EscalateActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingActivations`.
+message ListPendingActivationsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ActivationStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingActivationsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingActivations`.
+message ListPendingActivationsResponse {
+  repeated Activation activations = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateActivationApproval`.
+message DelegateActivationApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  DelegateActivationApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateActivationApproval`.
+message DelegateActivationApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  DelegateActivationApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallActivation`.
+message RecallActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  RecallActivationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallActivation`.
+message RecallActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  RecallActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetActivationApprovalStatus`.
+message GetActivationApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetActivationApprovalStatus`.
+message GetActivationApprovalStatusResponse {
+  Activation activation = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentActivationApproval`.
+message CommentActivationApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  CommentActivationApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentActivationApproval`.
+message CommentActivationApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  CommentActivationApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

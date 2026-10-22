@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performers.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/performers/v1/performers.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Performers.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performers/v1;performersv1";
+option java_multiple_files = true;
+option java_outer_classname = "RiderWorkflowServiceProto";
+option java_package = "com.acme.performers.v1";
+
+// Runs the long-lived workflow that takes a rider from start to finish.
+service RiderWorkflowService {
+  // Starts a rider.
+  rpc StartRiderWorkflow(StartRiderWorkflowRequest) returns (StartRiderWorkflowResponse);
+
+  // Advances a rider.
+  rpc AdvanceRiderWorkflow(AdvanceRiderWorkflowRequest) returns (AdvanceRiderWorkflowResponse);
+
+  // Cancels a rider.
+  rpc CancelRiderWorkflow(CancelRiderWorkflowRequest) returns (CancelRiderWorkflowResponse);
+
+  // Retrys a rider.
+  rpc RetryRiderWorkflow(RetryRiderWorkflowRequest) returns (RetryRiderWorkflowResponse);
+
+  // Pauses a rider.
+  rpc PauseRiderWorkflow(PauseRiderWorkflowRequest) returns (PauseRiderWorkflowResponse);
+
+  // Returns a rider.
+  rpc InspectRiderWorkflow(InspectRiderWorkflowRequest) returns (InspectRiderWorkflowResponse);
+
+  // Lists riders a page at a time.
+  rpc ListRiderWorkflows(ListRiderWorkflowsRequest) returns (ListRiderWorkflowsResponse);
+
+  // Signals a rider.
+  rpc SignalRiderWorkflow(SignalRiderWorkflowRequest) returns (SignalRiderWorkflowResponse);
+}
+
+// The request of `StartRiderWorkflow`.
+message StartRiderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string rider_id = 2;
+  Rider rider = 3;
+  StartRiderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartRiderWorkflow`.
+message StartRiderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Rider rider = 1;
+  StartRiderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceRiderWorkflow`.
+message AdvanceRiderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string rider_id = 2;
+  Rider rider = 3;
+  AdvanceRiderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceRiderWorkflow`.
+message AdvanceRiderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Rider rider = 1;
+  AdvanceRiderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelRiderWorkflow`.
+message CancelRiderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string rider_id = 2;
+  Rider rider = 3;
+  CancelRiderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelRiderWorkflow`.
+message CancelRiderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Rider rider = 1;
+  CancelRiderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryRiderWorkflow`.
+message RetryRiderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string rider_id = 2;
+  Rider rider = 3;
+  RetryRiderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryRiderWorkflow`.
+message RetryRiderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Rider rider = 1;
+  RetryRiderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseRiderWorkflow`.
+message PauseRiderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string rider_id = 2;
+  Rider rider = 3;
+  PauseRiderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseRiderWorkflow`.
+message PauseRiderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Rider rider = 1;
+  PauseRiderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectRiderWorkflow`.
+message InspectRiderWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string rider_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectRiderWorkflow`.
+message InspectRiderWorkflowResponse {
+  Rider rider = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListRiderWorkflows`.
+message ListRiderWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated RiderStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListRiderWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListRiderWorkflows`.
+message ListRiderWorkflowsResponse {
+  repeated Rider riders = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalRiderWorkflow`.
+message SignalRiderWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string rider_id = 2;
+  Rider rider = 3;
+  SignalRiderWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalRiderWorkflow`.
+message SignalRiderWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Rider rider = 1;
+  SignalRiderWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

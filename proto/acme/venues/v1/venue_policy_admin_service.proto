@@ -1,0 +1,311 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenuePolicyAdminServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Operator actions on venue policies that support staff run by hand.
+service VenuePolicyAdminService {
+  // Archives a venue policy.
+  rpc ArchiveVenuePolicy(ArchiveVenuePolicyRequest) returns (ArchiveVenuePolicyResponse);
+
+  // Restores a venue policy.
+  rpc RestoreVenuePolicy(RestoreVenuePolicyRequest) returns (RestoreVenuePolicyResponse);
+
+  // Deletes a venue policy.
+  rpc PurgeVenuePolicy(PurgeVenuePolicyRequest) returns (PurgeVenuePolicyResponse);
+
+  // Reassigns a venue policy.
+  rpc ReassignVenuePolicy(ReassignVenuePolicyRequest) returns (ReassignVenuePolicyResponse);
+
+  // Locks a venue policy.
+  rpc LockVenuePolicy(LockVenuePolicyRequest) returns (LockVenuePolicyResponse);
+
+  // Unlocks a venue policy.
+  rpc UnlockVenuePolicy(UnlockVenuePolicyRequest) returns (UnlockVenuePolicyResponse);
+
+  // Transfers a venue policy.
+  rpc TransferVenuePolicy(TransferVenuePolicyRequest) returns (TransferVenuePolicyResponse);
+
+  // Repairs a venue policy.
+  rpc RepairVenuePolicy(RepairVenuePolicyRequest) returns (RepairVenuePolicyResponse);
+
+  // Returns a venue policy.
+  rpc InspectVenuePolicy(InspectVenuePolicyRequest) returns (InspectVenuePolicyResponse);
+}
+
+// The request of `ArchiveVenuePolicy`.
+message ArchiveVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  ArchiveVenuePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ArchiveVenuePolicy`.
+message ArchiveVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  ArchiveVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RestoreVenuePolicy`.
+message RestoreVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  RestoreVenuePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RestoreVenuePolicy`.
+message RestoreVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  RestoreVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PurgeVenuePolicy`.
+message PurgeVenuePolicyRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `PurgeVenuePolicy`.
+message PurgeVenuePolicyResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}
+
+// The request of `ReassignVenuePolicy`.
+message ReassignVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.identity.v1.UserRef assignee = 1;
+    string queue = 2;
+    int32 capacity = 3;
+    string assignee_email = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  ReassignVenuePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReassignVenuePolicy`.
+message ReassignVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  ReassignVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LockVenuePolicy`.
+message LockVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  LockVenuePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `LockVenuePolicy`.
+message LockVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  LockVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnlockVenuePolicy`.
+message UnlockVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  UnlockVenuePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnlockVenuePolicy`.
+message UnlockVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  UnlockVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TransferVenuePolicy`.
+message TransferVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  TransferVenuePolicyRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TransferVenuePolicy`.
+message TransferVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  TransferVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RepairVenuePolicy`.
+message RepairVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string cursor = 1;
+    bytes payload = 2;
+    string resolution = 3;
+    string peer_region = 4;
+    string checksum = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  RepairVenuePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RepairVenuePolicy`.
+message RepairVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  RepairVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectVenuePolicy`.
+message InspectVenuePolicyRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectVenuePolicy`.
+message InspectVenuePolicyResponse {
+  VenuePolicy venue_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}

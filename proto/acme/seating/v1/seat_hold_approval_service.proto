@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.seating.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/seating/v1/seating.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Seating.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/seating/v1;seatingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeatHoldApprovalServiceProto";
+option java_package = "com.acme.seating.v1";
+
+// Routes seat holds through approval, with escalation and delegation.
+service SeatHoldApprovalService {
+  // Submits a seat hold.
+  rpc SubmitSeatHold(SubmitSeatHoldRequest) returns (SubmitSeatHoldResponse);
+
+  // Approves a seat hold.
+  rpc ApproveSeatHold(ApproveSeatHoldRequest) returns (ApproveSeatHoldResponse);
+
+  // Rejects a seat hold.
+  rpc RejectSeatHold(RejectSeatHoldRequest) returns (RejectSeatHoldResponse);
+
+  // Escalates a seat hold.
+  rpc EscalateSeatHold(EscalateSeatHoldRequest) returns (EscalateSeatHoldResponse);
+
+  // Lists seat holds a page at a time.
+  rpc ListPendingSeatHolds(ListPendingSeatHoldsRequest) returns (ListPendingSeatHoldsResponse);
+
+  // Delegates a seat hold.
+  rpc DelegateSeatHoldApproval(DelegateSeatHoldApprovalRequest) returns (DelegateSeatHoldApprovalResponse);
+
+  // Recalls a seat hold.
+  rpc RecallSeatHold(RecallSeatHoldRequest) returns (RecallSeatHoldResponse);
+
+  // Returns a seat hold.
+  rpc GetSeatHoldApprovalStatus(GetSeatHoldApprovalStatusRequest) returns (GetSeatHoldApprovalStatusResponse);
+
+  // Comments a seat hold.
+  rpc CommentSeatHoldApproval(CommentSeatHoldApprovalRequest) returns (CommentSeatHoldApprovalResponse);
+}
+
+// The request of `SubmitSeatHold`.
+message SubmitSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  SubmitSeatHoldRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitSeatHold`.
+message SubmitSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  SubmitSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveSeatHold`.
+message ApproveSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  ApproveSeatHoldRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveSeatHold`.
+message ApproveSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  ApproveSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectSeatHold`.
+message RejectSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  RejectSeatHoldRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectSeatHold`.
+message RejectSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  RejectSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateSeatHold`.
+message EscalateSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  EscalateSeatHoldRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateSeatHold`.
+message EscalateSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  EscalateSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingSeatHolds`.
+message ListPendingSeatHoldsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SeatHoldStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingSeatHoldsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingSeatHolds`.
+message ListPendingSeatHoldsResponse {
+  repeated SeatHold seat_holds = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateSeatHoldApproval`.
+message DelegateSeatHoldApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  DelegateSeatHoldApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateSeatHoldApproval`.
+message DelegateSeatHoldApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  DelegateSeatHoldApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallSeatHold`.
+message RecallSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  RecallSeatHoldRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallSeatHold`.
+message RecallSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  RecallSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSeatHoldApprovalStatus`.
+message GetSeatHoldApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSeatHoldApprovalStatus`.
+message GetSeatHoldApprovalStatusResponse {
+  SeatHold seat_hold = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentSeatHoldApproval`.
+message CommentSeatHoldApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  CommentSeatHoldApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentSeatHoldApproval`.
+message CommentSeatHoldApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  CommentSeatHoldApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

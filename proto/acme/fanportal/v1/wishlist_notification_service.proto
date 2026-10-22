@@ -1,0 +1,247 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.fanportal.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/fanportal/v1/fanportal.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Fanportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/fanportal/v1;fanportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "WishlistNotificationServiceProto";
+option java_package = "com.acme.fanportal.v1";
+
+// Tells the people who follow a wishlist what changed.
+service WishlistNotificationService {
+  // Subscribes a wishlist.
+  rpc SubscribeWishlistUpdates(SubscribeWishlistUpdatesRequest) returns (SubscribeWishlistUpdatesResponse);
+
+  // Unsubscribes a wishlist.
+  rpc UnsubscribeWishlistUpdates(UnsubscribeWishlistUpdatesRequest) returns (UnsubscribeWishlistUpdatesResponse);
+
+  // Notifys a wishlist.
+  rpc NotifyWishlistWatchers(NotifyWishlistWatchersRequest) returns (NotifyWishlistWatchersResponse);
+
+  // Lists wishlists a page at a time.
+  rpc ListWishlistSubscriptions(ListWishlistSubscriptionsRequest) returns (ListWishlistSubscriptionsResponse);
+
+  // Sends a wishlist.
+  rpc SendWishlistTestNotice(SendWishlistTestNoticeRequest) returns (SendWishlistTestNoticeResponse);
+
+  // Returns a wishlist.
+  rpc GetWishlistPreferences(GetWishlistPreferencesRequest) returns (GetWishlistPreferencesResponse);
+
+  // Streams the changes of wishlists as they happen.
+  rpc StreamWishlistNotices(StreamWishlistNoticesRequest) returns (stream StreamWishlistNoticesResponse);
+}
+
+// The request of `SubscribeWishlistUpdates`.
+message SubscribeWishlistUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wishlist_id = 2;
+  SubscribeWishlistUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SubscribeWishlistUpdates`.
+message SubscribeWishlistUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wishlist wishlist = 1;
+  SubscribeWishlistUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnsubscribeWishlistUpdates`.
+message UnsubscribeWishlistUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wishlist_id = 2;
+  UnsubscribeWishlistUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnsubscribeWishlistUpdates`.
+message UnsubscribeWishlistUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wishlist wishlist = 1;
+  UnsubscribeWishlistUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NotifyWishlistWatchers`.
+message NotifyWishlistWatchersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wishlist_id = 2;
+  NotifyWishlistWatchersRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `NotifyWishlistWatchers`.
+message NotifyWishlistWatchersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wishlist wishlist = 1;
+  NotifyWishlistWatchersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListWishlistSubscriptions`.
+message ListWishlistSubscriptionsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated WishlistStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListWishlistSubscriptionsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListWishlistSubscriptions`.
+message ListWishlistSubscriptionsResponse {
+  repeated Wishlist wishlists = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SendWishlistTestNotice`.
+message SendWishlistTestNoticeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wishlist_id = 2;
+  SendWishlistTestNoticeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SendWishlistTestNotice`.
+message SendWishlistTestNoticeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wishlist wishlist = 1;
+  SendWishlistTestNoticeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetWishlistPreferences`.
+message GetWishlistPreferencesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string wishlist_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetWishlistPreferences`.
+message GetWishlistPreferencesResponse {
+  Wishlist wishlist = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `StreamWishlistNotices`.
+message StreamWishlistNoticesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated WishlistStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamWishlistNoticesRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamWishlistNotices`.
+message StreamWishlistNoticesResponse {
+  Wishlist wishlist = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}

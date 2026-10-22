@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "StreamKeyCalculationServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Computes the figures of a stream key, such as totals, taxes, and estimates.
+service StreamKeyCalculationService {
+  // Calculates a stream key.
+  rpc CalculateStreamKey(CalculateStreamKeyRequest) returns (CalculateStreamKeyResponse);
+
+  // Estimates a stream key.
+  rpc EstimateStreamKey(EstimateStreamKeyRequest) returns (EstimateStreamKeyResponse);
+
+  // Quotes a stream key.
+  rpc QuoteStreamKey(QuoteStreamKeyRequest) returns (QuoteStreamKeyResponse);
+
+  // Compares a stream key.
+  rpc CompareStreamKeyOptions(CompareStreamKeyOptionsRequest) returns (CompareStreamKeyOptionsResponse);
+
+  // Recalculates a stream key.
+  rpc RecalculateStreamKeys(RecalculateStreamKeysRequest) returns (RecalculateStreamKeysResponse);
+
+  // Simulates a stream key.
+  rpc SimulateStreamKey(SimulateStreamKeyRequest) returns (SimulateStreamKeyResponse);
+
+  // Explains a stream key.
+  rpc ExplainStreamKeyCalculation(ExplainStreamKeyCalculationRequest) returns (ExplainStreamKeyCalculationResponse);
+
+  // Returns a stream key.
+  rpc GetStreamKeyRates(GetStreamKeyRatesRequest) returns (GetStreamKeyRatesResponse);
+}
+
+// The request of `CalculateStreamKey`.
+message CalculateStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  CalculateStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateStreamKey`.
+message CalculateStreamKeyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateStreamKeyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  StreamKey stream_key = 1;
+  CalculateStreamKeyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateStreamKey`.
+message EstimateStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  EstimateStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateStreamKey`.
+message EstimateStreamKeyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateStreamKeyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  StreamKey stream_key = 1;
+  EstimateStreamKeyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteStreamKey`.
+message QuoteStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  QuoteStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteStreamKey`.
+message QuoteStreamKeyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteStreamKeyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  StreamKey stream_key = 1;
+  QuoteStreamKeyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareStreamKeyOptions`.
+message CompareStreamKeyOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  CompareStreamKeyOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareStreamKeyOptions`.
+message CompareStreamKeyOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareStreamKeyOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  StreamKey stream_key = 1;
+  CompareStreamKeyOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateStreamKeys`.
+message RecalculateStreamKeysRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  RecalculateStreamKeysRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateStreamKeys`.
+message RecalculateStreamKeysResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateStreamKeysResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  StreamKey stream_key = 1;
+  RecalculateStreamKeysResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateStreamKey`.
+message SimulateStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  SimulateStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateStreamKey`.
+message SimulateStreamKeyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateStreamKeyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  StreamKey stream_key = 1;
+  SimulateStreamKeyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainStreamKeyCalculation`.
+message ExplainStreamKeyCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  ExplainStreamKeyCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainStreamKeyCalculation`.
+message ExplainStreamKeyCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  ExplainStreamKeyCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetStreamKeyRates`.
+message GetStreamKeyRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetStreamKeyRates`.
+message GetStreamKeyRatesResponse {
+  StreamKey stream_key = 1;
+  acme.common.v1.OperationResult result = 2;
+}

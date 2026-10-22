@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.sponsorships.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/sponsorships/v1/sponsorships.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Sponsorships.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/sponsorships/v1;sponsorshipsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ActivationLifecycleServiceProto";
+option java_package = "com.acme.sponsorships.v1";
+
+// Moves an activation between the states of its lifecycle.
+service ActivationLifecycleService {
+  // Activates an activation.
+  rpc ActivateActivation(ActivateActivationRequest) returns (ActivateActivationResponse);
+
+  // Suspends an activation.
+  rpc SuspendActivation(SuspendActivationRequest) returns (SuspendActivationResponse);
+
+  // Reinstates an activation.
+  rpc ReinstateActivation(ReinstateActivationRequest) returns (ReinstateActivationResponse);
+
+  // Terminates an activation.
+  rpc TerminateActivation(TerminateActivationRequest) returns (TerminateActivationResponse);
+
+  // Renews an activation.
+  rpc RenewActivation(RenewActivationRequest) returns (RenewActivationResponse);
+
+  // Expires an activation.
+  rpc ExpireActivation(ExpireActivationRequest) returns (ExpireActivationResponse);
+
+  // Returns an activation.
+  rpc GetActivationLifecycle(GetActivationLifecycleRequest) returns (GetActivationLifecycleResponse);
+
+  // Schedules an activation.
+  rpc ScheduleActivationExpiry(ScheduleActivationExpiryRequest) returns (ScheduleActivationExpiryResponse);
+}
+
+// The request of `ActivateActivation`.
+message ActivateActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  ActivateActivationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateActivation`.
+message ActivateActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  ActivateActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendActivation`.
+message SuspendActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  SuspendActivationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendActivation`.
+message SuspendActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  SuspendActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateActivation`.
+message ReinstateActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  ReinstateActivationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateActivation`.
+message ReinstateActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  ReinstateActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateActivation`.
+message TerminateActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  TerminateActivationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateActivation`.
+message TerminateActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  TerminateActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewActivation`.
+message RenewActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  RenewActivationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewActivation`.
+message RenewActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  RenewActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireActivation`.
+message ExpireActivationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  ExpireActivationRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireActivation`.
+message ExpireActivationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  ExpireActivationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetActivationLifecycle`.
+message GetActivationLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetActivationLifecycle`.
+message GetActivationLifecycleResponse {
+  Activation activation = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleActivationExpiry`.
+message ScheduleActivationExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string activation_id = 2;
+  Activation activation = 3;
+  ScheduleActivationExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleActivationExpiry`.
+message ScheduleActivationExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Activation activation = 1;
+  ScheduleActivationExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

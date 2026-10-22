@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "BoxOfficeSaleApprovalServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Routes box office sales through approval, with escalation and delegation.
+service BoxOfficeSaleApprovalService {
+  // Submits a box office sale.
+  rpc SubmitBoxOfficeSale(SubmitBoxOfficeSaleRequest) returns (SubmitBoxOfficeSaleResponse);
+
+  // Approves a box office sale.
+  rpc ApproveBoxOfficeSale(ApproveBoxOfficeSaleRequest) returns (ApproveBoxOfficeSaleResponse);
+
+  // Rejects a box office sale.
+  rpc RejectBoxOfficeSale(RejectBoxOfficeSaleRequest) returns (RejectBoxOfficeSaleResponse);
+
+  // Escalates a box office sale.
+  rpc EscalateBoxOfficeSale(EscalateBoxOfficeSaleRequest) returns (EscalateBoxOfficeSaleResponse);
+
+  // Lists box office sales a page at a time.
+  rpc ListPendingBoxOfficeSales(ListPendingBoxOfficeSalesRequest) returns (ListPendingBoxOfficeSalesResponse);
+
+  // Delegates a box office sale.
+  rpc DelegateBoxOfficeSaleApproval(DelegateBoxOfficeSaleApprovalRequest) returns (DelegateBoxOfficeSaleApprovalResponse);
+
+  // Recalls a box office sale.
+  rpc RecallBoxOfficeSale(RecallBoxOfficeSaleRequest) returns (RecallBoxOfficeSaleResponse);
+
+  // Returns a box office sale.
+  rpc GetBoxOfficeSaleApprovalStatus(GetBoxOfficeSaleApprovalStatusRequest) returns (GetBoxOfficeSaleApprovalStatusResponse);
+
+  // Comments a box office sale.
+  rpc CommentBoxOfficeSaleApproval(CommentBoxOfficeSaleApprovalRequest) returns (CommentBoxOfficeSaleApprovalResponse);
+}
+
+// The request of `SubmitBoxOfficeSale`.
+message SubmitBoxOfficeSaleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  SubmitBoxOfficeSaleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitBoxOfficeSale`.
+message SubmitBoxOfficeSaleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  SubmitBoxOfficeSaleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveBoxOfficeSale`.
+message ApproveBoxOfficeSaleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  ApproveBoxOfficeSaleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveBoxOfficeSale`.
+message ApproveBoxOfficeSaleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  ApproveBoxOfficeSaleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectBoxOfficeSale`.
+message RejectBoxOfficeSaleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  RejectBoxOfficeSaleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectBoxOfficeSale`.
+message RejectBoxOfficeSaleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  RejectBoxOfficeSaleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateBoxOfficeSale`.
+message EscalateBoxOfficeSaleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  EscalateBoxOfficeSaleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateBoxOfficeSale`.
+message EscalateBoxOfficeSaleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  EscalateBoxOfficeSaleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingBoxOfficeSales`.
+message ListPendingBoxOfficeSalesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated BoxOfficeSaleStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingBoxOfficeSalesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingBoxOfficeSales`.
+message ListPendingBoxOfficeSalesResponse {
+  repeated BoxOfficeSale box_office_sales = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateBoxOfficeSaleApproval`.
+message DelegateBoxOfficeSaleApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  DelegateBoxOfficeSaleApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateBoxOfficeSaleApproval`.
+message DelegateBoxOfficeSaleApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  DelegateBoxOfficeSaleApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallBoxOfficeSale`.
+message RecallBoxOfficeSaleRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  RecallBoxOfficeSaleRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallBoxOfficeSale`.
+message RecallBoxOfficeSaleResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  RecallBoxOfficeSaleResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetBoxOfficeSaleApprovalStatus`.
+message GetBoxOfficeSaleApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetBoxOfficeSaleApprovalStatus`.
+message GetBoxOfficeSaleApprovalStatusResponse {
+  BoxOfficeSale box_office_sale = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentBoxOfficeSaleApproval`.
+message CommentBoxOfficeSaleApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string box_office_sale_id = 2;
+  BoxOfficeSale box_office_sale = 3;
+  CommentBoxOfficeSaleApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentBoxOfficeSaleApproval`.
+message CommentBoxOfficeSaleApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  BoxOfficeSale box_office_sale = 1;
+  CommentBoxOfficeSaleApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

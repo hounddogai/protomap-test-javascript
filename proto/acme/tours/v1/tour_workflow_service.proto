@@ -1,0 +1,267 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.tours.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/tours/v1/tours.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Tours.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/tours/v1;toursv1";
+option java_multiple_files = true;
+option java_outer_classname = "TourWorkflowServiceProto";
+option java_package = "com.acme.tours.v1";
+
+// Runs the long-lived workflow that takes a tour from start to finish.
+service TourWorkflowService {
+  // Starts a tour.
+  rpc StartTourWorkflow(StartTourWorkflowRequest) returns (StartTourWorkflowResponse);
+
+  // Advances a tour.
+  rpc AdvanceTourWorkflow(AdvanceTourWorkflowRequest) returns (AdvanceTourWorkflowResponse);
+
+  // Cancels a tour.
+  rpc CancelTourWorkflow(CancelTourWorkflowRequest) returns (CancelTourWorkflowResponse);
+
+  // Pauses a tour.
+  rpc PauseTourWorkflow(PauseTourWorkflowRequest) returns (PauseTourWorkflowResponse);
+
+  // Resumes a tour.
+  rpc ResumeTourWorkflow(ResumeTourWorkflowRequest) returns (ResumeTourWorkflowResponse);
+
+  // Returns a tour.
+  rpc InspectTourWorkflow(InspectTourWorkflowRequest) returns (InspectTourWorkflowResponse);
+
+  // Signals a tour.
+  rpc SignalTourWorkflow(SignalTourWorkflowRequest) returns (SignalTourWorkflowResponse);
+}
+
+// The request of `StartTourWorkflow`.
+message StartTourWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_id = 2;
+  Tour tour = 3;
+  StartTourWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartTourWorkflow`.
+message StartTourWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Tour tour = 1;
+  StartTourWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceTourWorkflow`.
+message AdvanceTourWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_id = 2;
+  Tour tour = 3;
+  AdvanceTourWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceTourWorkflow`.
+message AdvanceTourWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Tour tour = 1;
+  AdvanceTourWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelTourWorkflow`.
+message CancelTourWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_id = 2;
+  Tour tour = 3;
+  CancelTourWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelTourWorkflow`.
+message CancelTourWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Tour tour = 1;
+  CancelTourWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseTourWorkflow`.
+message PauseTourWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_id = 2;
+  Tour tour = 3;
+  PauseTourWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseTourWorkflow`.
+message PauseTourWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Tour tour = 1;
+  PauseTourWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeTourWorkflow`.
+message ResumeTourWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_id = 2;
+  Tour tour = 3;
+  ResumeTourWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeTourWorkflow`.
+message ResumeTourWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Tour tour = 1;
+  ResumeTourWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectTourWorkflow`.
+message InspectTourWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string tour_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectTourWorkflow`.
+message InspectTourWorkflowResponse {
+  Tour tour = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `SignalTourWorkflow`.
+message SignalTourWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_id = 2;
+  Tour tour = 3;
+  SignalTourWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalTourWorkflow`.
+message SignalTourWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Tour tour = 1;
+  SignalTourWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

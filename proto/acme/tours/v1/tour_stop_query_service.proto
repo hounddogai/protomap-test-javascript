@@ -1,0 +1,245 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.tours.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/tours/v1/tours.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Tours.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/tours/v1;toursv1";
+option java_multiple_files = true;
+option java_outer_classname = "TourStopQueryServiceProto";
+option java_package = "com.acme.tours.v1";
+
+// Answers read-only questions about tour stops, for screens and reports.
+service TourStopQueryService {
+  // Returns a tour stop.
+  rpc LookupTourStop(LookupTourStopRequest) returns (LookupTourStopResponse);
+
+  // Lists tour stops a page at a time.
+  rpc BrowseTourStops(BrowseTourStopsRequest) returns (BrowseTourStopsResponse);
+
+  // Lists tour stops a page at a time.
+  rpc FindTourStops(FindTourStopsRequest) returns (FindTourStopsResponse);
+
+  // Counts tour stops by status.
+  rpc CountTourStops(CountTourStopsRequest) returns (CountTourStopsResponse);
+
+  // Returns several tour stops at once.
+  rpc ResolveTourStops(ResolveTourStopsRequest) returns (ResolveTourStopsResponse);
+
+  // Streams every matching tour stop.
+  rpc ExportTourStops(ExportTourStopsRequest) returns (stream ExportTourStopsResponse);
+
+  // Summarizes a tour stop.
+  rpc SummarizeTourStops(SummarizeTourStopsRequest) returns (SummarizeTourStopsResponse);
+
+  // Lists tour stops a page at a time.
+  rpc SuggestTourStops(SuggestTourStopsRequest) returns (SuggestTourStopsResponse);
+
+  // Returns a tour stop.
+  rpc PeekTourStop(PeekTourStopRequest) returns (PeekTourStopResponse);
+}
+
+// The request of `LookupTourStop`.
+message LookupTourStopRequest {
+  acme.common.v1.RequestContext context = 1;
+  string tour_stop_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupTourStop`.
+message LookupTourStopResponse {
+  TourStop tour_stop = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseTourStops`.
+message BrowseTourStopsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TourStopStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseTourStopsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseTourStops`.
+message BrowseTourStopsResponse {
+  repeated TourStop tour_stops = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindTourStops`.
+message FindTourStopsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TourStopStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindTourStopsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindTourStops`.
+message FindTourStopsResponse {
+  repeated TourStop tour_stops = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountTourStops`.
+message CountTourStopsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TourStopStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountTourStopsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountTourStops`.
+message CountTourStopsResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveTourStops`.
+message ResolveTourStopsRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string tour_stop_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveTourStops`.
+message ResolveTourStopsResponse {
+  repeated TourStop tour_stops = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportTourStops`.
+message ExportTourStopsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TourStopStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportTourStopsRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportTourStops`.
+message ExportTourStopsResponse {
+  TourStop tour_stop = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeTourStops`.
+message SummarizeTourStopsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string tour_stop_id = 2;
+  SummarizeTourStopsRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeTourStops`.
+message SummarizeTourStopsResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestTourStops`.
+message SuggestTourStopsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TourStopStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestTourStopsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestTourStops`.
+message SuggestTourStopsResponse {
+  repeated TourStop tour_stops = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekTourStop`.
+message PeekTourStopRequest {
+  acme.common.v1.RequestContext context = 1;
+  string tour_stop_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekTourStop`.
+message PeekTourStopResponse {
+  TourStop tour_stop = 1;
+  acme.common.v1.OperationResult result = 2;
+}

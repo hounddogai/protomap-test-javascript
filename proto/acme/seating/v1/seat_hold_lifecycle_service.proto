@@ -1,0 +1,294 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.seating.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/identity/v1/refs.proto";
+import "acme/seating/v1/seating.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Seating.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/seating/v1;seatingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeatHoldLifecycleServiceProto";
+option java_package = "com.acme.seating.v1";
+
+// Moves a seat hold between the states of its lifecycle.
+service SeatHoldLifecycleService {
+  // Activates a seat hold.
+  rpc ActivateSeatHold(ActivateSeatHoldRequest) returns (ActivateSeatHoldResponse);
+
+  // Suspends a seat hold.
+  rpc SuspendSeatHold(SuspendSeatHoldRequest) returns (SuspendSeatHoldResponse);
+
+  // Reinstates a seat hold.
+  rpc ReinstateSeatHold(ReinstateSeatHoldRequest) returns (ReinstateSeatHoldResponse);
+
+  // Terminates a seat hold.
+  rpc TerminateSeatHold(TerminateSeatHoldRequest) returns (TerminateSeatHoldResponse);
+
+  // Renews a seat hold.
+  rpc RenewSeatHold(RenewSeatHoldRequest) returns (RenewSeatHoldResponse);
+
+  // Expires a seat hold.
+  rpc ExpireSeatHold(ExpireSeatHoldRequest) returns (ExpireSeatHoldResponse);
+
+  // Returns a seat hold.
+  rpc GetSeatHoldLifecycle(GetSeatHoldLifecycleRequest) returns (GetSeatHoldLifecycleResponse);
+
+  // Schedules a seat hold.
+  rpc ScheduleSeatHoldExpiry(ScheduleSeatHoldExpiryRequest) returns (ScheduleSeatHoldExpiryResponse);
+}
+
+// The request of `ActivateSeatHold`.
+message ActivateSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  ActivateSeatHoldRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ActivateSeatHold`.
+message ActivateSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  ActivateSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SuspendSeatHold`.
+message SuspendSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SuspendSeatHoldRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SuspendSeatHold`.
+message SuspendSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  SuspendSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ReinstateSeatHold`.
+message ReinstateSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  ReinstateSeatHoldRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ReinstateSeatHold`.
+message ReinstateSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  ReinstateSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `TerminateSeatHold`.
+message TerminateSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  TerminateSeatHoldRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `TerminateSeatHold`.
+message TerminateSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  TerminateSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RenewSeatHold`.
+message RenewSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  RenewSeatHoldRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `RenewSeatHold`.
+message RenewSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  RenewSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExpireSeatHold`.
+message ExpireSeatHoldRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string reason_code = 1;
+    google.protobuf.Timestamp effective_at = 2;
+    acme.identity.v1.UserRef new_owner = 3;
+    acme.common.v1.ContactInfo notify_contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  ExpireSeatHoldRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `ExpireSeatHold`.
+message ExpireSeatHoldResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  ExpireSeatHoldResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetSeatHoldLifecycle`.
+message GetSeatHoldLifecycleRequest {
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetSeatHoldLifecycle`.
+message GetSeatHoldLifecycleResponse {
+  SeatHold seat_hold = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ScheduleSeatHoldExpiry`.
+message ScheduleSeatHoldExpiryRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_hold_id = 2;
+  SeatHold seat_hold = 3;
+  ScheduleSeatHoldExpiryRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScheduleSeatHoldExpiry`.
+message ScheduleSeatHoldExpiryResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatHold seat_hold = 1;
+  ScheduleSeatHoldExpiryResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

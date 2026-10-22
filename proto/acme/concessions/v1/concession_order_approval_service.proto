@@ -1,0 +1,304 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.concessions.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/concessions/v1/concessions.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Concessions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/concessions/v1;concessionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ConcessionOrderApprovalServiceProto";
+option java_package = "com.acme.concessions.v1";
+
+// Routes concession orders through approval, with escalation and delegation.
+service ConcessionOrderApprovalService {
+  // Submits a concession order.
+  rpc SubmitConcessionOrder(SubmitConcessionOrderRequest) returns (SubmitConcessionOrderResponse);
+
+  // Approves a concession order.
+  rpc ApproveConcessionOrder(ApproveConcessionOrderRequest) returns (ApproveConcessionOrderResponse);
+
+  // Rejects a concession order.
+  rpc RejectConcessionOrder(RejectConcessionOrderRequest) returns (RejectConcessionOrderResponse);
+
+  // Escalates a concession order.
+  rpc EscalateConcessionOrder(EscalateConcessionOrderRequest) returns (EscalateConcessionOrderResponse);
+
+  // Delegates a concession order.
+  rpc DelegateConcessionOrderApproval(DelegateConcessionOrderApprovalRequest) returns (DelegateConcessionOrderApprovalResponse);
+
+  // Recalls a concession order.
+  rpc RecallConcessionOrder(RecallConcessionOrderRequest) returns (RecallConcessionOrderResponse);
+
+  // Returns a concession order.
+  rpc GetConcessionOrderApprovalStatus(GetConcessionOrderApprovalStatusRequest) returns (GetConcessionOrderApprovalStatusResponse);
+
+  // Comments a concession order.
+  rpc CommentConcessionOrderApproval(CommentConcessionOrderApprovalRequest) returns (CommentConcessionOrderApprovalResponse);
+}
+
+// The request of `SubmitConcessionOrder`.
+message SubmitConcessionOrderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  SubmitConcessionOrderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitConcessionOrder`.
+message SubmitConcessionOrderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  SubmitConcessionOrderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveConcessionOrder`.
+message ApproveConcessionOrderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  ApproveConcessionOrderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveConcessionOrder`.
+message ApproveConcessionOrderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  ApproveConcessionOrderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectConcessionOrder`.
+message RejectConcessionOrderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  RejectConcessionOrderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectConcessionOrder`.
+message RejectConcessionOrderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  RejectConcessionOrderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateConcessionOrder`.
+message EscalateConcessionOrderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  EscalateConcessionOrderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateConcessionOrder`.
+message EscalateConcessionOrderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  EscalateConcessionOrderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateConcessionOrderApproval`.
+message DelegateConcessionOrderApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  DelegateConcessionOrderApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateConcessionOrderApproval`.
+message DelegateConcessionOrderApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  DelegateConcessionOrderApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallConcessionOrder`.
+message RecallConcessionOrderRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  RecallConcessionOrderRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallConcessionOrder`.
+message RecallConcessionOrderResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  RecallConcessionOrderResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetConcessionOrderApprovalStatus`.
+message GetConcessionOrderApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetConcessionOrderApprovalStatus`.
+message GetConcessionOrderApprovalStatusResponse {
+  ConcessionOrder concession_order = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentConcessionOrderApproval`.
+message CommentConcessionOrderApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string concession_order_id = 2;
+  ConcessionOrder concession_order = 3;
+  CommentConcessionOrderApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentConcessionOrderApproval`.
+message CommentConcessionOrderApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ConcessionOrder concession_order = 1;
+  CommentConcessionOrderApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

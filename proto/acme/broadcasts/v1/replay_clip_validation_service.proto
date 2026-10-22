@@ -1,0 +1,223 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ReplayClipValidationServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Checks replay clips against the rules before anything acts on them.
+service ReplayClipValidationService {
+  // Validates a replay clip.
+  rpc ValidateReplayClip(ValidateReplayClipRequest) returns (ValidateReplayClipResponse);
+
+  // Previews a replay clip.
+  rpc PreviewReplayClip(PreviewReplayClipRequest) returns (PreviewReplayClipResponse);
+
+  // Checks a replay clip.
+  rpc CheckReplayClipEligibility(CheckReplayClipEligibilityRequest) returns (CheckReplayClipEligibilityResponse);
+
+  // Normalizes a replay clip.
+  rpc NormalizeReplayClip(NormalizeReplayClipRequest) returns (NormalizeReplayClipResponse);
+
+  // Explains a replay clip.
+  rpc ExplainReplayClipDecision(ExplainReplayClipDecisionRequest) returns (ExplainReplayClipDecisionResponse);
+
+  // Returns a replay clip.
+  rpc GetReplayClipRules(GetReplayClipRulesRequest) returns (GetReplayClipRulesResponse);
+}
+
+// The request of `ValidateReplayClip`.
+message ValidateReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  ValidateReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateReplayClip`.
+message ValidateReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  ValidateReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewReplayClip`.
+message PreviewReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  PreviewReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewReplayClip`.
+message PreviewReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  PreviewReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckReplayClipEligibility`.
+message CheckReplayClipEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  CheckReplayClipEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckReplayClipEligibility`.
+message CheckReplayClipEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  CheckReplayClipEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeReplayClip`.
+message NormalizeReplayClipRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  NormalizeReplayClipRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeReplayClip`.
+message NormalizeReplayClipResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  NormalizeReplayClipResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainReplayClipDecision`.
+message ExplainReplayClipDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  ExplainReplayClipDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainReplayClipDecision`.
+message ExplainReplayClipDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  ExplainReplayClipDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetReplayClipRules`.
+message GetReplayClipRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetReplayClipRules`.
+message GetReplayClipRulesResponse {
+  ReplayClip replay_clip = 1;
+  acme.common.v1.OperationResult result = 2;
+}

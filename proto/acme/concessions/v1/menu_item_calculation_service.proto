@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.concessions.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/concessions/v1/concessions.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Concessions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/concessions/v1;concessionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "MenuItemCalculationServiceProto";
+option java_package = "com.acme.concessions.v1";
+
+// Computes the figures of a menu item, such as totals, taxes, and estimates.
+service MenuItemCalculationService {
+  // Calculates a menu item.
+  rpc CalculateMenuItem(CalculateMenuItemRequest) returns (CalculateMenuItemResponse);
+
+  // Estimates a menu item.
+  rpc EstimateMenuItem(EstimateMenuItemRequest) returns (EstimateMenuItemResponse);
+
+  // Quotes a menu item.
+  rpc QuoteMenuItem(QuoteMenuItemRequest) returns (QuoteMenuItemResponse);
+
+  // Compares a menu item.
+  rpc CompareMenuItemOptions(CompareMenuItemOptionsRequest) returns (CompareMenuItemOptionsResponse);
+
+  // Recalculates a menu item.
+  rpc RecalculateMenuItems(RecalculateMenuItemsRequest) returns (RecalculateMenuItemsResponse);
+
+  // Simulates a menu item.
+  rpc SimulateMenuItem(SimulateMenuItemRequest) returns (SimulateMenuItemResponse);
+
+  // Explains a menu item.
+  rpc ExplainMenuItemCalculation(ExplainMenuItemCalculationRequest) returns (ExplainMenuItemCalculationResponse);
+
+  // Returns a menu item.
+  rpc GetMenuItemRates(GetMenuItemRatesRequest) returns (GetMenuItemRatesResponse);
+}
+
+// The request of `CalculateMenuItem`.
+message CalculateMenuItemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  CalculateMenuItemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateMenuItem`.
+message CalculateMenuItemResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateMenuItemResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  MenuItem menu_item = 1;
+  CalculateMenuItemResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateMenuItem`.
+message EstimateMenuItemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  EstimateMenuItemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateMenuItem`.
+message EstimateMenuItemResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateMenuItemResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  MenuItem menu_item = 1;
+  EstimateMenuItemResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteMenuItem`.
+message QuoteMenuItemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  QuoteMenuItemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteMenuItem`.
+message QuoteMenuItemResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteMenuItemResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  MenuItem menu_item = 1;
+  QuoteMenuItemResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareMenuItemOptions`.
+message CompareMenuItemOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  CompareMenuItemOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareMenuItemOptions`.
+message CompareMenuItemOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareMenuItemOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  MenuItem menu_item = 1;
+  CompareMenuItemOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateMenuItems`.
+message RecalculateMenuItemsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  RecalculateMenuItemsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateMenuItems`.
+message RecalculateMenuItemsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateMenuItemsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  MenuItem menu_item = 1;
+  RecalculateMenuItemsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateMenuItem`.
+message SimulateMenuItemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  SimulateMenuItemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateMenuItem`.
+message SimulateMenuItemResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateMenuItemResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  MenuItem menu_item = 1;
+  SimulateMenuItemResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainMenuItemCalculation`.
+message ExplainMenuItemCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  ExplainMenuItemCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainMenuItemCalculation`.
+message ExplainMenuItemCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  ExplainMenuItemCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetMenuItemRates`.
+message GetMenuItemRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetMenuItemRates`.
+message GetMenuItemRatesResponse {
+  MenuItem menu_item = 1;
+  acme.common.v1.OperationResult result = 2;
+}

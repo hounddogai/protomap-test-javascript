@@ -1,0 +1,217 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.fanportal.v1;
+
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/fanportal/v1/fanportal.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Fanportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/fanportal/v1;fanportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "EventPageQueryServiceProto";
+option java_package = "com.acme.fanportal.v1";
+
+// Answers read-only questions about event pages, for screens and reports.
+service EventPageQueryService {
+  // Returns an event page.
+  rpc LookupEventPage(LookupEventPageRequest) returns (LookupEventPageResponse);
+
+  // Lists event pages a page at a time.
+  rpc BrowseEventPages(BrowseEventPagesRequest) returns (BrowseEventPagesResponse);
+
+  // Lists event pages a page at a time.
+  rpc FindEventPages(FindEventPagesRequest) returns (FindEventPagesResponse);
+
+  // Returns several event pages at once.
+  rpc ResolveEventPages(ResolveEventPagesRequest) returns (ResolveEventPagesResponse);
+
+  // Streams every matching event page.
+  rpc ExportEventPages(ExportEventPagesRequest) returns (stream ExportEventPagesResponse);
+
+  // Summarizes an event page.
+  rpc SummarizeEventPages(SummarizeEventPagesRequest) returns (SummarizeEventPagesResponse);
+
+  // Lists event pages a page at a time.
+  rpc SuggestEventPages(SuggestEventPagesRequest) returns (SuggestEventPagesResponse);
+
+  // Returns an event page.
+  rpc PeekEventPage(PeekEventPageRequest) returns (PeekEventPageResponse);
+}
+
+// The request of `LookupEventPage`.
+message LookupEventPageRequest {
+  acme.common.v1.RequestContext context = 1;
+  string event_page_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupEventPage`.
+message LookupEventPageResponse {
+  EventPage event_page = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseEventPages`.
+message BrowseEventPagesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EventPageStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseEventPagesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseEventPages`.
+message BrowseEventPagesResponse {
+  repeated EventPage event_pages = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindEventPages`.
+message FindEventPagesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EventPageStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindEventPagesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindEventPages`.
+message FindEventPagesResponse {
+  repeated EventPage event_pages = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveEventPages`.
+message ResolveEventPagesRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string event_page_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveEventPages`.
+message ResolveEventPagesResponse {
+  repeated EventPage event_pages = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportEventPages`.
+message ExportEventPagesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EventPageStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportEventPagesRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportEventPages`.
+message ExportEventPagesResponse {
+  EventPage event_page = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeEventPages`.
+message SummarizeEventPagesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string event_page_id = 2;
+  SummarizeEventPagesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeEventPages`.
+message SummarizeEventPagesResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestEventPages`.
+message SuggestEventPagesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EventPageStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestEventPagesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestEventPages`.
+message SuggestEventPagesResponse {
+  repeated EventPage event_pages = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekEventPage`.
+message PeekEventPageRequest {
+  acme.common.v1.RequestContext context = 1;
+  string event_page_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekEventPage`.
+message PeekEventPageResponse {
+  EventPage event_page = 1;
+  acme.common.v1.OperationResult result = 2;
+}

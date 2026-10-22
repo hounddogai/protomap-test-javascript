@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "PerformanceValidationServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Checks performances against the rules before anything acts on them.
+service PerformanceValidationService {
+  // Validates a performance.
+  rpc ValidatePerformance(ValidatePerformanceRequest) returns (ValidatePerformanceResponse);
+
+  // Previews a performance.
+  rpc PreviewPerformance(PreviewPerformanceRequest) returns (PreviewPerformanceResponse);
+
+  // Checks a performance.
+  rpc CheckPerformanceEligibility(CheckPerformanceEligibilityRequest) returns (CheckPerformanceEligibilityResponse);
+
+  // Normalizes a performance.
+  rpc NormalizePerformance(NormalizePerformanceRequest) returns (NormalizePerformanceResponse);
+
+  // Explains a performance.
+  rpc ExplainPerformanceDecision(ExplainPerformanceDecisionRequest) returns (ExplainPerformanceDecisionResponse);
+
+  // Scores a performance.
+  rpc ScorePerformance(ScorePerformanceRequest) returns (ScorePerformanceResponse);
+
+  // Lints a performance.
+  rpc LintPerformances(LintPerformancesRequest) returns (LintPerformancesResponse);
+
+  // Returns a performance.
+  rpc GetPerformanceRules(GetPerformanceRulesRequest) returns (GetPerformanceRulesResponse);
+}
+
+// The request of `ValidatePerformance`.
+message ValidatePerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  ValidatePerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidatePerformance`.
+message ValidatePerformanceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  ValidatePerformanceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewPerformance`.
+message PreviewPerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  PreviewPerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewPerformance`.
+message PreviewPerformanceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  PreviewPerformanceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckPerformanceEligibility`.
+message CheckPerformanceEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  CheckPerformanceEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckPerformanceEligibility`.
+message CheckPerformanceEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  CheckPerformanceEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizePerformance`.
+message NormalizePerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  NormalizePerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizePerformance`.
+message NormalizePerformanceResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  NormalizePerformanceResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainPerformanceDecision`.
+message ExplainPerformanceDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  ExplainPerformanceDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainPerformanceDecision`.
+message ExplainPerformanceDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  ExplainPerformanceDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScorePerformance`.
+message ScorePerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  ScorePerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScorePerformance`.
+message ScorePerformanceResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScorePerformanceResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Performance performance = 1;
+  ScorePerformanceResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintPerformances`.
+message LintPerformancesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  LintPerformancesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintPerformances`.
+message LintPerformancesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  LintPerformancesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetPerformanceRules`.
+message GetPerformanceRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetPerformanceRules`.
+message GetPerformanceRulesResponse {
+  Performance performance = 1;
+  acme.common.v1.OperationResult result = 2;
+}

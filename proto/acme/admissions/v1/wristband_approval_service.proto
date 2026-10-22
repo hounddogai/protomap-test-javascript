@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "WristbandApprovalServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Routes wristbands through approval, with escalation and delegation.
+service WristbandApprovalService {
+  // Submits a wristband.
+  rpc SubmitWristband(SubmitWristbandRequest) returns (SubmitWristbandResponse);
+
+  // Approves a wristband.
+  rpc ApproveWristband(ApproveWristbandRequest) returns (ApproveWristbandResponse);
+
+  // Rejects a wristband.
+  rpc RejectWristband(RejectWristbandRequest) returns (RejectWristbandResponse);
+
+  // Escalates a wristband.
+  rpc EscalateWristband(EscalateWristbandRequest) returns (EscalateWristbandResponse);
+
+  // Lists wristbands a page at a time.
+  rpc ListPendingWristbands(ListPendingWristbandsRequest) returns (ListPendingWristbandsResponse);
+
+  // Delegates a wristband.
+  rpc DelegateWristbandApproval(DelegateWristbandApprovalRequest) returns (DelegateWristbandApprovalResponse);
+
+  // Recalls a wristband.
+  rpc RecallWristband(RecallWristbandRequest) returns (RecallWristbandResponse);
+
+  // Returns a wristband.
+  rpc GetWristbandApprovalStatus(GetWristbandApprovalStatusRequest) returns (GetWristbandApprovalStatusResponse);
+
+  // Comments a wristband.
+  rpc CommentWristbandApproval(CommentWristbandApprovalRequest) returns (CommentWristbandApprovalResponse);
+}
+
+// The request of `SubmitWristband`.
+message SubmitWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  SubmitWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitWristband`.
+message SubmitWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  SubmitWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveWristband`.
+message ApproveWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  ApproveWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveWristband`.
+message ApproveWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  ApproveWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectWristband`.
+message RejectWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  RejectWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectWristband`.
+message RejectWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  RejectWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateWristband`.
+message EscalateWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  EscalateWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateWristband`.
+message EscalateWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  EscalateWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingWristbands`.
+message ListPendingWristbandsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated WristbandStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingWristbandsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingWristbands`.
+message ListPendingWristbandsResponse {
+  repeated Wristband wristbands = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateWristbandApproval`.
+message DelegateWristbandApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  DelegateWristbandApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateWristbandApproval`.
+message DelegateWristbandApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  DelegateWristbandApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallWristband`.
+message RecallWristbandRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  RecallWristbandRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallWristband`.
+message RecallWristbandResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  RecallWristbandResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetWristbandApprovalStatus`.
+message GetWristbandApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetWristbandApprovalStatus`.
+message GetWristbandApprovalStatusResponse {
+  Wristband wristband = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentWristbandApproval`.
+message CommentWristbandApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string wristband_id = 2;
+  Wristband wristband = 3;
+  CommentWristbandApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentWristbandApproval`.
+message CommentWristbandApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Wristband wristband = 1;
+  CommentWristbandApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

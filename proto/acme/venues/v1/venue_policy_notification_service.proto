@@ -1,0 +1,218 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/any.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenuePolicyNotificationServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Tells the people who follow a venue policy what changed.
+service VenuePolicyNotificationService {
+  // Subscribes a venue policy.
+  rpc SubscribeVenuePolicyUpdates(SubscribeVenuePolicyUpdatesRequest) returns (SubscribeVenuePolicyUpdatesResponse);
+
+  // Unsubscribes a venue policy.
+  rpc UnsubscribeVenuePolicyUpdates(UnsubscribeVenuePolicyUpdatesRequest) returns (UnsubscribeVenuePolicyUpdatesResponse);
+
+  // Notifys a venue policy.
+  rpc NotifyVenuePolicyWatchers(NotifyVenuePolicyWatchersRequest) returns (NotifyVenuePolicyWatchersResponse);
+
+  // Sends a venue policy.
+  rpc SendVenuePolicyTestNotice(SendVenuePolicyTestNoticeRequest) returns (SendVenuePolicyTestNoticeResponse);
+
+  // Returns a venue policy.
+  rpc GetVenuePolicyPreferences(GetVenuePolicyPreferencesRequest) returns (GetVenuePolicyPreferencesResponse);
+
+  // Streams the changes of venue policies as they happen.
+  rpc StreamVenuePolicyNotices(StreamVenuePolicyNoticesRequest) returns (stream StreamVenuePolicyNoticesResponse);
+}
+
+// The request of `SubscribeVenuePolicyUpdates`.
+message SubscribeVenuePolicyUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  SubscribeVenuePolicyUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SubscribeVenuePolicyUpdates`.
+message SubscribeVenuePolicyUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  SubscribeVenuePolicyUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `UnsubscribeVenuePolicyUpdates`.
+message UnsubscribeVenuePolicyUpdatesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  UnsubscribeVenuePolicyUpdatesRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `UnsubscribeVenuePolicyUpdates`.
+message UnsubscribeVenuePolicyUpdatesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  UnsubscribeVenuePolicyUpdatesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NotifyVenuePolicyWatchers`.
+message NotifyVenuePolicyWatchersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  NotifyVenuePolicyWatchersRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `NotifyVenuePolicyWatchers`.
+message NotifyVenuePolicyWatchersResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  NotifyVenuePolicyWatchersResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SendVenuePolicyTestNotice`.
+message SendVenuePolicyTestNoticeRequest {
+  // What the operation needs besides the record.
+  message Details {
+    acme.common.v1.ContactInfo recipient = 1;
+    string template_id = 2;
+    map<string, string> variables = 3;
+    google.protobuf.Any payload = 4;
+    string channel = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  SendVenuePolicyTestNoticeRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SendVenuePolicyTestNotice`.
+message SendVenuePolicyTestNoticeResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  SendVenuePolicyTestNoticeResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetVenuePolicyPreferences`.
+message GetVenuePolicyPreferencesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetVenuePolicyPreferences`.
+message GetVenuePolicyPreferencesResponse {
+  VenuePolicy venue_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `StreamVenuePolicyNotices`.
+message StreamVenuePolicyNoticesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated VenuePolicyStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  StreamVenuePolicyNoticesRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `StreamVenuePolicyNotices`.
+message StreamVenuePolicyNoticesResponse {
+  VenuePolicy venue_policy = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}

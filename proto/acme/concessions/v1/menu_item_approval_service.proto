@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.concessions.v1;
+
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/concessions/v1/concessions.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Concessions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/concessions/v1;concessionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "MenuItemApprovalServiceProto";
+option java_package = "com.acme.concessions.v1";
+
+// Routes menu items through approval, with escalation and delegation.
+service MenuItemApprovalService {
+  // Submits a menu item.
+  rpc SubmitMenuItem(SubmitMenuItemRequest) returns (SubmitMenuItemResponse);
+
+  // Approves a menu item.
+  rpc ApproveMenuItem(ApproveMenuItemRequest) returns (ApproveMenuItemResponse);
+
+  // Rejects a menu item.
+  rpc RejectMenuItem(RejectMenuItemRequest) returns (RejectMenuItemResponse);
+
+  // Escalates a menu item.
+  rpc EscalateMenuItem(EscalateMenuItemRequest) returns (EscalateMenuItemResponse);
+
+  // Lists menu items a page at a time.
+  rpc ListPendingMenuItems(ListPendingMenuItemsRequest) returns (ListPendingMenuItemsResponse);
+
+  // Delegates a menu item.
+  rpc DelegateMenuItemApproval(DelegateMenuItemApprovalRequest) returns (DelegateMenuItemApprovalResponse);
+
+  // Recalls a menu item.
+  rpc RecallMenuItem(RecallMenuItemRequest) returns (RecallMenuItemResponse);
+
+  // Returns a menu item.
+  rpc GetMenuItemApprovalStatus(GetMenuItemApprovalStatusRequest) returns (GetMenuItemApprovalStatusResponse);
+
+  // Comments a menu item.
+  rpc CommentMenuItemApproval(CommentMenuItemApprovalRequest) returns (CommentMenuItemApprovalResponse);
+}
+
+// The request of `SubmitMenuItem`.
+message SubmitMenuItemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  SubmitMenuItemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitMenuItem`.
+message SubmitMenuItemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  SubmitMenuItemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveMenuItem`.
+message ApproveMenuItemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  ApproveMenuItemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveMenuItem`.
+message ApproveMenuItemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  ApproveMenuItemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectMenuItem`.
+message RejectMenuItemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  RejectMenuItemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectMenuItem`.
+message RejectMenuItemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  RejectMenuItemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateMenuItem`.
+message EscalateMenuItemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  EscalateMenuItemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateMenuItem`.
+message EscalateMenuItemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  EscalateMenuItemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingMenuItems`.
+message ListPendingMenuItemsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated MenuItemStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingMenuItemsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingMenuItems`.
+message ListPendingMenuItemsResponse {
+  repeated MenuItem menu_items = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateMenuItemApproval`.
+message DelegateMenuItemApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  DelegateMenuItemApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateMenuItemApproval`.
+message DelegateMenuItemApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  DelegateMenuItemApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallMenuItem`.
+message RecallMenuItemRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  RecallMenuItemRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallMenuItem`.
+message RecallMenuItemResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  RecallMenuItemResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetMenuItemApprovalStatus`.
+message GetMenuItemApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetMenuItemApprovalStatus`.
+message GetMenuItemApprovalStatusResponse {
+  MenuItem menu_item = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentMenuItemApproval`.
+message CommentMenuItemApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string menu_item_id = 2;
+  MenuItem menu_item = 3;
+  CommentMenuItemApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentMenuItemApproval`.
+message CommentMenuItemApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  MenuItem menu_item = 1;
+  CommentMenuItemApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,245 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/audit.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "CashDrawerQueryServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Answers read-only questions about cash drawers, for screens and reports.
+service CashDrawerQueryService {
+  // Returns a cash drawer.
+  rpc LookupCashDrawer(LookupCashDrawerRequest) returns (LookupCashDrawerResponse);
+
+  // Lists cash drawers a page at a time.
+  rpc BrowseCashDrawers(BrowseCashDrawersRequest) returns (BrowseCashDrawersResponse);
+
+  // Lists cash drawers a page at a time.
+  rpc FindCashDrawers(FindCashDrawersRequest) returns (FindCashDrawersResponse);
+
+  // Counts cash drawers by status.
+  rpc CountCashDrawers(CountCashDrawersRequest) returns (CountCashDrawersResponse);
+
+  // Returns several cash drawers at once.
+  rpc ResolveCashDrawers(ResolveCashDrawersRequest) returns (ResolveCashDrawersResponse);
+
+  // Streams every matching cash drawer.
+  rpc ExportCashDrawers(ExportCashDrawersRequest) returns (stream ExportCashDrawersResponse);
+
+  // Summarizes a cash drawer.
+  rpc SummarizeCashDrawers(SummarizeCashDrawersRequest) returns (SummarizeCashDrawersResponse);
+
+  // Lists cash drawers a page at a time.
+  rpc SuggestCashDrawers(SuggestCashDrawersRequest) returns (SuggestCashDrawersResponse);
+
+  // Returns a cash drawer.
+  rpc PeekCashDrawer(PeekCashDrawerRequest) returns (PeekCashDrawerResponse);
+}
+
+// The request of `LookupCashDrawer`.
+message LookupCashDrawerRequest {
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `LookupCashDrawer`.
+message LookupCashDrawerResponse {
+  CashDrawer cash_drawer = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `BrowseCashDrawers`.
+message BrowseCashDrawersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashDrawerStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  BrowseCashDrawersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `BrowseCashDrawers`.
+message BrowseCashDrawersResponse {
+  repeated CashDrawer cash_drawers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `FindCashDrawers`.
+message FindCashDrawersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashDrawerStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  FindCashDrawersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `FindCashDrawers`.
+message FindCashDrawersResponse {
+  repeated CashDrawer cash_drawers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CountCashDrawers`.
+message CountCashDrawersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashDrawerStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  CountCashDrawersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `CountCashDrawers`.
+message CountCashDrawersResponse {
+  int64 count = 1;
+  map<string, int64> by_status = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResolveCashDrawers`.
+message ResolveCashDrawersRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string cash_drawer_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `ResolveCashDrawers`.
+message ResolveCashDrawersResponse {
+  repeated CashDrawer cash_drawers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExportCashDrawers`.
+message ExportCashDrawersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashDrawerStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  ExportCashDrawersRequest.Filter filter = 2;
+  string format = 3;
+  google.protobuf.FieldMask fields = 4;
+  string destination_uri = 5;
+}
+
+// The response of `ExportCashDrawers`.
+message ExportCashDrawersResponse {
+  CashDrawer cash_drawer = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SummarizeCashDrawers`.
+message SummarizeCashDrawersRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string format = 1;
+    acme.common.v1.TimeWindow period = 2;
+    repeated string recipient_emails = 3;
+    string cron = 4;
+    map<string, string> filters = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  SummarizeCashDrawersRequest.Details details = 3;
+  string reason = 4;
+  map<string, string> annotations = 5;
+}
+
+// The response of `SummarizeCashDrawers`.
+message SummarizeCashDrawersResponse {
+  string report_id = 1;
+  string download_uri = 2;
+  map<string, string> summary = 3;
+  acme.common.v1.TimeWindow period = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `SuggestCashDrawers`.
+message SuggestCashDrawersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashDrawerStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SuggestCashDrawersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SuggestCashDrawers`.
+message SuggestCashDrawersResponse {
+  repeated CashDrawer cash_drawers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PeekCashDrawer`.
+message PeekCashDrawerRequest {
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `PeekCashDrawer`.
+message PeekCashDrawerResponse {
+  CashDrawer cash_drawer = 1;
+  acme.common.v1.OperationResult result = 2;
+}

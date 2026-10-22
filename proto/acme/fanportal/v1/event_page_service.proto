@@ -1,0 +1,220 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.fanportal.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/fanportal/v1/fanportal.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Fanportal.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/fanportal/v1;fanportalv1";
+option java_multiple_files = true;
+option java_outer_classname = "EventPageServiceProto";
+option java_package = "com.acme.fanportal.v1";
+
+// Manages event pages: creates, reads, changes, and lists them.
+service EventPageService {
+  // Creates an event page.
+  rpc CreateEventPage(CreateEventPageRequest) returns (CreateEventPageResponse);
+
+  // Returns an event page.
+  rpc GetEventPage(GetEventPageRequest) returns (GetEventPageResponse);
+
+  // Changes an event page.
+  rpc UpdateEventPage(UpdateEventPageRequest) returns (UpdateEventPageResponse);
+
+  // Deletes an event page.
+  rpc DeleteEventPage(DeleteEventPageRequest) returns (DeleteEventPageResponse);
+
+  // Returns several event pages at once.
+  rpc BatchGetEventPages(BatchGetEventPagesRequest) returns (BatchGetEventPagesResponse);
+
+  // Lists event pages a page at a time.
+  rpc SearchEventPages(SearchEventPagesRequest) returns (SearchEventPagesResponse);
+
+  // Streams the changes of event pages as they happen.
+  rpc WatchEventPages(WatchEventPagesRequest) returns (stream WatchEventPagesResponse);
+
+  // Takes a stream of event pages and answers once at the end.
+  rpc BatchCreateEventPages(stream BatchCreateEventPagesRequest) returns (BatchCreateEventPagesResponse);
+
+  // Creates an event page.
+  rpc CloneEventPage(CloneEventPageRequest) returns (CloneEventPageResponse);
+}
+
+// The request of `CreateEventPage`.
+message CreateEventPageRequest {
+  acme.common.v1.RequestContext context = 1;
+  EventPage event_page = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CreateEventPage`.
+message CreateEventPageResponse {
+  EventPage event_page = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `GetEventPage`.
+message GetEventPageRequest {
+  acme.common.v1.RequestContext context = 1;
+  string event_page_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetEventPage`.
+message GetEventPageResponse {
+  EventPage event_page = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `UpdateEventPage`.
+message UpdateEventPageRequest {
+  acme.common.v1.RequestContext context = 1;
+  EventPage event_page = 2;
+  google.protobuf.FieldMask update_mask = 3;
+  bool allow_missing = 4;
+}
+
+// The response of `UpdateEventPage`.
+message UpdateEventPageResponse {
+  EventPage event_page = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `DeleteEventPage`.
+message DeleteEventPageRequest {
+  acme.common.v1.RequestContext context = 1;
+  string event_page_id = 2;
+  string reason = 3;
+  string etag = 4;
+  bool force = 5;
+}
+
+// The response of `DeleteEventPage`.
+message DeleteEventPageResponse {
+  acme.common.v1.OperationResult result = 1;
+  google.protobuf.Timestamp effective_at = 2;
+}
+
+// The request of `BatchGetEventPages`.
+message BatchGetEventPagesRequest {
+  acme.common.v1.RequestContext context = 1;
+  repeated string event_page_ids = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `BatchGetEventPages`.
+message BatchGetEventPagesResponse {
+  repeated EventPage event_pages = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SearchEventPages`.
+message SearchEventPagesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EventPageStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  SearchEventPagesRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `SearchEventPages`.
+message SearchEventPagesResponse {
+  repeated EventPage event_pages = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `WatchEventPages`.
+message WatchEventPagesRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated EventPageStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  WatchEventPagesRequest.Filter filter = 2;
+  google.protobuf.Timestamp since = 3;
+  int32 max_events = 4;
+  acme.common.v1.ContactInfo subscriber = 5;
+}
+
+// The response of `WatchEventPages`.
+message WatchEventPagesResponse {
+  EventPage event_page = 1;
+  string change_type = 2;
+  google.protobuf.Timestamp changed_at = 3;
+  int64 sequence = 4;
+  acme.common.v1.OperationResult result = 5;
+}
+
+// The request of `BatchCreateEventPages`.
+message BatchCreateEventPagesRequest {
+  // What a stream of records starts with.
+  message StreamHeader {
+    string source = 1;
+    string format = 2;
+    int64 total_records = 3;
+    acme.common.v1.ContactInfo submitted_by = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  oneof chunk {
+    BatchCreateEventPagesRequest.StreamHeader header = 2;
+    EventPage record = 3;
+  }
+  int64 sequence = 4;
+}
+
+// The response of `BatchCreateEventPages`.
+message BatchCreateEventPagesResponse {
+  // A record the import turned down.
+  message Rejection {
+    int64 sequence = 1;
+    string reason = 2;
+    string event_page_id = 3;
+  }
+
+  int64 accepted = 1;
+  int64 rejected = 2;
+  repeated BatchCreateEventPagesResponse.Rejection rejections = 3;
+  acme.common.v1.OperationResult result = 4;
+}
+
+// The request of `CloneEventPage`.
+message CloneEventPageRequest {
+  acme.common.v1.RequestContext context = 1;
+  EventPage event_page = 2;
+  string request_id = 3;
+  bool validate_only = 4;
+}
+
+// The response of `CloneEventPage`.
+message CloneEventPageResponse {
+  EventPage event_page = 1;
+  acme.common.v1.OperationResult result = 2;
+}

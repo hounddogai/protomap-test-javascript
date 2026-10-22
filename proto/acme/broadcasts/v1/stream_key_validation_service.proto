@@ -1,0 +1,305 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "StreamKeyValidationServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Checks stream keys against the rules before anything acts on them.
+service StreamKeyValidationService {
+  // Validates a stream key.
+  rpc ValidateStreamKey(ValidateStreamKeyRequest) returns (ValidateStreamKeyResponse);
+
+  // Previews a stream key.
+  rpc PreviewStreamKey(PreviewStreamKeyRequest) returns (PreviewStreamKeyResponse);
+
+  // Checks a stream key.
+  rpc CheckStreamKeyEligibility(CheckStreamKeyEligibilityRequest) returns (CheckStreamKeyEligibilityResponse);
+
+  // Normalizes a stream key.
+  rpc NormalizeStreamKey(NormalizeStreamKeyRequest) returns (NormalizeStreamKeyResponse);
+
+  // Explains a stream key.
+  rpc ExplainStreamKeyDecision(ExplainStreamKeyDecisionRequest) returns (ExplainStreamKeyDecisionResponse);
+
+  // Scores a stream key.
+  rpc ScoreStreamKey(ScoreStreamKeyRequest) returns (ScoreStreamKeyResponse);
+
+  // Lints a stream key.
+  rpc LintStreamKeys(LintStreamKeysRequest) returns (LintStreamKeysResponse);
+
+  // Returns a stream key.
+  rpc GetStreamKeyRules(GetStreamKeyRulesRequest) returns (GetStreamKeyRulesResponse);
+}
+
+// The request of `ValidateStreamKey`.
+message ValidateStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  ValidateStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateStreamKey`.
+message ValidateStreamKeyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  ValidateStreamKeyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewStreamKey`.
+message PreviewStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  PreviewStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewStreamKey`.
+message PreviewStreamKeyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  PreviewStreamKeyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckStreamKeyEligibility`.
+message CheckStreamKeyEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  CheckStreamKeyEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckStreamKeyEligibility`.
+message CheckStreamKeyEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  CheckStreamKeyEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeStreamKey`.
+message NormalizeStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  NormalizeStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeStreamKey`.
+message NormalizeStreamKeyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  NormalizeStreamKeyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainStreamKeyDecision`.
+message ExplainStreamKeyDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  ExplainStreamKeyDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainStreamKeyDecision`.
+message ExplainStreamKeyDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  ExplainStreamKeyDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ScoreStreamKey`.
+message ScoreStreamKeyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  ScoreStreamKeyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ScoreStreamKey`.
+message ScoreStreamKeyResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ScoreStreamKeyResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  StreamKey stream_key = 1;
+  ScoreStreamKeyResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintStreamKeys`.
+message LintStreamKeysRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  StreamKey stream_key = 3;
+  LintStreamKeysRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintStreamKeys`.
+message LintStreamKeysResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  StreamKey stream_key = 1;
+  LintStreamKeysResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetStreamKeyRules`.
+message GetStreamKeyRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string stream_key_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetStreamKeyRules`.
+message GetStreamKeyRulesResponse {
+  StreamKey stream_key = 1;
+  acme.common.v1.OperationResult result = 2;
+}

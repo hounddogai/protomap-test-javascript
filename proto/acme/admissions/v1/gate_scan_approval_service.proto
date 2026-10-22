@@ -1,0 +1,333 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.admissions.v1;
+
+import "acme/admissions/v1/admissions.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Admissions.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/admissions/v1;admissionsv1";
+option java_multiple_files = true;
+option java_outer_classname = "GateScanApprovalServiceProto";
+option java_package = "com.acme.admissions.v1";
+
+// Routes gate scans through approval, with escalation and delegation.
+service GateScanApprovalService {
+  // Submits a gate scan.
+  rpc SubmitGateScan(SubmitGateScanRequest) returns (SubmitGateScanResponse);
+
+  // Approves a gate scan.
+  rpc ApproveGateScan(ApproveGateScanRequest) returns (ApproveGateScanResponse);
+
+  // Rejects a gate scan.
+  rpc RejectGateScan(RejectGateScanRequest) returns (RejectGateScanResponse);
+
+  // Escalates a gate scan.
+  rpc EscalateGateScan(EscalateGateScanRequest) returns (EscalateGateScanResponse);
+
+  // Lists gate scans a page at a time.
+  rpc ListPendingGateScans(ListPendingGateScansRequest) returns (ListPendingGateScansResponse);
+
+  // Delegates a gate scan.
+  rpc DelegateGateScanApproval(DelegateGateScanApprovalRequest) returns (DelegateGateScanApprovalResponse);
+
+  // Recalls a gate scan.
+  rpc RecallGateScan(RecallGateScanRequest) returns (RecallGateScanResponse);
+
+  // Returns a gate scan.
+  rpc GetGateScanApprovalStatus(GetGateScanApprovalStatusRequest) returns (GetGateScanApprovalStatusResponse);
+
+  // Comments a gate scan.
+  rpc CommentGateScanApproval(CommentGateScanApprovalRequest) returns (CommentGateScanApprovalResponse);
+}
+
+// The request of `SubmitGateScan`.
+message SubmitGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  SubmitGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitGateScan`.
+message SubmitGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  SubmitGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveGateScan`.
+message ApproveGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  ApproveGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveGateScan`.
+message ApproveGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  ApproveGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectGateScan`.
+message RejectGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  RejectGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectGateScan`.
+message RejectGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  RejectGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateGateScan`.
+message EscalateGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  EscalateGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateGateScan`.
+message EscalateGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  EscalateGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingGateScans`.
+message ListPendingGateScansRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated GateScanStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingGateScansRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingGateScans`.
+message ListPendingGateScansResponse {
+  repeated GateScan gate_scans = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `DelegateGateScanApproval`.
+message DelegateGateScanApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  DelegateGateScanApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `DelegateGateScanApproval`.
+message DelegateGateScanApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  DelegateGateScanApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallGateScan`.
+message RecallGateScanRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  RecallGateScanRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallGateScan`.
+message RecallGateScanResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  RecallGateScanResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetGateScanApprovalStatus`.
+message GetGateScanApprovalStatusRequest {
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetGateScanApprovalStatus`.
+message GetGateScanApprovalStatusResponse {
+  GateScan gate_scan = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `CommentGateScanApproval`.
+message CommentGateScanApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string gate_scan_id = 2;
+  GateScan gate_scan = 3;
+  CommentGateScanApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentGateScanApproval`.
+message CommentGateScanApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  GateScan gate_scan = 1;
+  CommentGateScanApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

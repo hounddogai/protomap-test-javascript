@@ -1,0 +1,335 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "PerformanceCalculationServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Computes the figures of a performance, such as totals, taxes, and estimates.
+service PerformanceCalculationService {
+  // Calculates a performance.
+  rpc CalculatePerformance(CalculatePerformanceRequest) returns (CalculatePerformanceResponse);
+
+  // Estimates a performance.
+  rpc EstimatePerformance(EstimatePerformanceRequest) returns (EstimatePerformanceResponse);
+
+  // Quotes a performance.
+  rpc QuotePerformance(QuotePerformanceRequest) returns (QuotePerformanceResponse);
+
+  // Compares a performance.
+  rpc ComparePerformanceOptions(ComparePerformanceOptionsRequest) returns (ComparePerformanceOptionsResponse);
+
+  // Recalculates a performance.
+  rpc RecalculatePerformances(RecalculatePerformancesRequest) returns (RecalculatePerformancesResponse);
+
+  // Simulates a performance.
+  rpc SimulatePerformance(SimulatePerformanceRequest) returns (SimulatePerformanceResponse);
+
+  // Explains a performance.
+  rpc ExplainPerformanceCalculation(ExplainPerformanceCalculationRequest) returns (ExplainPerformanceCalculationResponse);
+
+  // Returns a performance.
+  rpc GetPerformanceRates(GetPerformanceRatesRequest) returns (GetPerformanceRatesResponse);
+}
+
+// The request of `CalculatePerformance`.
+message CalculatePerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  CalculatePerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculatePerformance`.
+message CalculatePerformanceResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculatePerformanceResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Performance performance = 1;
+  CalculatePerformanceResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimatePerformance`.
+message EstimatePerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  EstimatePerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimatePerformance`.
+message EstimatePerformanceResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimatePerformanceResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Performance performance = 1;
+  EstimatePerformanceResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuotePerformance`.
+message QuotePerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  QuotePerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuotePerformance`.
+message QuotePerformanceResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuotePerformanceResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Performance performance = 1;
+  QuotePerformanceResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ComparePerformanceOptions`.
+message ComparePerformanceOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  ComparePerformanceOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ComparePerformanceOptions`.
+message ComparePerformanceOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated ComparePerformanceOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Performance performance = 1;
+  ComparePerformanceOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculatePerformances`.
+message RecalculatePerformancesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  RecalculatePerformancesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculatePerformances`.
+message RecalculatePerformancesResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculatePerformancesResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Performance performance = 1;
+  RecalculatePerformancesResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulatePerformance`.
+message SimulatePerformanceRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  SimulatePerformanceRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulatePerformance`.
+message SimulatePerformanceResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulatePerformanceResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  Performance performance = 1;
+  SimulatePerformanceResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainPerformanceCalculation`.
+message ExplainPerformanceCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  ExplainPerformanceCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainPerformanceCalculation`.
+message ExplainPerformanceCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  ExplainPerformanceCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetPerformanceRates`.
+message GetPerformanceRatesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetPerformanceRates`.
+message GetPerformanceRatesResponse {
+  Performance performance = 1;
+  acme.common.v1.OperationResult result = 2;
+}

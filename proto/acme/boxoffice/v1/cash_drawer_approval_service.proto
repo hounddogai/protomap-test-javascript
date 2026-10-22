@@ -1,0 +1,278 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.boxoffice.v1;
+
+import "acme/boxoffice/v1/boxoffice.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/identity/v1/refs.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Boxoffice.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/boxoffice/v1;boxofficev1";
+option java_multiple_files = true;
+option java_outer_classname = "CashDrawerApprovalServiceProto";
+option java_package = "com.acme.boxoffice.v1";
+
+// Routes cash drawers through approval, with escalation and delegation.
+service CashDrawerApprovalService {
+  // Submits a cash drawer.
+  rpc SubmitCashDrawer(SubmitCashDrawerRequest) returns (SubmitCashDrawerResponse);
+
+  // Approves a cash drawer.
+  rpc ApproveCashDrawer(ApproveCashDrawerRequest) returns (ApproveCashDrawerResponse);
+
+  // Rejects a cash drawer.
+  rpc RejectCashDrawer(RejectCashDrawerRequest) returns (RejectCashDrawerResponse);
+
+  // Escalates a cash drawer.
+  rpc EscalateCashDrawer(EscalateCashDrawerRequest) returns (EscalateCashDrawerResponse);
+
+  // Lists cash drawers a page at a time.
+  rpc ListPendingCashDrawers(ListPendingCashDrawersRequest) returns (ListPendingCashDrawersResponse);
+
+  // Recalls a cash drawer.
+  rpc RecallCashDrawer(RecallCashDrawerRequest) returns (RecallCashDrawerResponse);
+
+  // Comments a cash drawer.
+  rpc CommentCashDrawerApproval(CommentCashDrawerApprovalRequest) returns (CommentCashDrawerApprovalResponse);
+}
+
+// The request of `SubmitCashDrawer`.
+message SubmitCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  SubmitCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SubmitCashDrawer`.
+message SubmitCashDrawerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  SubmitCashDrawerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ApproveCashDrawer`.
+message ApproveCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  ApproveCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ApproveCashDrawer`.
+message ApproveCashDrawerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  ApproveCashDrawerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RejectCashDrawer`.
+message RejectCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  RejectCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RejectCashDrawer`.
+message RejectCashDrawerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  RejectCashDrawerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EscalateCashDrawer`.
+message EscalateCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  EscalateCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EscalateCashDrawer`.
+message EscalateCashDrawerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  EscalateCashDrawerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPendingCashDrawers`.
+message ListPendingCashDrawersRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated CashDrawerStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPendingCashDrawersRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPendingCashDrawers`.
+message ListPendingCashDrawersResponse {
+  repeated CashDrawer cash_drawers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecallCashDrawer`.
+message RecallCashDrawerRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  RecallCashDrawerRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecallCashDrawer`.
+message RecallCashDrawerResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  RecallCashDrawerResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CommentCashDrawerApproval`.
+message CommentCashDrawerApprovalRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string approver_email = 1;
+    string comment = 2;
+    repeated string conditions = 3;
+    google.protobuf.Timestamp effective_at = 4;
+    acme.identity.v1.UserRef approver = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string cash_drawer_id = 2;
+  CashDrawer cash_drawer = 3;
+  CommentCashDrawerApprovalRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CommentCashDrawerApproval`.
+message CommentCashDrawerApprovalResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  CashDrawer cash_drawer = 1;
+  CommentCashDrawerApprovalResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

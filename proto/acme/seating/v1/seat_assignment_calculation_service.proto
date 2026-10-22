@@ -1,0 +1,318 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.seating.v1;
+
+import "acme/common/v1/address.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/money.proto";
+import "acme/common/v1/operation.proto";
+import "acme/seating/v1/seating.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Seating.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/seating/v1;seatingv1";
+option java_multiple_files = true;
+option java_outer_classname = "SeatAssignmentCalculationServiceProto";
+option java_package = "com.acme.seating.v1";
+
+// Computes the figures of a seat assignment, such as totals, taxes, and estimates.
+service SeatAssignmentCalculationService {
+  // Calculates a seat assignment.
+  rpc CalculateSeatAssignment(CalculateSeatAssignmentRequest) returns (CalculateSeatAssignmentResponse);
+
+  // Estimates a seat assignment.
+  rpc EstimateSeatAssignment(EstimateSeatAssignmentRequest) returns (EstimateSeatAssignmentResponse);
+
+  // Quotes a seat assignment.
+  rpc QuoteSeatAssignment(QuoteSeatAssignmentRequest) returns (QuoteSeatAssignmentResponse);
+
+  // Compares a seat assignment.
+  rpc CompareSeatAssignmentOptions(CompareSeatAssignmentOptionsRequest) returns (CompareSeatAssignmentOptionsResponse);
+
+  // Recalculates a seat assignment.
+  rpc RecalculateSeatAssignments(RecalculateSeatAssignmentsRequest) returns (RecalculateSeatAssignmentsResponse);
+
+  // Simulates a seat assignment.
+  rpc SimulateSeatAssignment(SimulateSeatAssignmentRequest) returns (SimulateSeatAssignmentResponse);
+
+  // Explains a seat assignment.
+  rpc ExplainSeatAssignmentCalculation(ExplainSeatAssignmentCalculationRequest) returns (ExplainSeatAssignmentCalculationResponse);
+}
+
+// The request of `CalculateSeatAssignment`.
+message CalculateSeatAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  CalculateSeatAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CalculateSeatAssignment`.
+message CalculateSeatAssignmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CalculateSeatAssignmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  CalculateSeatAssignmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `EstimateSeatAssignment`.
+message EstimateSeatAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  EstimateSeatAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `EstimateSeatAssignment`.
+message EstimateSeatAssignmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated EstimateSeatAssignmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  EstimateSeatAssignmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `QuoteSeatAssignment`.
+message QuoteSeatAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  QuoteSeatAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `QuoteSeatAssignment`.
+message QuoteSeatAssignmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated QuoteSeatAssignmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  QuoteSeatAssignmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CompareSeatAssignmentOptions`.
+message CompareSeatAssignmentOptionsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  CompareSeatAssignmentOptionsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CompareSeatAssignmentOptions`.
+message CompareSeatAssignmentOptionsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated CompareSeatAssignmentOptionsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  CompareSeatAssignmentOptionsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RecalculateSeatAssignments`.
+message RecalculateSeatAssignmentsRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  RecalculateSeatAssignmentsRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RecalculateSeatAssignments`.
+message RecalculateSeatAssignmentsResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated RecalculateSeatAssignmentsResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  RecalculateSeatAssignmentsResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SimulateSeatAssignment`.
+message SimulateSeatAssignmentRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string currency_code = 1;
+    acme.common.v1.PostalAddress destination = 2;
+    repeated string scenario_ids = 3;
+    bool include_breakdown = 4;
+    acme.common.v1.Money budget = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  SimulateSeatAssignmentRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SimulateSeatAssignment`.
+message SimulateSeatAssignmentResponse {
+  // How a figure was reached.
+  message Breakdown {
+    // One line of a breakdown.
+    message Line {
+      string label = 1;
+      acme.common.v1.Money amount = 2;
+      double rate = 3;
+    }
+
+    acme.common.v1.Money total = 1;
+    repeated SimulateSeatAssignmentResponse.Breakdown.Line lines = 2;
+    string currency_code = 3;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  SimulateSeatAssignmentResponse.Breakdown breakdown = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainSeatAssignmentCalculation`.
+message ExplainSeatAssignmentCalculationRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string seat_assignment_id = 2;
+  SeatAssignment seat_assignment = 3;
+  ExplainSeatAssignmentCalculationRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainSeatAssignmentCalculation`.
+message ExplainSeatAssignmentCalculationResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SeatAssignment seat_assignment = 1;
+  ExplainSeatAssignmentCalculationResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

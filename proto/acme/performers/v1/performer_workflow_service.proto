@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.performers.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/performers/v1/performers.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Performers.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/performers/v1;performersv1";
+option java_multiple_files = true;
+option java_outer_classname = "PerformerWorkflowServiceProto";
+option java_package = "com.acme.performers.v1";
+
+// Runs the long-lived workflow that takes a performer from start to finish.
+service PerformerWorkflowService {
+  // Starts a performer.
+  rpc StartPerformerWorkflow(StartPerformerWorkflowRequest) returns (StartPerformerWorkflowResponse);
+
+  // Advances a performer.
+  rpc AdvancePerformerWorkflow(AdvancePerformerWorkflowRequest) returns (AdvancePerformerWorkflowResponse);
+
+  // Cancels a performer.
+  rpc CancelPerformerWorkflow(CancelPerformerWorkflowRequest) returns (CancelPerformerWorkflowResponse);
+
+  // Retrys a performer.
+  rpc RetryPerformerWorkflow(RetryPerformerWorkflowRequest) returns (RetryPerformerWorkflowResponse);
+
+  // Returns a performer.
+  rpc InspectPerformerWorkflow(InspectPerformerWorkflowRequest) returns (InspectPerformerWorkflowResponse);
+
+  // Lists performers a page at a time.
+  rpc ListPerformerWorkflows(ListPerformerWorkflowsRequest) returns (ListPerformerWorkflowsResponse);
+
+  // Signals a performer.
+  rpc SignalPerformerWorkflow(SignalPerformerWorkflowRequest) returns (SignalPerformerWorkflowResponse);
+}
+
+// The request of `StartPerformerWorkflow`.
+message StartPerformerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  StartPerformerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartPerformerWorkflow`.
+message StartPerformerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  StartPerformerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvancePerformerWorkflow`.
+message AdvancePerformerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  AdvancePerformerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvancePerformerWorkflow`.
+message AdvancePerformerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  AdvancePerformerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelPerformerWorkflow`.
+message CancelPerformerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  CancelPerformerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelPerformerWorkflow`.
+message CancelPerformerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  CancelPerformerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryPerformerWorkflow`.
+message RetryPerformerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  RetryPerformerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryPerformerWorkflow`.
+message RetryPerformerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  RetryPerformerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectPerformerWorkflow`.
+message InspectPerformerWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectPerformerWorkflow`.
+message InspectPerformerWorkflowResponse {
+  Performer performer = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListPerformerWorkflows`.
+message ListPerformerWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PerformerStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPerformerWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPerformerWorkflows`.
+message ListPerformerWorkflowsResponse {
+  repeated Performer performers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalPerformerWorkflow`.
+message SignalPerformerWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performer_id = 2;
+  Performer performer = 3;
+  SignalPerformerWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalPerformerWorkflow`.
+message SignalPerformerWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performer performer = 1;
+  SignalPerformerWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

@@ -1,0 +1,296 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.sponsorships.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/sponsorships/v1/sponsorships.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Sponsorships.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/sponsorships/v1;sponsorshipsv1";
+option java_multiple_files = true;
+option java_outer_classname = "SponsorshipDealWorkflowServiceProto";
+option java_package = "com.acme.sponsorships.v1";
+
+// Runs the long-lived workflow that takes a sponsorship deal from start to finish.
+service SponsorshipDealWorkflowService {
+  // Starts a sponsorship deal.
+  rpc StartSponsorshipDealWorkflow(StartSponsorshipDealWorkflowRequest) returns (StartSponsorshipDealWorkflowResponse);
+
+  // Advances a sponsorship deal.
+  rpc AdvanceSponsorshipDealWorkflow(AdvanceSponsorshipDealWorkflowRequest) returns (AdvanceSponsorshipDealWorkflowResponse);
+
+  // Cancels a sponsorship deal.
+  rpc CancelSponsorshipDealWorkflow(CancelSponsorshipDealWorkflowRequest) returns (CancelSponsorshipDealWorkflowResponse);
+
+  // Retrys a sponsorship deal.
+  rpc RetrySponsorshipDealWorkflow(RetrySponsorshipDealWorkflowRequest) returns (RetrySponsorshipDealWorkflowResponse);
+
+  // Pauses a sponsorship deal.
+  rpc PauseSponsorshipDealWorkflow(PauseSponsorshipDealWorkflowRequest) returns (PauseSponsorshipDealWorkflowResponse);
+
+  // Resumes a sponsorship deal.
+  rpc ResumeSponsorshipDealWorkflow(ResumeSponsorshipDealWorkflowRequest) returns (ResumeSponsorshipDealWorkflowResponse);
+
+  // Returns a sponsorship deal.
+  rpc InspectSponsorshipDealWorkflow(InspectSponsorshipDealWorkflowRequest) returns (InspectSponsorshipDealWorkflowResponse);
+
+  // Lists sponsorship deals a page at a time.
+  rpc ListSponsorshipDealWorkflows(ListSponsorshipDealWorkflowsRequest) returns (ListSponsorshipDealWorkflowsResponse);
+}
+
+// The request of `StartSponsorshipDealWorkflow`.
+message StartSponsorshipDealWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  StartSponsorshipDealWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartSponsorshipDealWorkflow`.
+message StartSponsorshipDealWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  StartSponsorshipDealWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceSponsorshipDealWorkflow`.
+message AdvanceSponsorshipDealWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  AdvanceSponsorshipDealWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceSponsorshipDealWorkflow`.
+message AdvanceSponsorshipDealWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  AdvanceSponsorshipDealWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelSponsorshipDealWorkflow`.
+message CancelSponsorshipDealWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  CancelSponsorshipDealWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelSponsorshipDealWorkflow`.
+message CancelSponsorshipDealWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  CancelSponsorshipDealWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetrySponsorshipDealWorkflow`.
+message RetrySponsorshipDealWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  RetrySponsorshipDealWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetrySponsorshipDealWorkflow`.
+message RetrySponsorshipDealWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  RetrySponsorshipDealWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseSponsorshipDealWorkflow`.
+message PauseSponsorshipDealWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  PauseSponsorshipDealWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseSponsorshipDealWorkflow`.
+message PauseSponsorshipDealWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  PauseSponsorshipDealWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeSponsorshipDealWorkflow`.
+message ResumeSponsorshipDealWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  SponsorshipDeal sponsorship_deal = 3;
+  ResumeSponsorshipDealWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeSponsorshipDealWorkflow`.
+message ResumeSponsorshipDealWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  SponsorshipDeal sponsorship_deal = 1;
+  ResumeSponsorshipDealWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectSponsorshipDealWorkflow`.
+message InspectSponsorshipDealWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string sponsorship_deal_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectSponsorshipDealWorkflow`.
+message InspectSponsorshipDealWorkflowResponse {
+  SponsorshipDeal sponsorship_deal = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListSponsorshipDealWorkflows`.
+message ListSponsorshipDealWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated SponsorshipDealStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListSponsorshipDealWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListSponsorshipDealWorkflows`.
+message ListSponsorshipDealWorkflowsResponse {
+  repeated SponsorshipDeal sponsorship_deals = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

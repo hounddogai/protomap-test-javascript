@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.broadcasts.v1;
+
+import "acme/broadcasts/v1/broadcasts.proto";
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Broadcasts.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/broadcasts/v1;broadcastsv1";
+option java_multiple_files = true;
+option java_outer_classname = "ReplayClipWorkflowServiceProto";
+option java_package = "com.acme.broadcasts.v1";
+
+// Runs the long-lived workflow that takes a replay clip from start to finish.
+service ReplayClipWorkflowService {
+  // Starts a replay clip.
+  rpc StartReplayClipWorkflow(StartReplayClipWorkflowRequest) returns (StartReplayClipWorkflowResponse);
+
+  // Advances a replay clip.
+  rpc AdvanceReplayClipWorkflow(AdvanceReplayClipWorkflowRequest) returns (AdvanceReplayClipWorkflowResponse);
+
+  // Cancels a replay clip.
+  rpc CancelReplayClipWorkflow(CancelReplayClipWorkflowRequest) returns (CancelReplayClipWorkflowResponse);
+
+  // Pauses a replay clip.
+  rpc PauseReplayClipWorkflow(PauseReplayClipWorkflowRequest) returns (PauseReplayClipWorkflowResponse);
+
+  // Resumes a replay clip.
+  rpc ResumeReplayClipWorkflow(ResumeReplayClipWorkflowRequest) returns (ResumeReplayClipWorkflowResponse);
+
+  // Returns a replay clip.
+  rpc InspectReplayClipWorkflow(InspectReplayClipWorkflowRequest) returns (InspectReplayClipWorkflowResponse);
+
+  // Lists replay clips a page at a time.
+  rpc ListReplayClipWorkflows(ListReplayClipWorkflowsRequest) returns (ListReplayClipWorkflowsResponse);
+}
+
+// The request of `StartReplayClipWorkflow`.
+message StartReplayClipWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  StartReplayClipWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartReplayClipWorkflow`.
+message StartReplayClipWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  StartReplayClipWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceReplayClipWorkflow`.
+message AdvanceReplayClipWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  AdvanceReplayClipWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceReplayClipWorkflow`.
+message AdvanceReplayClipWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  AdvanceReplayClipWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CancelReplayClipWorkflow`.
+message CancelReplayClipWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  CancelReplayClipWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CancelReplayClipWorkflow`.
+message CancelReplayClipWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  CancelReplayClipWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseReplayClipWorkflow`.
+message PauseReplayClipWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  PauseReplayClipWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseReplayClipWorkflow`.
+message PauseReplayClipWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  PauseReplayClipWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeReplayClipWorkflow`.
+message ResumeReplayClipWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  ReplayClip replay_clip = 3;
+  ResumeReplayClipWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeReplayClipWorkflow`.
+message ResumeReplayClipWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  ReplayClip replay_clip = 1;
+  ResumeReplayClipWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectReplayClipWorkflow`.
+message InspectReplayClipWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string replay_clip_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectReplayClipWorkflow`.
+message InspectReplayClipWorkflowResponse {
+  ReplayClip replay_clip = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListReplayClipWorkflows`.
+message ListReplayClipWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated ReplayClipStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListReplayClipWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListReplayClipWorkflows`.
+message ListReplayClipWorkflowsResponse {
+  repeated ReplayClip replay_clips = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}

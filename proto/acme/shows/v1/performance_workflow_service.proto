@@ -1,0 +1,279 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.shows.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/shows/v1/shows.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Shows.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/shows/v1;showsv1";
+option java_multiple_files = true;
+option java_outer_classname = "PerformanceWorkflowServiceProto";
+option java_package = "com.acme.shows.v1";
+
+// Runs the long-lived workflow that takes a performance from start to finish.
+service PerformanceWorkflowService {
+  // Starts a performance.
+  rpc StartPerformanceWorkflow(StartPerformanceWorkflowRequest) returns (StartPerformanceWorkflowResponse);
+
+  // Advances a performance.
+  rpc AdvancePerformanceWorkflow(AdvancePerformanceWorkflowRequest) returns (AdvancePerformanceWorkflowResponse);
+
+  // Retrys a performance.
+  rpc RetryPerformanceWorkflow(RetryPerformanceWorkflowRequest) returns (RetryPerformanceWorkflowResponse);
+
+  // Pauses a performance.
+  rpc PausePerformanceWorkflow(PausePerformanceWorkflowRequest) returns (PausePerformanceWorkflowResponse);
+
+  // Resumes a performance.
+  rpc ResumePerformanceWorkflow(ResumePerformanceWorkflowRequest) returns (ResumePerformanceWorkflowResponse);
+
+  // Lists performances a page at a time.
+  rpc ListPerformanceWorkflows(ListPerformanceWorkflowsRequest) returns (ListPerformanceWorkflowsResponse);
+
+  // Signals a performance.
+  rpc SignalPerformanceWorkflow(SignalPerformanceWorkflowRequest) returns (SignalPerformanceWorkflowResponse);
+}
+
+// The request of `StartPerformanceWorkflow`.
+message StartPerformanceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  StartPerformanceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartPerformanceWorkflow`.
+message StartPerformanceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  StartPerformanceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvancePerformanceWorkflow`.
+message AdvancePerformanceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  AdvancePerformanceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvancePerformanceWorkflow`.
+message AdvancePerformanceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  AdvancePerformanceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `RetryPerformanceWorkflow`.
+message RetryPerformanceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  RetryPerformanceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `RetryPerformanceWorkflow`.
+message RetryPerformanceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  RetryPerformanceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PausePerformanceWorkflow`.
+message PausePerformanceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  PausePerformanceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PausePerformanceWorkflow`.
+message PausePerformanceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  PausePerformanceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumePerformanceWorkflow`.
+message ResumePerformanceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  ResumePerformanceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumePerformanceWorkflow`.
+message ResumePerformanceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  ResumePerformanceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ListPerformanceWorkflows`.
+message ListPerformanceWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated PerformanceStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListPerformanceWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListPerformanceWorkflows`.
+message ListPerformanceWorkflowsResponse {
+  repeated Performance performances = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalPerformanceWorkflow`.
+message SignalPerformanceWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string performance_id = 2;
+  Performance performance = 3;
+  SignalPerformanceWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalPerformanceWorkflow`.
+message SignalPerformanceWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  Performance performance = 1;
+  SignalPerformanceWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

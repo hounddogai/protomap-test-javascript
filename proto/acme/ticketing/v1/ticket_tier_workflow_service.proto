@@ -1,0 +1,258 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.ticketing.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/common/v1/paging.proto";
+import "acme/ticketing/v1/ticketing.proto";
+import "google/protobuf/duration.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Ticketing.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/ticketing/v1;ticketingv1";
+option java_multiple_files = true;
+option java_outer_classname = "TicketTierWorkflowServiceProto";
+option java_package = "com.acme.ticketing.v1";
+
+// Runs the long-lived workflow that takes a ticket tier from start to finish.
+service TicketTierWorkflowService {
+  // Starts a ticket tier.
+  rpc StartTicketTierWorkflow(StartTicketTierWorkflowRequest) returns (StartTicketTierWorkflowResponse);
+
+  // Advances a ticket tier.
+  rpc AdvanceTicketTierWorkflow(AdvanceTicketTierWorkflowRequest) returns (AdvanceTicketTierWorkflowResponse);
+
+  // Pauses a ticket tier.
+  rpc PauseTicketTierWorkflow(PauseTicketTierWorkflowRequest) returns (PauseTicketTierWorkflowResponse);
+
+  // Resumes a ticket tier.
+  rpc ResumeTicketTierWorkflow(ResumeTicketTierWorkflowRequest) returns (ResumeTicketTierWorkflowResponse);
+
+  // Returns a ticket tier.
+  rpc InspectTicketTierWorkflow(InspectTicketTierWorkflowRequest) returns (InspectTicketTierWorkflowResponse);
+
+  // Lists ticket tiers a page at a time.
+  rpc ListTicketTierWorkflows(ListTicketTierWorkflowsRequest) returns (ListTicketTierWorkflowsResponse);
+
+  // Signals a ticket tier.
+  rpc SignalTicketTierWorkflow(SignalTicketTierWorkflowRequest) returns (SignalTicketTierWorkflowResponse);
+}
+
+// The request of `StartTicketTierWorkflow`.
+message StartTicketTierWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  StartTicketTierWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `StartTicketTierWorkflow`.
+message StartTicketTierWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  StartTicketTierWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `AdvanceTicketTierWorkflow`.
+message AdvanceTicketTierWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  AdvanceTicketTierWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `AdvanceTicketTierWorkflow`.
+message AdvanceTicketTierWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  AdvanceTicketTierWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PauseTicketTierWorkflow`.
+message PauseTicketTierWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  PauseTicketTierWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PauseTicketTierWorkflow`.
+message PauseTicketTierWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  PauseTicketTierWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ResumeTicketTierWorkflow`.
+message ResumeTicketTierWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  ResumeTicketTierWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ResumeTicketTierWorkflow`.
+message ResumeTicketTierWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  ResumeTicketTierWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `InspectTicketTierWorkflow`.
+message InspectTicketTierWorkflowRequest {
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `InspectTicketTierWorkflow`.
+message InspectTicketTierWorkflowResponse {
+  TicketTier ticket_tier = 1;
+  acme.common.v1.OperationResult result = 2;
+}
+
+// The request of `ListTicketTierWorkflows`.
+message ListTicketTierWorkflowsRequest {
+  // Which records to include.
+  message Filter {
+    string query = 1;
+    repeated TicketTierStatus statuses = 2;
+    google.protobuf.Timestamp created_after = 3;
+    map<string, string> labels = 4;
+    string owner_id = 5;
+    string region = 6;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  acme.common.v1.PageRequest page = 2;
+  ListTicketTierWorkflowsRequest.Filter filter = 3;
+  string order_by = 4;
+}
+
+// The response of `ListTicketTierWorkflows`.
+message ListTicketTierWorkflowsResponse {
+  repeated TicketTier ticket_tiers = 1;
+  acme.common.v1.PageInfo page_info = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `SignalTicketTierWorkflow`.
+message SignalTicketTierWorkflowRequest {
+  // What the operation needs besides the record.
+  message Details {
+    string step = 1;
+    map<string, string> parameters = 2;
+    google.protobuf.Duration timeout = 3;
+    string initiated_by = 4;
+    acme.common.v1.ContactInfo notify = 5;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string ticket_tier_id = 2;
+  TicketTier ticket_tier = 3;
+  SignalTicketTierWorkflowRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `SignalTicketTierWorkflow`.
+message SignalTicketTierWorkflowResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  TicketTier ticket_tier = 1;
+  SignalTicketTierWorkflowResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}

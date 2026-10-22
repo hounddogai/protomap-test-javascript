@@ -1,0 +1,260 @@
+// Copyright 2026 Acme Corp. All rights reserved.
+// Use of this file is governed by the Acme API license in LICENSE.
+
+syntax = "proto3";
+
+package acme.venues.v1;
+
+import "acme/common/v1/contact.proto";
+import "acme/common/v1/context.proto";
+import "acme/common/v1/operation.proto";
+import "acme/venues/v1/venues.proto";
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+option csharp_namespace = "Acme.Venues.V1";
+option go_package = "github.com/hounddogai/protomap-test-golang/gen/acme/venues/v1;venuesv1";
+option java_multiple_files = true;
+option java_outer_classname = "VenuePolicyValidationServiceProto";
+option java_package = "com.acme.venues.v1";
+
+// Checks venue policies against the rules before anything acts on them.
+service VenuePolicyValidationService {
+  // Validates a venue policy.
+  rpc ValidateVenuePolicy(ValidateVenuePolicyRequest) returns (ValidateVenuePolicyResponse);
+
+  // Previews a venue policy.
+  rpc PreviewVenuePolicy(PreviewVenuePolicyRequest) returns (PreviewVenuePolicyResponse);
+
+  // Checks a venue policy.
+  rpc CheckVenuePolicyEligibility(CheckVenuePolicyEligibilityRequest) returns (CheckVenuePolicyEligibilityResponse);
+
+  // Normalizes a venue policy.
+  rpc NormalizeVenuePolicy(NormalizeVenuePolicyRequest) returns (NormalizeVenuePolicyResponse);
+
+  // Explains a venue policy.
+  rpc ExplainVenuePolicyDecision(ExplainVenuePolicyDecisionRequest) returns (ExplainVenuePolicyDecisionResponse);
+
+  // Lints a venue policy.
+  rpc LintVenuePolicies(LintVenuePoliciesRequest) returns (LintVenuePoliciesResponse);
+
+  // Returns a venue policy.
+  rpc GetVenuePolicyRules(GetVenuePolicyRulesRequest) returns (GetVenuePolicyRulesResponse);
+}
+
+// The request of `ValidateVenuePolicy`.
+message ValidateVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  ValidateVenuePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ValidateVenuePolicy`.
+message ValidateVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  ValidateVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `PreviewVenuePolicy`.
+message PreviewVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  PreviewVenuePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `PreviewVenuePolicy`.
+message PreviewVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  PreviewVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `CheckVenuePolicyEligibility`.
+message CheckVenuePolicyEligibilityRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  CheckVenuePolicyEligibilityRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `CheckVenuePolicyEligibility`.
+message CheckVenuePolicyEligibilityResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  CheckVenuePolicyEligibilityResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `NormalizeVenuePolicy`.
+message NormalizeVenuePolicyRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  NormalizeVenuePolicyRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `NormalizeVenuePolicy`.
+message NormalizeVenuePolicyResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  NormalizeVenuePolicyResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `ExplainVenuePolicyDecision`.
+message ExplainVenuePolicyDecisionRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  ExplainVenuePolicyDecisionRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `ExplainVenuePolicyDecision`.
+message ExplainVenuePolicyDecisionResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  ExplainVenuePolicyDecisionResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `LintVenuePolicies`.
+message LintVenuePoliciesRequest {
+  // What the operation needs besides the record.
+  message Details {
+    repeated string rules = 1;
+    bool strict = 2;
+    string locale = 3;
+    acme.common.v1.ContactInfo contact = 4;
+  }
+
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  VenuePolicy venue_policy = 3;
+  LintVenuePoliciesRequest.Details details = 4;
+  string reason = 5;
+  map<string, string> annotations = 6;
+}
+
+// The response of `LintVenuePolicies`.
+message LintVenuePoliciesResponse {
+  // What the operation decided.
+  message Outcome {
+    string status = 1;
+    string message = 2;
+    string reference_id = 3;
+    repeated string next_steps = 4;
+    google.protobuf.Timestamp effective_at = 5;
+  }
+
+  VenuePolicy venue_policy = 1;
+  LintVenuePoliciesResponse.Outcome outcome = 2;
+  acme.common.v1.OperationResult result = 3;
+}
+
+// The request of `GetVenuePolicyRules`.
+message GetVenuePolicyRulesRequest {
+  acme.common.v1.RequestContext context = 1;
+  string venue_policy_id = 2;
+  google.protobuf.FieldMask read_mask = 3;
+}
+
+// The response of `GetVenuePolicyRules`.
+message GetVenuePolicyRulesResponse {
+  VenuePolicy venue_policy = 1;
+  acme.common.v1.OperationResult result = 2;
+}
